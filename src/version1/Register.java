@@ -14,6 +14,7 @@ public class Register extends ActionSupport{
    */
   private static final long serialVersionUID = 1L;
   private String name;
+  private String pwd;
   private String ID;
   private Date birthDay;
   private Boolean sex;
@@ -21,11 +22,21 @@ public class Register extends ActionSupport{
   private String phoneNumber;
   private String job;
   private Date bpDate;
+  
+
   private Date mpDate;
   private Date dpDate;
   private String bpSchool;
   private String mpSchool;
   private String dpSchool;
+  
+  public String getPwd() {
+    return pwd;
+  }
+  public void setPwd(String pwd) {
+    this.pwd = pwd;
+  }
+
   public String getName() {
     return name;
   }
@@ -120,8 +131,11 @@ public class Register extends ActionSupport{
     user.setDoctorPeriod(dInfor);
     
     DBcrud conn = new DBcrud();
+    int id = conn.saveCode(getName(), getPwd());
+    if (id == -1) return "ERROR";
+    user.setID(String.valueOf(id));
     if (conn.insertBasicInfo(user)) return SUCCESS;
-    else return ERROR;
+    else return "ERROR";
   }
 }
 
