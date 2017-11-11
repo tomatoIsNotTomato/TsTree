@@ -107,7 +107,7 @@ public class CampusUser extends ActionSupport {
 
   // 获取5位用户ID
   public String userID() {
-    return String.format("%0" + IDLENGTH + "d", Integer.parseInt(ID) + 1);
+    return String.format("%0" + IDLENGTH + "d", Integer.parseInt(ID) );
   }
   
   public CampusUser() {

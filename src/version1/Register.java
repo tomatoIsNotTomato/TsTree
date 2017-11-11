@@ -4,7 +4,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -122,6 +125,8 @@ public class Register extends ActionSupport{
     
     CampusUser user = new CampusUser(getName(),getBirthDay(),getSex(), getPlace(),getJob(),getPhoneNumber());
     
+    HttpServletRequest request = ServletActionContext.getRequest();
+    
     SchoolInfo bInfor = new SchoolInfo("bachelor", getBpSchool(), getBpDate());
     SchoolInfo mInfor = new SchoolInfo("master", getMpSchool(), getMpDate());
     SchoolInfo dInfor = new SchoolInfo("doctor", getDpSchool(), getDpDate());
@@ -134,7 +139,11 @@ public class Register extends ActionSupport{
     int id = conn.saveCode(getName(), getPwd());
     if (id == -1) return "ERROR";
     user.setID(String.valueOf(id));
-    if (conn.insertBasicInfo(user)) return SUCCESS;
+    setID(String.valueOf(id));
+    ID = user.userID();
+    if (conn.insertBasicInfo(user)) {
+      return "SUCCESS";
+    }
     else return "ERROR";
   }
 }

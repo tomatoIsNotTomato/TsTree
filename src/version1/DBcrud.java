@@ -34,7 +34,7 @@ public class DBcrud {
   private String changeToString(HashSet<NameIdPair> set) {
     ArrayList<String> l = new ArrayList<String>();
     for (NameIdPair i : set) {
-      l.add(i.getName() + "," + i.getID());
+      l.add(i.getName() + "," + i.getID()+","+i.getTel());
     }
     String setString = StringUtils.join(l, ";");
     return setString;
@@ -42,6 +42,7 @@ public class DBcrud {
 
   private HashSet<NameIdPair> changeToHashSet(String info) {
     HashSet<NameIdPair> hs = new HashSet<>();
+    if (info.length() == 0) return null;
     String[] infoList = info.split(";");
     for (String s : infoList) {
       String[] metaData = s.split(",");
@@ -191,7 +192,140 @@ public class DBcrud {
       return false;
     }
   }
+  
+  public ArrayList<Map<String, Object>> getBasicInfo(int ID) throws SQLException {
+    ArrayList<Map<String, Object>> lst = new ArrayList<>();
+    Connection connect = connectDB();
+    if (connect == null)
+      return null;
+    String sqlStatement = "select * from  user where ID = (?)";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, ID);
+      ResultSet rs = ps.executeQuery();
+      lst = extractInfo(rs);
+      connect.close();
+      return lst;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return null;
+    }
+  }
+  
+
+  
+  public ArrayList<Map<String, Object>> getBasicInfo(String Name) throws SQLException {
+    ArrayList<Map<String, Object>> lst = new ArrayList<>();
+    Connection connect = connectDB();
+    if (connect == null)
+      return null;
+    String sqlStatement = "select * from  user where name = (?)";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setString(1, Name);
+      ResultSet rs = ps.executeQuery();
+      lst = extractInfo(rs);
+      connect.close();
+      return lst;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return null;
+    }
+  }
+
+  public HashSet<NameIdPair> queryPeriodInfo(int ID, String period, String relationShip)
+      throws SQLException {
+    HashSet<NameIdPair> lst = new HashSet<>();
+    String info = new String();
+    Connection connect = connectDB();
+    if (connect == null)
+      return null;
+    String sqlStatement = "select "+relationShip +" from user_"+period+" where "+period+"ID = ?";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, ID);
+      ResultSet rs = ps.executeQuery();
+      while(rs.next()) {
+      info = rs.getString(1);}
+      if (changeToHashSet(info)!=null) {
+      lst.addAll(changeToHashSet(info));}
+      return lst;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return null;
+    }
+  }
+  
+  public ArrayList<Map<String, Object>> queryTsTree(int ID) {
+    ArrayList<Map<String, Object>> lst = new ArrayList<>();
+    String[] periods = {"bachelor", "master", "doctor"};
+    String[] relations = {"teacher", "student"};
+    for(String period : periods) {
+      for (String relation : relations) {
+        HashSet<NameIdPair> hs;
+        try {
+          hs = queryPeriodInfo(ID, period, relation);
+          if (hs==null) return null;
+          
+          for(NameIdPair pair : hs) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("relation", relation);
+            map.put("period", period);
+            map.put("ID",pair.getID());
+            map.put("name", pair.getName());
+            map.put("tel", pair.getTel());
+            lst.add(map);
+          }
+         }
+         catch (SQLException e) {
+          e.printStackTrace();
+          return null;
+        }
+      }
+    }
+    return lst;
+  }
+  
+  
+  public Boolean add_t_s_info(int selfID, String name, int id, String relation, String period, String tel) throws SQLException{
+    try {
+    Connection connect = connectDB();
+    PreparedStatement ps;
+    ResultSet rs;
+    String sqlStatement = "select "+relation+" from user_"+period + " where "+ period+"ID = (?)";
+    ps=connect.prepareStatement(sqlStatement);
+    ps.setInt(1, selfID);
+    
+    rs=ps.executeQuery();
+    if(rs.next()) { 
+    
+    HashSet<NameIdPair> hash=changeToHashSet(rs.getString(1));
+    if (hash == null) hash = new HashSet<NameIdPair>();
+    
+    hash.add(new NameIdPair(name,id, tel));
+    String inf = changeToString(hash);
+
+    ps=connect.prepareStatement("update user_"+period+" set "+relation+"=(?) where "+period+"ID=(?)");
+    
+    ps.setString(1, inf);
+    ps.setInt(2, selfID);
+    ps.executeUpdate();
+    connect.close();
+    }
+    return true;
+    }catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }
+
 
 
 

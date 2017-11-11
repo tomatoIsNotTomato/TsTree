@@ -5,12 +5,28 @@
 <struts>
     <package name="version1" extends="struts-default">
         <action name="register" class="version1.Register">
-            <result>/correct.jsp</result>
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
             <result name="ERROR">/error.jsp</result>
         </action>
         <action name="login" class="version1.Login">
             <result>/correct.jsp</result>
             <result name="ERROR">/userLogin.jsp</result>
         </action>
+        <action name="search" class="version1.SearchBasicInfo">
+            <result>/basicInfor.jsp</result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+        <action name="supple" class="version1.Supple">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+        <action name="getTree" class="version1.searchTsTree">
+            <result>/TStree.jsp</result>
+            <result name="ERROR">/suppleInfo.jsp</result>
+        </action> 
     </package>
 </struts>
