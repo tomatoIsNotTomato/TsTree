@@ -3,9 +3,7 @@
 <%@ taglib uri = "/struts-tags" prefix = "s" %>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
-
     <head>
-
         <meta charset="utf-8">
         <title>TsTree</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +18,7 @@
         <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js" type="text/javascript" type="text/javascript"></script>
         <script src="supersized.3.2.7.min.js"></script>
         <script src="supersized-init.js"></script>
+        <script type="text/javascript" src="d3.js"></script>
         
          <style type="text/css">
    
@@ -111,28 +110,11 @@
         </div>
         
         <s:a href="suppleInfo.jsp?ID=%{#request.ID}">Add a Node</s:a>
-        
-        <s:iterator value="%{#request.tree}" id="bl" status="bn" >
-        <div>
-        <h1>Basic Information</h1>
-        
-        <s:property value="#bs"></s:property>
-            <br>ID: <s:property value="#bs.get(\"ID\")"></s:property>
-            <br>Name: <s:property value="#bs.get(\"name\")"></s:property>
-            <br>Sex: <s:property value="#bs.get(\"sex\")"></s:property>
-            <br>Birth Date: <s:property value="#bs.get(\"birthDay\")"/>
-            <br>Job: <s:property value="#bs.get(\"job\")"></s:property>
-            <br>PhoneNumber <s:property value="#bs.get(\"phoneNumber\")"></s:property>
-            <br>Place: <s:property value="#bs.get(\"place\")"></s:property>
-        </div>
-    </s:iterator>
+    
     <script>
-        var rowlist =<%=request.getAttribute("jsonString")%>;
-        var edge = new Array(rowlist.length); 
-        for (var i = 0; i < rowlist.length; i++) {
-        	edge[i] = JSON.parse(rowlist[i]);
-        };
-        var nodes = {};
+        var links =<%=request.getAttribute("tree")%>;
+<%--         var nodes =<%=request.getAttribute("nodes")%>; --%>
+        var nodes = {}; 
 
         var img_w = 100;
         var img_h = 100;
@@ -141,13 +123,10 @@
                 
         links.forEach(function(link) { 
             console.log(nodes);
-            link.source = nodes[link.source]   
-                ||
-                (nodes[link.source] = { name: link.source }); //(填加节点数据)  
-
-            link.target = nodes[link.target] || (nodes[link.target] = { name: link.target });
+            
+            link.source = nodes[link.source] || (nodes[link.source] = { name: link.source , tel : link.tel, ID : link.ID, relation : link.relation, period : link.period}); 
+            link.target = nodes[link.target] || (nodes[link.target] = { name: link.target , tel : link.tel, ID : link.ID, relation : link.relation, period : link.period});
         });
-
 
         var width = 960,
             height = 500;
@@ -181,8 +160,6 @@
             .attr("d", "M0,-5L10,0L0,5");
 
 
-
-        //(2)根据连线类型引用上面创建的标记  
         var path = svg.append("svg:g").selectAll("path")
             .data(force.links())
             .enter().append("svg:path")
@@ -193,8 +170,6 @@
             .data(force.nodes())
             .enter().append("g")
             .attr("class", "node")
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout)
             .call(force.drag);
 
 
@@ -234,13 +209,21 @@
                     .attr("xlink:href", imgPath);
                     console.log("url(#catpattern" + i + ")");
                 return "url(#catpattern" + i + ")";
+            })
+            .on("mouseover", function(d) { //设置圆点半径    
+
+                return mouseover(d);
+            })
+            .on("mouseout", mouseout)
+            .on("click", function(d){
+            	window.location.href="/SearchBasicInfo?NameOrId="+d.ID;
             });
 
         node.append("text")
             .attr("x", (function(d){return 10 - radius(d);}))
             .attr("y", (function(d){return radius(d)+20;}))
             .attr("dy", ".35em")
-            .text(function(d) { return d.name; });
+            .text(function(d) { return d.name });
 
         function tick() { //打点更新坐标  
             path.attr("d", function(d) {
@@ -268,15 +251,15 @@
                             .attr("class","tooltip") //用于css设置类样式  
                             .attr("opacity",1.0); 
 
-        function mouseover() {
-            d3.select(this).select("circle").transition()
+        function mouseover(d) {
+            /* d3.select(this).select("circle").transition()
                 .duration(750)
                 .attr("r", function(d) { //设置圆点半径                        
                     return radius(d) + 10;
                 })
-                ;
-
-            tooltip.html("我是小可爱\n!!")  
+                ; */
+            console.log(d);
+            tooltip.html("姓名:"+d.name+"<br/>ID:"+d.ID+"<br/>Tel:"+d.tel+"<br/>关系:我的"+d.relation)  
                     //设置tooltip的位置(left,top 相对于页面的距离)   
                             .style("left",(d3.event.pageX)+"px")  
                             .style("top",(d3.event.pageY+20)+"px")  

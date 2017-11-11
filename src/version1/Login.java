@@ -26,7 +26,10 @@ public class Login extends ActionSupport {
  public String execute() throws Exception{
     DBcrud conn = new DBcrud();
     System.out.println(getId()+getPwd());
-    if (conn.loginJudge(Integer.parseInt(getId()), getPwd())) return SUCCESS;
+    if (conn.loginJudge(Integer.parseInt(getId()), getPwd())) {
+      id = String.format("%0" + 5 + "d", Integer.parseInt(id) );
+      return "SUCCESS";
+    }
     else return "ERROR";
   }
   

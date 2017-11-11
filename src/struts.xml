@@ -11,7 +11,9 @@
             <result name="ERROR">/error.jsp</result>
         </action>
         <action name="login" class="version1.Login">
-            <result>/correct.jsp</result>
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${id}
+                </result>
             <result name="ERROR">/userLogin.jsp</result>
         </action>
         <action name="search" class="version1.SearchBasicInfo">
