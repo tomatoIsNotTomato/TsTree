@@ -40,5 +40,11 @@
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action> 
+        <action name="delete" class="version1.de_t_s">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action> 
     </package>
 </struts>

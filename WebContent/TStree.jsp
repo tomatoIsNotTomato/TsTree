@@ -14,8 +14,11 @@
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/supersized.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="jquery.contextmenu.css">
         
-        <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js" type="text/javascript" type="text/javascript"></script>
+           
+        <script src="http://www.jq22.com/jquery/jquery-1.6.2.js"></script>
+        <script src="jquery.contextmenu.js"></script>  
         <script src="supersized.3.2.7.min.js"></script>
         <script src="supersized-init.js"></script>
         <script type="text/javascript" src="d3.js"></script>
@@ -141,8 +144,8 @@
         links.forEach(function(link) { 
             console.log(nodes);
             
-            link.source = nodes[link.source] || (nodes[link.source] = { name: link.source , tel : link.tel, ID : link.ID, relation : link.relation, period : link.period}); 
-            link.target = nodes[link.target] || (nodes[link.target] = { name: link.target , tel : link.tel, ID : link.ID, relation : link.relation, period : link.period});
+            link.source = nodes[link.source] || (nodes[link.source] = { name: link.source , tel : link.tel, ID : link.ID, type : link.type, period : link.period}); 
+            link.target = nodes[link.target] || (nodes[link.target] = { name: link.target , tel : link.tel, ID : link.ID, type : link.type, period : link.period});
         });
 
         var width = 960,
@@ -187,7 +190,11 @@
             .data(force.nodes())
             .enter().append("g")
             .attr("class", "node")
-            .call(force.drag);
+            .call(force.drag)
+            
+        
+      
+        var timer = null;
 
 
         //设置圆点的半径，圆点的度越大weight属性值越大，可以对其做一点数学变换                               
@@ -198,12 +205,13 @@
             return Math.log(d.weight + 5) * 20;
         }
 
-
-
         node.append("circle")
             .attr("r", function(d) { //设置圆点半径    
 
                 return radius(d);
+            })
+            .attr("id", function(d){
+            	return "node";
             })
             .attr("fill", function(d, i) {
 
@@ -232,15 +240,24 @@
                 return mouseover(d);
             })
             .on("mouseout", mouseout)
+            .on("dblclick", function(d){
+            	clearTimeout(timer);
+            	window.location.href="search?NameOrId="+d.ID;
+            }) 
             .on("click", function(d){
-            	window.location.href="/SearchBasicInfo?NameOrId="+d.ID;
-            });
+            	clearTimeout(timer);
+                timer = setTimeout(function() { 
+                	window.location.href="modify.jsp?ID="+d.ID+"&name="+d.name+"&tel="+d.tel+"&relation="+d.type+"&period="+d.period;
+                }, 300);
+            	
+            }) ;
 
         node.append("text")
             .attr("x", (function(d){return 10 - radius(d);}))
             .attr("y", (function(d){return radius(d)+20;}))
             .attr("dy", ".35em")
             .text(function(d) { return d.name });
+        
 
         function tick() { //打点更新坐标  
             path.attr("d", function(d) {
@@ -263,7 +280,8 @@
         var tooltip = d3.select("body").append("div")  
                             .attr("class","tooltip") //用于css设置类样式  
                             .attr("opacity",1.0); 
-
+        
+        
         function mouseover(d) {
             /* d3.select(this).select("circle").transition()
                 .duration(750)
@@ -272,7 +290,7 @@
                 })
                 ; */
             console.log(d);
-            tooltip.html("姓名:"+d.name+"<br/>ID:"+d.ID+"<br/>Tel:"+d.tel+"<br/>关系:我的"+d.relation)  
+            tooltip.html("姓名:"+d.name+"<br/>ID:"+d.ID+"<br/>Tel:"+d.tel+"<br/>关系:我的"+d.type)  
                     //设置tooltip的位置(left,top 相对于页面的距离)   
                             .style("left",(d3.event.pageX)+"px")  
                             .style("top",(d3.event.pageY+20)+"px")  

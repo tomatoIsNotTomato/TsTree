@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -357,6 +358,42 @@ public class DBcrud {
       return false;
     }
 
+  }
+  
+  @SuppressWarnings("null")
+  public Boolean de_t_s_info(int ID,int id,String name,String period,String relation,String tel) 
+      throws SQLException{
+    try {
+    Connection connect = connectDB();
+    PreparedStatement ps;
+    ResultSet rs;
+    String sqlStatement = "select * from user_"+period+ " where "+period+"ID = ?";
+    ps=connect.prepareStatement(sqlStatement);
+    ps.setInt(1, ID);
+    rs=ps.executeQuery();
+    
+    if(rs.next()) {
+      HashSet<NameIdPair> hash=changeToHashSet(rs.getString(relation));
+      if (hash == null) hash = new HashSet<NameIdPair>();
+      NameIdPair nana=new NameIdPair(name,id,tel);
+      Iterator iter=hash.iterator();
+      while (iter.hasNext()) {
+        NameIdPair person = (NameIdPair) iter.next();
+      if (person.equals(nana)) {
+      iter.remove();
+      }
+      }
+    String str=changeToString(hash);
+    ps=connect.prepareStatement("update user_"+period+" set "+relation+"=(?) where "+period+"ID=(?)");
+    ps.setString(1, str);
+    ps.setInt(2, ID);
+    ps.executeUpdate();
+    }
+    return true;
+  }catch (Exception e) {
+    e.printStackTrace();
+    return false;
+  }
   }
 }
 

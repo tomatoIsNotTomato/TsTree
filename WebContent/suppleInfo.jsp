@@ -75,7 +75,7 @@
             }
             
             }
-        });
+        );
         
         function is_hide(){ $(".alert").animate({"top":"-40%"}, 300) }
         function is_show(){ $(".alert").show().animate({"top":"45%"}, 300) }
