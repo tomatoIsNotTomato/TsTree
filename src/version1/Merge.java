@@ -1,17 +1,17 @@
 package version1;
 
-import java.util.ArrayList;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class Merge extends ActionSupport{
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private String ID1;
   private String ID2;
   private String name;

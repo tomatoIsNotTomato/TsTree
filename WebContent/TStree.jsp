@@ -102,8 +102,19 @@
             
             <form action="search" method="post">
                 <div>
-                    <input type="hidden" name="ID" value=<%=request.getAttribute("selfID") %> >
                     <input type="text" name="nameOrId" placeholder="Name or ID" autocomplete="off"/>
+                </div>
+                <button id="submit" type="submit">search</button>
+            </form>
+            <br>
+        </div>
+        
+        <div class="page-container">
+            
+            <form action="showFullTree" method="post">
+                <div>
+                    <input type="hidden" name="ID" value=<%=request.getAttribute("ID") %> >
+                    <input type="text" name="count" placeholder="迭代次数" autocomplete="off"/>
                 </div>
                 <button id="submit" type="submit">search</button>
             </form>
@@ -242,10 +253,6 @@
                     d.target.y;
             });
 
-
-
-
-
             //更新结点图片和文字
             node.attr("transform", function(d) {
                     return "translate(" + d.x + "," + d.y + ")";
@@ -281,8 +288,6 @@
                 tooltip.style("opacity",0.0);  
         }
         </script>
-    
-    
-    
+
 </body>
 </html>

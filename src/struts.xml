@@ -30,6 +30,10 @@
             <result>/TStree.jsp</result>
             <result name="ERROR">/suppleInfo.jsp</result>
         </action> 
+        <action name="showFullTree" class="version1.queryFullTsTree">
+            <result>/TStree.jsp</result>
+            <result name="ERROR">/suppleInfo.jsp</result>
+        </action> 
         <action name="merge" class="version1.Merge">
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${ID1}
