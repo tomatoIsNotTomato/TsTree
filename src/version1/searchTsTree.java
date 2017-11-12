@@ -12,6 +12,8 @@ import com.opensymphony.xwork2.ActionSupport;
 public class searchTsTree extends ActionSupport{
   private String ID;
 
+
+
   public String getID() {
     return ID;
   }
@@ -20,8 +22,6 @@ public class searchTsTree extends ActionSupport{
   public void setID(String iD) {
     ID = iD;
   }
-  
-  
   
    public String execute() throws Exception{
     DBcrud conn = new DBcrud();
@@ -60,9 +60,10 @@ public class searchTsTree extends ActionSupport{
       sb.append(']');
       String jsonString = sb.toString();
       request.setAttribute("tree", jsonString);
+      request.setAttribute("ID", ID);
+      request.setAttribute("name", name);
       return SUCCESS;
     }
     else return "ERROR";
   }
-  
 }

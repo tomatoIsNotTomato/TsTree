@@ -309,20 +309,54 @@ public class DBcrud {
     if (hash == null) hash = new HashSet<NameIdPair>();
     
     hash.add(new NameIdPair(name,id, tel));
-    String inf = changeToString(hash);
+        String inf = changeToString(hash);
 
-    ps=connect.prepareStatement("update user_"+period+" set "+relation+"=(?) where "+period+"ID=(?)");
-    
-    ps.setString(1, inf);
-    ps.setInt(2, selfID);
-    ps.executeUpdate();
-    connect.close();
-    }
-    return true;
-    }catch (Exception e) {
+        ps = connect.prepareStatement("update user_" + period + " set " + relation + "=(?) where " + period + "ID=(?)");
+
+        ps.setString(1, inf);
+        ps.setInt(2, selfID);
+        ps.executeUpdate();
+        connect.close();
+      }
+      return true;
+    } catch (Exception e) {
       e.printStackTrace();
       return false;
     }
+  }
+
+  public Boolean Merge(int ID1, int ID2, String name) {
+    ArrayList<Map<String, Object>> lst = new ArrayList<>();
+    String[] periods = { "bachelor", "master", "doctor" };
+    String[] relations = { "teacher", "student" };
+    try {
+      for (String period : periods) {
+        for (String relation : relations) {
+          HashSet<NameIdPair> hs;
+
+          hs = queryPeriodInfo(ID1, period, relation);
+          for (NameIdPair pair : hs) {
+            if (pair.getName().equals(name)) {
+              pair.setID(ID2);
+              String inf = changeToString(hs);
+              Connection conn = connectDB();
+              String sqlStatement = "update user_" + period + " set " + relation + "=(?) where " + period + "ID=(?)";
+              PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sqlStatement);
+              ps.setString(1, inf);
+              ps.setInt(2, ID1);
+              ps.executeUpdate();
+              conn.close();
+            }
+          }
+        }
+      }
+      return true;
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+
   }
 }
 

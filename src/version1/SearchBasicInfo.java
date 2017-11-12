@@ -28,16 +28,18 @@ public class SearchBasicInfo extends ActionSupport{
     Matcher isNum = pattern.matcher(NameOrId);
     if( isNum.matches() && NameOrId.length()==5 ){
       ArrayList<Map<String,Object>> lst = conn.getBasicInfo(Integer.valueOf(NameOrId)); 
-      if (lst!=null) {
+      if (lst.size()!=0) {
         request.setAttribute("BasicInfo", lst);
+        request.setAttribute("ID", lst.get(0).get("ID").toString());
         return SUCCESS;
       }
       else return "ERROR";
     }
     else {
       ArrayList<Map<String,Object>> lst = conn.getBasicInfo(NameOrId);
-      if (lst!=null) {
+      if (lst.size()!=0) {
         request.setAttribute("BasicInfo", lst);
+        request.setAttribute("ID", lst.get(0).get("ID").toString());
         return SUCCESS;
       }
       else return "ERROR";

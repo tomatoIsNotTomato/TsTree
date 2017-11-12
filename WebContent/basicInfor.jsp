@@ -33,19 +33,15 @@
             <br>Birth Date: <s:property value="#bs.get(\"birthDay\")"/>
             <br>Job: <s:property value="#bs.get(\"job\")"></s:property>
             <br>PhoneNumber <s:property value="#bs.get(\"phoneNumber\")"></s:property>
-            <br>Place: <s:property value="#bs.get(\"place\")"></s:property>
         </div>
     </s:iterator>
     
-    <div class="page-container">
-            
-            <form action="getTree" method="post">
-                <div>
-                    <input type="hidden" name="ID" value = "%{#request.ID}"/>
-                </div>
-                <button id="submit" type="submit">search</button>
-            </form>
-            <br>
-        </div>
+  
+    <s:a action="getTree">显示师承树
+
+     <s:param name="ID"><s:property value="%{#request.ID}"/></s:param>
+
+ </s:a>
+   
 </body>
 </html>

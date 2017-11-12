@@ -102,6 +102,7 @@
             
             <form action="search" method="post">
                 <div>
+                    <input type="hidden" name="ID" value=<%=request.getAttribute("selfID") %> >
                     <input type="text" name="nameOrId" placeholder="Name or ID" autocomplete="off"/>
                 </div>
                 <button id="submit" type="submit">search</button>
@@ -110,12 +111,17 @@
         </div>
         
         <s:a href="suppleInfo.jsp?ID=%{#request.ID}">Add a Node</s:a>
+       <s:a action="merge">与我的师承树合并
+
+     <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
+     <s:param name="name"><s:property value="%{#request.name}"/></s:param>
+ </s:a>
     
     <script>
         var links =<%=request.getAttribute("tree")%>;
 <%--         var nodes =<%=request.getAttribute("nodes")%>; --%>
         var nodes = {}; 
-
+     
         var img_w = 100;
         var img_h = 100;
         var rad = 60;

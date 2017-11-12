@@ -40,5 +40,27 @@ package version1;
       this.ID = ID;
       this.tel = tel;
     }
+    
+    public int hashCode() {
+      return this.name.hashCode();
+    }
+    @SuppressWarnings("unused")
+    public boolean equals(Object obj){
+
+      if(obj instanceof NameIdPair){
+        if (obj == null) {
+          return false;
+        }
+
+        NameIdPair temp = (NameIdPair)obj;
+
+        if ((this.ID == temp.ID)&&(this.name.equals(temp.name))
+            &&(this.tel.equals(temp.tel))) {
+            return true;
+        }
+       
+    }
+       return false;
+    }
   }
 
