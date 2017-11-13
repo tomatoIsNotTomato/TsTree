@@ -41,7 +41,7 @@
                 </div>
                 
                 <div>
-                    <input type="password" name="tel"  placeholder="tel" oncontextmenu="return false" onpaste="return false" />
+                    <input type="text" name="tel"  placeholder="tel" oncontextmenu="return false" onpaste="return false" />
                 </div>
                 <div>
                     <!-- <input type="text" name="period" placeholder="时期" autocomplete="off"/> -->
@@ -49,7 +49,7 @@
                     <input type="radio" name="relation" value="student" checked="checked" />student
                 </div>
                 
-                <button id="submit" type="submit">Sign in</button>
+                <button id="submit" type="submit">Save</button>
             </form>
             <br>
         </div>

@@ -12,7 +12,7 @@
         <meta name="author" content="">
 
         <!-- CSS -->
-        <link rel="stylesheet" href="css/reset.css">
+        
         <link rel="stylesheet" href="css/supersized.css">
         <link rel="stylesheet" href="css/style.css">
 
@@ -33,10 +33,7 @@
             </form>
             <br>
             <a href="register.jsp">New? Register here.</a>
-            <!-- <div class="connect">
-                <p>If we can only encounter each other rather than stay with each other,then I wish we had never encountered.</p>
-                <p style="margin-top:20px;">如果只是遇见，不能停留，不如不遇见。</p>
-            </div> -->
+
         </div>
         <div class="alert" style="display:none">
             <h2>消息</h2>
@@ -46,7 +43,6 @@
             </div>
         </div>
 
-        <!-- Javascript -->
         <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js" type="text/javascript" type="text/javascript"></script>
         <script src="supersized.3.2.7.min.js"></script>
         <script src="supersized-init.js"></script>
