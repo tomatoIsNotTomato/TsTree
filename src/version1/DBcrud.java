@@ -13,7 +13,7 @@ public class DBcrud {
   private String jdbcDriver = "com.mysql.jdbc.Driver";
   private String dbusername = "root";
   private String dbpassword = "2218234907";
-  private String dbUrl = "jdbc:mysql://localhost:3306/tstree?useSSL=false";
+  private String dbUrl = "jdbc:mysql://localhost:3306/tstree?useSSL=false&useUnicode=true&characterEncoding=utf-8";
 
   public Connection connectDB() {
     try {
@@ -47,7 +47,12 @@ public class DBcrud {
     String[] infoList = info.split(";");
     for (String s : infoList) {
       String[] metaData = s.split(",");
-      NameIdPair nip = new NameIdPair(metaData[0], Integer.parseInt(metaData[1]), metaData[2]);
+      NameIdPair nip = new NameIdPair(metaData[0], Integer.parseInt(metaData[1]), "");
+      if (metaData.length>2)
+      {
+        nip.setTel(metaData[2]);
+      }
+      
       hs.add(nip);
     }
     return hs;
@@ -62,8 +67,18 @@ public class DBcrud {
       int column = md.getColumnCount();
       while (rs.next()) {
         Map<String, Object> rowData = new HashMap<String, Object>();
+        
         for (int i = 1; i <= column; i++) {
           rowData.put(md.getColumnName(i), rs.getObject(i));
+          if (md.getColumnName(i).equals("sex")){
+            if  ((int)rs.getObject(i)==0) {
+              rowData.put(md.getColumnName(i), "W");
+            }
+            else {
+              rowData.put(md.getColumnName(i), "M");
+            }
+          }
+         
         }
         lst.add(rowData);
       }
@@ -133,7 +148,7 @@ public class DBcrud {
     Boolean fail = false;
     if (connect == null)
       return false;
-    String sqlStatement1 = "insert into user (id, name, birthDay, sex, place, phoneNumber, job) value(?,?,?,?,?,?,?)";
+    String sqlStatement1 = "insert into user (id, name, birthDay, sex, place, phoneNumber, job, linkedIn) value(?,?,?,?,?,?,?,?)";
 
     PreparedStatement ps;
     try {
@@ -145,6 +160,7 @@ public class DBcrud {
       ps.setString(5, user.getPlace());
       ps.setString(6, user.getPhoneNumber());
       ps.setString(7, user.getJob());
+      ps.setString(8, user.getLinkedIn());
 
       ps.executeUpdate();
 
@@ -386,6 +402,44 @@ public class DBcrud {
     String str=changeToString(hash);
     ps=connect.prepareStatement("update user_"+period+" set "+relation+"=(?) where "+period+"ID=(?)");
     ps.setString(1, str);
+    ps.setInt(2, ID);
+    ps.executeUpdate();
+    }
+    return true;
+  }catch (Exception e) {
+    e.printStackTrace();
+    return false;
+  }
+  }
+  
+  @SuppressWarnings("null")
+  public Boolean update_t_s_info(int ID,int id,String name1,String name2,
+      String period,String relation,String tel_old,String tel_new) 
+      throws SQLException{
+    try {
+    Connection connect = connectDB();
+    PreparedStatement ps;
+    ResultSet rs;
+    String sqlStatement = "select * from user_"+period + " where "+period+"ID = ?";
+    ps=connect.prepareStatement(sqlStatement);
+    ps.setInt(1, ID);
+    rs=ps.executeQuery();
+    if(rs.next()) {
+      HashSet<NameIdPair> hash=changeToHashSet(rs.getString(relation));
+      if (hash == null) hash = new HashSet<NameIdPair>();
+      NameIdPair nana=new NameIdPair(name1,id,tel_old);
+      Iterator iter=hash.iterator();
+      while (iter.hasNext()) {
+        NameIdPair person = (NameIdPair) iter.next();
+      if (person.equals(nana)) {
+      iter.remove();
+      }
+      }
+    hash.add(new NameIdPair(name2,id,tel_new));
+    String str2=changeToString(hash);
+    System.out.println(str2);
+    ps=connect.prepareStatement("update user_"+period+" set "+relation+"=(?) where "+period+"ID=(?)");
+    ps.setString(1, str2);
     ps.setInt(2, ID);
     ps.executeUpdate();
     }

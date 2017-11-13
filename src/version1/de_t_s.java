@@ -76,8 +76,7 @@ public class de_t_s extends ActionSupport {
   public String execute() throws Exception {
     try {
       DBcrud conn = new DBcrud();
-      HttpServletRequest request = ServletActionContext.getRequest();
-      ID = Integer.valueOf(request.getSession().getAttribute("userID").toString());
+      
       conn.de_t_s_info(ID, id, Name, period, relation, tel);
 
     } catch (Exception e) {
@@ -85,5 +84,4 @@ public class de_t_s extends ActionSupport {
     }
     return "SUCCESS";
   }
-
 }

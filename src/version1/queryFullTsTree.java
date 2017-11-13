@@ -51,10 +51,12 @@ public class queryFullTsTree extends ActionSupport{
             map.put("tel", pair.getTel());
             */
     for(Map<String, Object> info:l) {
-      if (!info.get("ID").equals(("-1"))) {
-        searchTree(lst, info.get("name").toString(), Integer.valueOf(info.get("ID").toString()), ++cnt);
+      if (!info.get("ID").toString().equals(("-1"))) {
+        searchTree(lst, info.get("name").toString(), Integer.valueOf(info.get("ID").toString()), cnt);
+       
       }
     }
+    cnt++;
     return;
   }
   

@@ -22,25 +22,31 @@
     <body oncontextmenu="return false">
 
         <div class="page-container">
-            <h1>添加老师/学生</h1>
+            <h1>Add teacher or student</h1>
             <form action="supple" method="post">
                 <div>
                     <input  type="hidden" name="ID" value = <s:property value="#parameters.ID[0]"/>/>
                 </div>
                 <div>
-                    <input type="text" name="name" placeholder="名字" autocomplete="off"/>
+                    <input type="text" name="name" placeholder="name" autocomplete="off"/>
                 </div>
                 <div>
-                    <input type="text" name="id" placeholder="ID(选填)" autocomplete="off"/>
+                    <input type="text" name="id" placeholder="ID(optional)" autocomplete="off"/>
                 </div>
                 <div>
-                    <input type="text" name="relation" placeholder="关系" autocomplete="off"/>
+                    <!-- <input type="text" name="relation" placeholder="关系" autocomplete="off"/> -->
+                    <input type="radio" name="period" value="bachelor"/>bachelor
+                    <input type="radio" name="period" value="master"/>master
+                    <input type="radio" name="period" value="doctor" checked="checked" />doctor
+                </div>
+                
+                <div>
+                    <input type="password" name="tel"  placeholder="tel" oncontextmenu="return false" onpaste="return false" />
                 </div>
                 <div>
-                    <input type="text" name="period" placeholder="时期" autocomplete="off"/>
-                </div>
-                <div>
-                    <input type="password" name="tel"  placeholder="联系电话" oncontextmenu="return false" onpaste="return false" />
+                    <!-- <input type="text" name="period" placeholder="时期" autocomplete="off"/> -->
+                    <input type="radio" name="relation" value="teacher"/>teacher
+                    <input type="radio" name="relation" value="student" checked="checked" />student
                 </div>
                 
                 <button id="submit" type="submit">Sign in</button>

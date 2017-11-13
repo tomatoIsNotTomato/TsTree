@@ -1,12 +1,8 @@
 package version1;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -20,12 +16,23 @@ public class Register extends ActionSupport{
   private String pwd;
   private String ID;
   private Date birthDay;
-  private Boolean sex;
+  private String sex;
   private String place;
   private String phoneNumber;
   private String job;
   private Date bpDate;
-  
+  private String linkedIn;
+
+  public String getLinkedIn() {
+    return linkedIn;
+  }
+  public void setLinkedIn(String linkedIn) {
+    this.linkedIn = linkedIn;
+  }
+  public static long getSerialversionuid() {
+    return serialVersionUID;
+  }
+
 
   private Date mpDate;
   private Date dpDate;
@@ -58,10 +65,10 @@ public class Register extends ActionSupport{
   public void setBirthDay(Date birthDay) {
     this.birthDay = birthDay;
   }
-  public Boolean getSex() {
+  public String getSex() {
     return sex;
   }
-  public void setSex(Boolean sex) {
+  public void setSex(String sex) {
     this.sex = sex;
   }
   public String getPlace() {
@@ -122,8 +129,11 @@ public class Register extends ActionSupport{
   
   public String execute() throws Exception{
     
-    
-    CampusUser user = new CampusUser(getName(),getBirthDay(),getSex(), getPlace(),getJob(),getPhoneNumber());
+    Boolean sexi = true;
+    if (getSex().equals("1")) {
+      sexi = false;
+    }
+    CampusUser user = new CampusUser(getName(),getBirthDay(),sexi, getPlace(), getPhoneNumber(),getJob(), getLinkedIn());
     
     HttpServletRequest request = ServletActionContext.getRequest();
     
@@ -141,6 +151,7 @@ public class Register extends ActionSupport{
     user.setID(String.valueOf(id));
     setID(String.valueOf(id));
     ID = user.userID();
+    request.getSession().setAttribute("userID", ID);
     if (conn.insertBasicInfo(user)) {
       return "SUCCESS";
     }

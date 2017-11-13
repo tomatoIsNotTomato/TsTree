@@ -43,7 +43,7 @@ public class searchTsTree extends ActionSupport{
       }
     }
     
-    if (lst.size()!=0){
+    if (lst != null && lst.size()!=0){
       int i = 0;
       StringBuilder sb = new StringBuilder();
       sb.append('[');
@@ -56,7 +56,7 @@ public class searchTsTree extends ActionSupport{
       sb.append(']');
       String jsonString = sb.toString();
       request.setAttribute("tree", jsonString);
-      request.setAttribute("ID", ID);
+      request.setAttribute("ID", String.format("%0" +5 + "d", Integer.parseInt(ID) ));
       request.setAttribute("name", name);
       return SUCCESS;
     }

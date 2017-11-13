@@ -28,6 +28,6 @@
     <script src="supersized-init.js"></script>
     </head>
     <body>
-            <h1>Error appears...</h1>     
+            <h1>No result...</h1>     
     </body>
 </html>

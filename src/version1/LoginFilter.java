@@ -30,6 +30,7 @@ public class LoginFilter extends HttpServlet implements Filter {
         String url=request.getServletPath();    
         String contextPath=request.getContextPath();    
         if(url.equals("")) url+="/";    
+
         if((url.startsWith("/"))&&!((url.startsWith("/userLogin"))||(url.startsWith("/login"))||(url.startsWith("/css"))||(url.startsWith("/register")))){//若访问后台资源 过滤到login    
              String user=(String)session.getAttribute("userID");    
              if(user==null){//转入管理员登陆页面    

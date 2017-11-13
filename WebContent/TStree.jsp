@@ -14,23 +14,122 @@
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/supersized.css">
         <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="jquery.contextmenu.css">
+
         
            
-        <script src="http://www.jq22.com/jquery/jquery-1.6.2.js"></script>
-        <script src="jquery.contextmenu.js"></script>  
+       <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+        
         <script src="supersized.3.2.7.min.js"></script>
         <script src="supersized-init.js"></script>
         <script type="text/javascript" src="d3.js"></script>
         
          <style type="text/css">
+   ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+                position: fixed;
+                top: 0;
+                width: 100%;
+            }
+            
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            
+            li a:hover:not(.active) {
+                background-color: #111;
+            } 
+   .searchBox {
+   float:right;
+   margin-right:170px;
+        margin-top:0px;
+        width:100px;
+        height:35px;
+   }
    
+   .searchBox input{
+        float:right;
+        margin-top:7px;
+        width:200px;
+        height:25px;
+        font-size:15px;
+        border-radius: 6px;
+	    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+	    border: 1px solid rgba(255,255,255,.15);
+        
+   }
+   .searchBox button{
+        width:60px;
+        height:25px;
+        margin-top:5px;
+        border-radius:10px;
+        font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+        border-radius: 6px;
+        border: 0px;
+        padding: 0;
+        background: ##848484;
+        
+   }
+   
+   .mainSearch {
+   float:right;
+   margin-right:100px;
+        margin-top:200px;
+        width:250px;
+        
+   }
+   
+   .mainSearch input{
+        float:right;
+        
+        width:270px;
+        height:30px;
+        font-size:15px;
+        border-radius: 6px;
+        border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+        border: 1px solid rgba(255,255,255,.15);
+        
+   }
+   .mainSearch button{
+        width:300px;
+        height:30px;
+        margin-top:5px;
+        font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+        border-radius: 6px;
+        border: 0px;
+        padding: 0;
+        background: #ef4300;
+        
+   }
+   
+   .herf {
+        display:block;
+        width:300px;
+        height:30px;
+        border-radius: 6px;
+        border: 0px;
+        float:right;
+        background-color:#ef4300;
+        text-decoration:none;
+        font-family:'PT Sans', Helvetica, Arial, sans-serif;
+        font-size: 14px;
+	    font-weight: 700;
+	    color: #fff;
+   }
+       
     h1 {
-        font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;
-        padding: 10px 10px 10px 20px;
-        display: block;
-        background: #C0E1FF;
-        margin-top:80px;
+        font: 40px "Trebuchet MS", Arial, Helvetica, sans-serif;
+        float:left;
+        margin-left:50px;
+        margin-top:5px;
+         
     }
     .circleImg {
         stroke: #ff7f0e;
@@ -42,7 +141,6 @@
         stroke: #666;
         stroke-width: 1.5px;
     }
-
 
     path.link.student {
         stroke-dasharray: 0, 2 1;
@@ -59,83 +157,92 @@
     }
 
     .tooltip{  
-            font-family:simsun;  
-            font-size:16px;  
-            width:120;  
-            height:auto;  
-            position:absolute;   
-            text-align:center;  
-            border-style:solid;  
-            border-width:1px;  
-            background-color:white;  
-            border-radius:5px;    
+            font-family: "microsoft yahei", "simsun";
+    font-size: 12px;
+    width: 170px;
+    height: auto;
+    z-index: 2;
+    position: absolute;
+    background: #fff;
+    opacity: 0.5;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);    
         }
-    ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          background-color: #333;
-          position: fixed;
-          top: 0;
-          width: 100%;
-      }
-      
-      li a {
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 14px 16px;
-          text-decoration: none;
-      }
-      
-      li a:hover:not(.active) {
-          background-color: #111;
-      } 
-      
-      .active {
-          background-color: #4CAF50;
-      }
-    </style>
+        
+        
+    .tooltip .title {
+    color: #fff;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #333;
+    border-radius: 5px 5px 0 0;
+}
+.tooltip .detail-info {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #337ab7;
+    color:#333
+}
+
+
+     .op {
+            font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+            margin-right:0px;
+            float:right;
+            margin-top:7px;
+        }
+     svg{
+     float:left;
+     margin-top:10px;}
+        
     
+    </style>
     </head>
 <body>
-
-<div class="page-container">
-            
-            <form action="search" method="post">
-                <div>
+<ul>
+          <li><img src = images/tstree.jpg width="120px" style="float:left; margin-top:3px" ></li>
+           <li><a href="About.jsp" style="float:right">About us</a></li>
+           
+           <li> <form action="search" method="post" class="searchBox">
+                
+                <table>
+                <tr><td>
                     <input type="text" name="nameOrId" placeholder="Name or ID" autocomplete="off"/>
-                </div>
-                <button id="submit" type="submit">search</button>
+                </td><td>
+                <button id="submit" type="submit">search</button></tr>
+                </table>
             </form>
-            <br>
-        </div>
-        
+            </li>
+        </ul>
+            <h1><%=request.getAttribute("name")%>'s TsTree..</h1>
+     
         <div class="page-container">
-            
-            <form action="showFullTree" method="post">
-                <div>
-                    <input type="hidden" name="ID" value=<%=request.getAttribute("ID") %> >
-                    <input type="text" name="count" placeholder="迭代次数" autocomplete="off"/>
-                </div>
+            <form action="showFullTree" method="post" class="mainSearch">
+                 <input type="hidden" name="ID" value=<%=request.getAttribute("ID") %> >
+                 <input type="text" name="count" placeholder="Iteration times" autocomplete="off"/>
                 <button id="submit" type="submit">search</button>
             </form>
             <br>
         </div>
         
-        <s:a href="suppleInfo.jsp?ID=%{#request.ID}">Add a Node</s:a>
+        
+        
+        <%-- <s:a href="suppleInfo.jsp?ID=%{#request.ID}">Add a Node</s:a></td></tr>
+       
        <s:a action="merge">与我的师承树合并
 
      <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
      <s:param name="name"><s:property value="%{#request.name}"/></s:param>
- </s:a>
-    
+ </s:a> --%>
+   
+  
     <script>
         var links =<%=request.getAttribute("tree")%>;
 <%--         var nodes =<%=request.getAttribute("nodes")%>; --%>
         var nodes = {}; 
-     
+        var mainname = '<%=request.getAttribute("name")%>';
+        var mainID = <%=request.getAttribute("ID")%>;
+        
         var img_w = 100;
         var img_h = 100;
         var rad = 60;
@@ -143,9 +250,19 @@
                 
         links.forEach(function(link) { 
             console.log(nodes);
+            if (link.source==mainname){
+            	link.source = nodes[link.source] || (nodes[link.source] = { name: mainname , ID : mainID}); 
+            }
+            else{
+            	link.source = nodes[link.source] || (nodes[link.source] = { name: link.source , tel : link.tel, ID : link.ID, type : link.type, period : link.period}); 
+            }
             
-            link.source = nodes[link.source] || (nodes[link.source] = { name: link.source , tel : link.tel, ID : link.ID, type : link.type, period : link.period}); 
+            if (link.target==mainname){
+            	link.target = nodes[link.target] || (nodes[link.target] = { name: mainname , ID : mainID}); 
+            }
+            else{
             link.target = nodes[link.target] || (nodes[link.target] = { name: link.target , tel : link.tel, ID : link.ID, type : link.type, period : link.period});
+            }
         });
 
         var width = 960,
@@ -191,9 +308,7 @@
             .enter().append("g")
             .attr("class", "node")
             .call(force.drag)
-            
-        
-      
+ 
         var timer = null;
 
 
@@ -231,7 +346,8 @@
                     .attr("y", -(img_h / 2 - rad))
                     .attr("width", img_w)
                     .attr("height", img_h)
-                    .attr("xlink:href", imgPath);
+                    .attr("xlink:href", "userImage/default.jpg");
+                
                     console.log("url(#catpattern" + i + ")");
                 return "url(#catpattern" + i + ")";
             })
@@ -242,12 +358,19 @@
             .on("mouseout", mouseout)
             .on("dblclick", function(d){
             	clearTimeout(timer);
-            	window.location.href="search?NameOrId="+d.ID;
+            	if (d.ID!="-0001"){
+            	window.location.href="search?NameOrId="+d.ID;}
             }) 
             .on("click", function(d){
             	clearTimeout(timer);
                 timer = setTimeout(function() { 
-                	window.location.href="modify.jsp?ID="+d.ID+"&name="+d.name+"&tel="+d.tel+"&relation="+d.type+"&period="+d.period;
+                	 for (var i = 0; i < links.length; i++) {
+                	        if ((links[i].target.name==mainname && links[i].source.name==d.name)||(links[i].target.name==d.name && links[i].source.name==mainname)){
+                	        	window.location.href="modify.jsp?sourceID="+<%=request.getAttribute("ID")%>+"&ID="+d.ID+"&name="+d.name+"&tel="+d.tel+"&relation="+d.type+"&period="+d.period;
+                	        	break;
+                	        }
+                	    };
+                	
                 }, 300);
             	
             }) ;
@@ -290,7 +413,14 @@
                 })
                 ; */
             console.log(d);
-            tooltip.html("姓名:"+d.name+"<br/>ID:"+d.ID+"<br/>Tel:"+d.tel+"<br/>关系:我的"+d.type)  
+                tooltip.html(function(){
+                	if (d.name == mainname){
+                		return "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>ID:"+d.ID+"</div>";
+                	}
+                	else{
+                		return "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>ID:"+d.ID+"<br/>Tel:"+d.tel+"<br/>relation:my"+d.type+"</div>";
+                	}
+                })
                     //设置tooltip的位置(left,top 相对于页面的距离)   
                             .style("left",(d3.event.pageX)+"px")  
                             .style("top",(d3.event.pageY+20)+"px")  
@@ -306,6 +436,19 @@
                 tooltip.style("opacity",0.0);  
         }
         </script>
+        
+        <div class="op">
+     <br>
+     <s:a href="suppleInfo.jsp?ID=%{#request.ID}" cssClass="herf">Add a Node</s:a>
+     <br>
+     <br>
+     <s:a action="merge" cssClass="herf">Merge with My Tstree
 
+     <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
+     <s:param name="name"><s:property value="%{#request.name}"/></s:param>
+     </s:a>
+     </div>
+     <br>
+     
 </body>
 </html>

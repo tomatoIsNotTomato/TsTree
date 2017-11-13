@@ -18,7 +18,7 @@
         </action>
         <action name="search" class="version1.SearchBasicInfo">
             <result>/basicInfor.jsp</result>
-            <result name="ERROR">/error.jsp</result>
+            <result name="ERROR">/noResult.jsp</result>
         </action>
         <action name="supple" class="version1.Supple">
             <result name="SUCCESS" type="redirectAction">
@@ -41,6 +41,12 @@
             <result name="ERROR">/error.jsp</result>
         </action> 
         <action name="delete" class="version1.de_t_s">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action> 
+         <action name="update" class="version1.update_t_s">
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${ID}
                 </result>

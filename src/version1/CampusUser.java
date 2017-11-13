@@ -16,6 +16,19 @@ public class CampusUser extends ActionSupport {
   private String place;
   private String phoneNumber;
   private String job;
+  private String linkedIn;
+  public String getLinkedIn() {
+    return linkedIn;
+  }
+
+  public void setLinkedIn(String linkedIn) {
+    this.linkedIn = linkedIn;
+  }
+
+  public static int getIdlength() {
+    return IDLENGTH;
+  }
+
   private SchoolInfo bachelorPeriod; // 本科
   private SchoolInfo masterPeriod; // 硕士
   private SchoolInfo doctorPeriod; // 博士
@@ -118,12 +131,13 @@ public class CampusUser extends ActionSupport {
     place = null;
     phoneNumber = null;
     job = null;
+    linkedIn = null;
     bachelorPeriod = null;
     masterPeriod = null;
     doctorPeriod = null;
   }
   
-  public CampusUser(String name, Date bDate, Boolean sex, String place, String phoneNumber, String job) {
+  public CampusUser(String name, Date bDate, Boolean sex, String place, String phoneNumber, String job, String linkedIn) {
     this.name = name;
     this.ID = null;
     this.birthDay = bDate;
@@ -131,6 +145,7 @@ public class CampusUser extends ActionSupport {
     this.place = place;
     this.phoneNumber = phoneNumber;
     this.job = job;
+    this.linkedIn = linkedIn;
     bachelorPeriod = null;
     masterPeriod = null;
     doctorPeriod = null;

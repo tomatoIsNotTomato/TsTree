@@ -29,15 +29,17 @@
 			</div>
 
 			<div>
-				<input type="text" name="phoneNumber" placeholder="能找到你的电话">
+				<input type="text" name="phoneNumber" placeholder="能找到你的电话"/>
 			</div>
+			
+			
 
 			<div>
 				<input type="password" name="pwd" placeholder="密码">
 			</div>
 
 			<div>
-				<input type="password" name="pwd1" = placeholder="再输一遍">
+				<input type="password" name="pwd1" placeholder="再输一遍">
 			</div>
 
 			<button id="next1" type="button">next</button>
@@ -46,7 +48,9 @@
 				<h2>关于你...</h2>
 
 				<div>
-					<input type="text" name="sex" placeholder="W/M">
+					<!-- <input type="text" name="sex" placeholder="W/M"> -->
+					<input type="radio" name="sex" value="0"/>Man
+                    <input type="radio" name="sex" value="1" checked="checked" />Lady
 				</div>
 
 				<div>
@@ -60,6 +64,10 @@
 				<div>
 					<input type="text" name="job" placeholder="你是做什么的">
 				</div>
+				
+				<div>
+                    <input type="text" name="linkedIn" placeholder="LinkedIn host page">
+                </div>
                 <button id="next2" type="button">next</button>
 			</div>
 			<div class="form2" style="display: none">
