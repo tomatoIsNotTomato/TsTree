@@ -9,21 +9,16 @@ public class CampusUser extends ActionSupport {
    * 
    */
   private static final long serialVersionUID = 1L;
-  private String name;
+  
+  private String firstName;
   private String ID;
-  private Date birthDay;
-  private Boolean sex;
-  private String place;
-  private String phoneNumber;
-  private String job;
-  private String linkedIn;
-  public String getLinkedIn() {
-    return linkedIn;
-  }
-
-  public void setLinkedIn(String linkedIn) {
-    this.linkedIn = linkedIn;
-  }
+  private String lastName;
+  private String headline;
+  private String location;
+  private String industry;
+  private String email;
+  private String picture_url;
+  private String profile_url;
 
   public static int getIdlength() {
     return IDLENGTH;
@@ -34,12 +29,17 @@ public class CampusUser extends ActionSupport {
   private SchoolInfo doctorPeriod; // 博士
   private static final int IDLENGTH = 5;
 
-  public String getName() {
-    return name;
+  // 获取5位用户ID
+  public String userID() {
+    return String.format("%0" + IDLENGTH + "d", Integer.parseInt(ID) );
+  }
+  
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
   public String getID() {
@@ -50,29 +50,62 @@ public class CampusUser extends ActionSupport {
     ID = iD;
   }
 
-  public Date getBirthDay() {
-    return birthDay;
+  public String getLastName() {
+    return lastName;
   }
 
-  public void setBirthDay(Date birthDay) {
-    this.birthDay = birthDay;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
-  public Boolean getSex() {
-    return sex;
+  public String getHeadline() {
+    return headline;
   }
 
-  public void setSex(Boolean sex) {
-    this.sex = sex;
+  public void setHeadline(String headline) {
+    this.headline = headline;
   }
 
-  public String getPlace() {
-    return place;
+  public String getLocation() {
+    return location;
   }
 
-  public void setPlace(String place) {
-    this.place = place;
+  public void setLocation(String location) {
+    this.location = location;
   }
+
+  public String getIndustry() {
+    return industry;
+  }
+
+  public void setIndustry(String industry) {
+    this.industry = industry;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPicture_url() {
+    return picture_url;
+  }
+
+  public void setPicture_url(String picture_url) {
+    this.picture_url = picture_url;
+  }
+
+  public String getProfile_url() {
+    return profile_url;
+  }
+
+  public void setProfile_url(String profile_url) {
+    this.profile_url = profile_url;
+  }
+
 
   public SchoolInfo getBachelorPeriod() {
     return bachelorPeriod;
@@ -80,22 +113,6 @@ public class CampusUser extends ActionSupport {
 
   public void setBachelorPeriod(SchoolInfo bachelorPeriod) {
     this.bachelorPeriod = bachelorPeriod;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-  public String getJob() {
-    return job;
-  }
-
-  public void setJob(String job) {
-    this.job = job;
   }
 
   public SchoolInfo getMasterPeriod() {
@@ -114,38 +131,28 @@ public class CampusUser extends ActionSupport {
     this.doctorPeriod = doctorPeriod;
   }
 
-  public static long getSerialversionuid() {
-    return serialVersionUID;
-  }
-
-  // 获取5位用户ID
-  public String userID() {
-    return String.format("%0" + IDLENGTH + "d", Integer.parseInt(ID) );
-  }
-  
   public CampusUser() {
-    name = null;
+    firstName = null;
     ID = null;
-    birthDay = null;
-    sex = null;
-    place = null;
-    phoneNumber = null;
-    job = null;
-    linkedIn = null;
-    bachelorPeriod = null;
-    masterPeriod = null;
-    doctorPeriod = null;
+    lastName = null;
+    headline = null;
+    location = null;
+    industry = null;
+    email = null;
+    picture_url = null;
+    profile_url = null;
   }
   
-  public CampusUser(String name, Date bDate, Boolean sex, String place, String phoneNumber, String job, String linkedIn) {
-    this.name = name;
+  public CampusUser(String firstName, String lastName, String headline, String location, String industry, String email, String picture_url, String profile_url) {
     this.ID = null;
-    this.birthDay = bDate;
-    this.sex = sex;
-    this.place = place;
-    this.phoneNumber = phoneNumber;
-    this.job = job;
-    this.linkedIn = linkedIn;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.headline = headline;
+    this.location = location;
+    this.industry = industry;
+    this.email = email;
+    this.picture_url = picture_url;
+    this.profile_url = profile_url;
     bachelorPeriod = null;
     masterPeriod = null;
     doctorPeriod = null;

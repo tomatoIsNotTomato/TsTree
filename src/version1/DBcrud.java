@@ -13,7 +13,7 @@ public class DBcrud {
   private String jdbcDriver = "com.mysql.jdbc.Driver";
   private String dbusername = "root";
   private String dbpassword = "2218234907";
-  private String dbUrl = "jdbc:mysql://localhost:3306/tstree?useSSL=false&useUnicode=true&characterEncoding=utf-8";
+  private String dbUrl = "jdbc:mysql://localhost:3306/tree?useSSL=false&useUnicode=true&characterEncoding=utf-8";
 
   public Connection connectDB() {
     try {
@@ -35,7 +35,7 @@ public class DBcrud {
   private String changeToString(HashSet<NameIdPair> set) {
     ArrayList<String> l = new ArrayList<String>();
     for (NameIdPair i : set) {
-      l.add(i.getName() + "," + i.getID()+","+i.getTel());
+      l.add(i.getName() + "," + i.getID()+","+i.getEmail());
     }
     String setString = StringUtils.join(l, ";");
     return setString;
@@ -50,7 +50,7 @@ public class DBcrud {
       NameIdPair nip = new NameIdPair(metaData[0], Integer.parseInt(metaData[1]), "");
       if (metaData.length>2)
       {
-        nip.setTel(metaData[2]);
+        nip.setEmail(metaData[2]);
       }
       
       hs.add(nip);
@@ -70,15 +70,14 @@ public class DBcrud {
         
         for (int i = 1; i <= column; i++) {
           rowData.put(md.getColumnName(i), rs.getObject(i));
-          if (md.getColumnName(i).equals("sex")){
+          /*if (md.getColumnName(i).equals("sex")){
             if  ((int)rs.getObject(i)==0) {
               rowData.put(md.getColumnName(i), "W");
             }
             else {
               rowData.put(md.getColumnName(i), "M");
             }
-          }
-         
+          }*/
         }
         lst.add(rowData);
       }
@@ -88,23 +87,45 @@ public class DBcrud {
     }
     return lst;
   }
+  
+  private int checkExist(String email) throws SQLException{
+    Connection connect = connectDB();
+    if (connect == null) {
+      return -1;
+    }
+    String sqlStatement = "select * from userpwd where email = ?";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ResultSet rs = ps.executeQuery(sqlStatement);
+      if (rs.next())
+        return 0;
+      else return 1;
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return -1;
+    }
+  }
 
-  public int saveCode(String name, String pwd) throws SQLException {
+  public int saveCode(String email, String pwd) throws SQLException {
     Connection connect = connectDB();
     int id = -1;
     if (connect == null)
       return -1;
-    String sqlStatement = "insert into userpwd (name, pwd) value(?,?)";
+    String sqlStatement = "insert into userpwd (email,id, pwd) value(?,?)";
     PreparedStatement ps;
     try {
       ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
-      ps.setString(1, name);
-      ps.setString(2, pwd);
-      ps.executeUpdate();
-
-      ResultSet rs = ps.executeQuery("SELECT LAST_INSERT_ID()");
+      ResultSet rs = ps.executeQuery("select max(id) from userpwd");
       if (rs.next())
         id = rs.getInt(1);
+      id++;
+      ps.setString(1, email);
+      ps.setInt(2, id);
+      ps.setString(3, pwd);
+      ps.executeUpdate();
       connect.close();
       return id;
     }
@@ -112,9 +133,9 @@ public class DBcrud {
       e.printStackTrace();
       connect.close();
       return -1;
-      
     }
   }
+  
   public Boolean insertPeriodInfo(int ID, SchoolInfo info) throws SQLException {
     Connection connect = connectDB();
     if (connect == null)
@@ -148,19 +169,19 @@ public class DBcrud {
     Boolean fail = false;
     if (connect == null)
       return false;
-    String sqlStatement1 = "insert into user (id, name, birthDay, sex, place, phoneNumber, job, linkedIn) value(?,?,?,?,?,?,?,?)";
-
+    String sqlStatement1 = "insert into user (id, firstName, lastName, headline, location, industry, email-address, picture-url, public-profile-url) value(?,?,?,?,?,?,?,?,?)";
     PreparedStatement ps;
     try {
       ps = (PreparedStatement) connect.prepareStatement(sqlStatement1);
       ps.setInt(1, id);
-      ps.setString(2, user.getName());
-      ps.setDate(3, user.getBirthDay());
-      ps.setBoolean(4, user.getSex());
-      ps.setString(5, user.getPlace());
-      ps.setString(6, user.getPhoneNumber());
-      ps.setString(7, user.getJob());
-      ps.setString(8, user.getLinkedIn());
+      ps.setString(2, user.getFirstName());
+      ps.setString(3, user.getLastName());
+      ps.setString(4, user.getHeadline());
+      ps.setString(5, user.getLocation());
+      ps.setString(6, user.getIndustry());
+      ps.setString(7, user.getEmail());
+      ps.setString(8, user.getPicture_url());
+      ps.setString(9, user.getProfile_url());
 
       ps.executeUpdate();
 
@@ -182,15 +203,15 @@ public class DBcrud {
     }
   }
 
-  public Boolean loginJudge(int ID, String pwd) throws SQLException {
+  public Boolean loginJudge(String email, String pwd) throws SQLException {
     Connection connect = connectDB();
     if (connect == null)
       return false;
-    String sqlStatement = "select * from  userpwd where id = (?) and pwd = (?)";
+    String sqlStatement = "select * from  userpwd where email = (?) and pwd = (?)";
     PreparedStatement ps;
     try {
       ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
-      ps.setInt(1, ID);
+      ps.setString(1, email);
       ps.setString(2, pwd);
       ResultSet rs = ps.executeQuery();
      
@@ -201,8 +222,6 @@ public class DBcrud {
         connect.close();
         return false;
       }
-        
-
     } catch (Exception e) {
       e.printStackTrace();
       connect.close();
@@ -230,19 +249,18 @@ public class DBcrud {
       return null;
     }
   }
-  
-
-  
-  public ArrayList<Map<String, Object>> getBasicInfo(String Name) throws SQLException {
+   
+  public ArrayList<Map<String, Object>> getBasicInfo(String firstName, String lastName) throws SQLException {
     ArrayList<Map<String, Object>> lst = new ArrayList<>();
     Connection connect = connectDB();
     if (connect == null)
       return null;
-    String sqlStatement = "select * from  user where name = (?)";
+    String sqlStatement = "select * from  user where firstName = (?) and lastName = (?)";
     PreparedStatement ps;
     try {
       ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
-      ps.setString(1, Name);
+      ps.setString(1, firstName);
+      ps.setString(2, lastName);
       ResultSet rs = ps.executeQuery();
       lst = extractInfo(rs);
       connect.close();
@@ -296,7 +314,7 @@ public class DBcrud {
             map.put("period", period);
             map.put("ID",pair.getID());
             map.put("name", pair.getName());
-            map.put("tel", pair.getTel());
+            map.put("email", pair.getEmail());
             lst.add(map);
           }
          }
@@ -309,8 +327,7 @@ public class DBcrud {
     return lst;
   }
   
-  
-  public Boolean add_t_s_info(int selfID, String name, int id, String relation, String period, String tel) throws SQLException{
+  public Boolean add_t_s_info(int selfID, String name, int id, String relation, String period, String email) throws SQLException{
     try {
     Connection connect = connectDB();
     PreparedStatement ps;
@@ -325,7 +342,7 @@ public class DBcrud {
     HashSet<NameIdPair> hash=changeToHashSet(rs.getString(1));
     if (hash == null) hash = new HashSet<NameIdPair>();
     
-    hash.add(new NameIdPair(name,id, tel));
+    hash.add(new NameIdPair(name,id, email));
         String inf = changeToString(hash);
 
         ps = connect.prepareStatement("update user_" + period + " set " + relation + "=(?) where " + period + "ID=(?)");
@@ -377,7 +394,7 @@ public class DBcrud {
   }
   
   @SuppressWarnings("null")
-  public Boolean de_t_s_info(int ID,int id,String name,String period,String relation,String tel) 
+  public Boolean de_t_s_info(int ID,int id,String name,String period,String relation,String email) 
       throws SQLException{
     try {
     Connection connect = connectDB();
@@ -391,7 +408,7 @@ public class DBcrud {
     if(rs.next()) {
       HashSet<NameIdPair> hash=changeToHashSet(rs.getString(relation));
       if (hash == null) hash = new HashSet<NameIdPair>();
-      NameIdPair nana=new NameIdPair(name,id,tel);
+      NameIdPair nana=new NameIdPair(name,id,email);
       Iterator iter=hash.iterator();
       while (iter.hasNext()) {
         NameIdPair person = (NameIdPair) iter.next();
@@ -414,7 +431,7 @@ public class DBcrud {
   
   @SuppressWarnings("null")
   public Boolean update_t_s_info(int ID,int id,String name1,String name2,
-      String period,String relation,String tel_old,String tel_new) 
+      String period,String relation,String email_old,String email_new) 
       throws SQLException{
     try {
     Connection connect = connectDB();
@@ -427,7 +444,7 @@ public class DBcrud {
     if(rs.next()) {
       HashSet<NameIdPair> hash=changeToHashSet(rs.getString(relation));
       if (hash == null) hash = new HashSet<NameIdPair>();
-      NameIdPair nana=new NameIdPair(name1,id,tel_old);
+      NameIdPair nana=new NameIdPair(name1,id,email_old);
       Iterator iter=hash.iterator();
       while (iter.hasNext()) {
         NameIdPair person = (NameIdPair) iter.next();
@@ -435,7 +452,7 @@ public class DBcrud {
       iter.remove();
       }
       }
-    hash.add(new NameIdPair(name2,id,tel_new));
+    hash.add(new NameIdPair(name2,id,email_new));
     String str2=changeToString(hash);
     System.out.println(str2);
     ps=connect.prepareStatement("update user_"+period+" set "+relation+"=(?) where "+period+"ID=(?)");

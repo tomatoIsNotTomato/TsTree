@@ -12,6 +12,7 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class SearchBasicInfo extends ActionSupport{
+  private String id;
   private String NameOrId;
 
   public String getNameOrId() {
@@ -36,7 +37,8 @@ public class SearchBasicInfo extends ActionSupport{
       else return "ERROR";
     }
     else {
-      ArrayList<Map<String,Object>> lst = conn.getBasicInfo(NameOrId);
+      String [] name = NameOrId.split("-");
+      ArrayList<Map<String,Object>> lst = conn.getBasicInfo(name[0], name[1]);
       if (lst.size()!=0) {
         request.setAttribute("BasicInfo", lst);
         request.setAttribute("ID", lst.get(0).get("ID").toString());

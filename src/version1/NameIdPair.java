@@ -4,14 +4,16 @@ package version1;
   public class NameIdPair {
     private String name;
     private int ID;
-    private String tel;
+    private String email;
 
-    public String getTel() {
-      return tel;
+    
+
+    public String getEmail() {
+      return email;
     }
 
-    public void setTel(String tel) {
-      this.tel = tel;
+    public void setEmail(String email) {
+      this.email = email;
     }
 
     public NameIdPair(String name) {
@@ -35,10 +37,10 @@ package version1;
       ID = iD;
     }
 
-    public NameIdPair(String name, int ID, String tel) {
+    public NameIdPair(String name, int ID, String email) {
       this.name = name;
       this.ID = ID;
-      this.tel = tel;
+      this.email = email;
     }
     
     public int hashCode() {
@@ -55,7 +57,7 @@ package version1;
         NameIdPair temp = (NameIdPair)obj;
 
         if ((this.ID == temp.ID)&&(this.name.equals(temp.name))
-            &&(this.tel.equals(temp.tel))) {
+            &&(this.email.equals(temp.email))) {
             return true;
         }
        

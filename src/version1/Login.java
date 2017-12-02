@@ -14,14 +14,14 @@ public class Login extends ActionSupport {
    * 
    */
   private static final long serialVersionUID = 1L;
-  private String id;
+  private String email;
   private String pwd;
   
-  public String getId() {
-    return id;
+  public String getEmail() {
+    return email;
   }
-  public void setId(String id) {
-    this.id = id;
+  public void setEmail(String email) {
+    this.email = email;
   }
   public String getPwd() {
     return pwd;
@@ -32,11 +32,10 @@ public class Login extends ActionSupport {
   
  public String execute() throws Exception{
     DBcrud conn = new DBcrud();
-    System.out.println(getId()+getPwd());
-    if (conn.loginJudge(Integer.parseInt(getId()), getPwd())) {
-      id = String.format("%0" + 5 + "d", Integer.parseInt(id) );
+    System.out.println(getEmail()+getPwd());
+    if (conn.loginJudge(getEmail(), getPwd())) {
       HttpServletRequest request = ServletActionContext.getRequest();
-      request.getSession().setAttribute("userID", id);
+      request.getSession().setAttribute("userEmail", getEmail());
       return "SUCCESS";
     }
     else return "ERROR";

@@ -12,28 +12,20 @@ public class Register extends ActionSupport{
    * 
    */
   private static final long serialVersionUID = 1L;
-  private String name;
-  private String pwd;
+
+  private String firstName;
   private String ID;
-  private Date birthDay;
-  private String sex;
-  private String place;
-  private String phoneNumber;
-  private String job;
+  private String lastName;
+  private String headline;
+  private String location;
+  private String industry;
+  private String email;
+  private String picture_url;
+  private String profile_url;
+  private String pwd;
+
+ 
   private Date bpDate;
-  private String linkedIn;
-
-  public String getLinkedIn() {
-    return linkedIn;
-  }
-  public void setLinkedIn(String linkedIn) {
-    this.linkedIn = linkedIn;
-  }
-  public static long getSerialversionuid() {
-    return serialVersionUID;
-  }
-
-
   private Date mpDate;
   private Date dpDate;
   private String bpSchool;
@@ -47,11 +39,11 @@ public class Register extends ActionSupport{
     this.pwd = pwd;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
   public String getID() {
     return ID;
@@ -59,35 +51,47 @@ public class Register extends ActionSupport{
   public void setID(String iD) {
     ID = iD;
   }
-  public Date getBirthDay() {
-    return birthDay;
+  public String getLastName() {
+    return lastName;
   }
-  public void setBirthDay(Date birthDay) {
-    this.birthDay = birthDay;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
-  public String getSex() {
-    return sex;
+  public String getHeadline() {
+    return headline;
   }
-  public void setSex(String sex) {
-    this.sex = sex;
+  public void setHeadline(String headline) {
+    this.headline = headline;
   }
-  public String getPlace() {
-    return place;
+  public String getLocation() {
+    return location;
   }
-  public void setPlace(String place) {
-    this.place = place;
+  public void setLocation(String location) {
+    this.location = location;
   }
-  public String getPhoneNumber() {
-    return phoneNumber;
+  public String getIndustry() {
+    return industry;
   }
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
+  public void setIndustry(String industry) {
+    this.industry = industry;
   }
-  public String getJob() {
-    return job;
+  public String getEmail() {
+    return email;
   }
-  public void setJob(String job) {
-    this.job = job;
+  public void setEmail(String email) {
+    this.email = email;
+  }
+  public String getPicture_url() {
+    return picture_url;
+  }
+  public void setPicture_url(String picture_url) {
+    this.picture_url = picture_url;
+  }
+  public String getProfile_url() {
+    return profile_url;
+  }
+  public void setProfile_url(String profile_url) {
+    this.profile_url = profile_url;
   }
   public Date getBpDate() {
     return bpDate;
@@ -129,11 +133,8 @@ public class Register extends ActionSupport{
   
   public String execute() throws Exception{
     
-    Boolean sexi = true;
-    if (getSex().equals("1")) {
-      sexi = false;
-    }
-    CampusUser user = new CampusUser(getName(),getBirthDay(),sexi, getPlace(), getPhoneNumber(),getJob(), getLinkedIn());
+    
+    CampusUser user = new CampusUser(getFirstName(), getLastName(), getHeadline(), getLocation(), getIndustry(), getEmail(), getPicture_url(), getProfile_url());
     
     HttpServletRequest request = ServletActionContext.getRequest();
     
@@ -146,12 +147,12 @@ public class Register extends ActionSupport{
     user.setDoctorPeriod(dInfor);
     
     DBcrud conn = new DBcrud();
-    int id = conn.saveCode(getName(), getPwd());
+    int id = conn.saveCode(getEmail(), getPwd());
     if (id == -1) return "ERROR";
     user.setID(String.valueOf(id));
     setID(String.valueOf(id));
     ID = user.userID();
-    request.getSession().setAttribute("userID", ID);
+    request.getSession().setAttribute("userEmail", email);
     if (conn.insertBasicInfo(user)) {
       return "SUCCESS";
     }
