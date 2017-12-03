@@ -88,16 +88,24 @@ public class DBcrud {
     return lst;
   }
   
-  private int checkExist(String email) throws SQLException{
+  public int checkExist(String emailOrId, String type) throws SQLException{
     Connection connect = connectDB();
     if (connect == null) {
       return -1;
     }
-    String sqlStatement = "select * from userpwd where email = ?";
+    String sqlStatement = "select * from userpwd where email = (?)";
+    String sqlStatement1 = "select * from userpwd where linkedinId = (?)";
     PreparedStatement ps;
     try {
-      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
-      ResultSet rs = ps.executeQuery(sqlStatement);
+      if (type.equals("linkedin")) {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement1);
+      }
+      else 
+        {
+        ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+        }
+      ps.setString(1, emailOrId);
+      ResultSet rs = ps.executeQuery();
       if (rs.next())
         return 0;
       else return 1;
@@ -109,23 +117,25 @@ public class DBcrud {
     }
   }
 
-  public int saveCode(String email, String pwd) throws SQLException {
+  public int saveCode(String emailOrId, String pwdOrToken, String type) throws SQLException {
     Connection connect = connectDB();
     int id = -1;
     if (connect == null)
       return -1;
-    String sqlStatement = "insert into userpwd (email,id, pwd) value(?,?)";
+    String sqlStatement = "insert into userpwd (email,pwd) value(?,?)";
+    String sqlStatement1 = "insert into userpwd (linkinId,token) value(?,?)";
     PreparedStatement ps;
     try {
-      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
-      ResultSet rs = ps.executeQuery("select max(id) from userpwd");
-      if (rs.next())
-        id = rs.getInt(1);
-      id++;
-      ps.setString(1, email);
-      ps.setInt(2, id);
-      ps.setString(3, pwd);
+      if (type == "linkedin")
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement1);
+      else ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setString(1, emailOrId);
+      ps.setString(2, pwdOrToken);
       ps.executeUpdate();
+      ResultSet rs = ps.executeQuery("SELECT LAST_INSERT_ID()");
+      if(rs.next()) {
+        id = rs.getInt(1);
+      }
       connect.close();
       return id;
     }
@@ -203,11 +213,11 @@ public class DBcrud {
     }
   }
 
-  public Boolean loginJudge(String email, String pwd) throws SQLException {
+  public int loginJudge(String email, String pwd) throws SQLException {
     Connection connect = connectDB();
     if (connect == null)
-      return false;
-    String sqlStatement = "select * from  userpwd where email = (?) and pwd = (?)";
+      return 0;
+    String sqlStatement = "select id from userpwd where email = (?) and pwd = (?)";
     PreparedStatement ps;
     try {
       ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
@@ -217,15 +227,15 @@ public class DBcrud {
      
       if (rs.next()) {
         connect.close();
-        return true;
+        return rs.getInt(1);
       } else {
         connect.close();
-        return false;
+        return -1;
       }
     } catch (Exception e) {
       e.printStackTrace();
       connect.close();
-      return false;
+      return 0;
     }
   }
   

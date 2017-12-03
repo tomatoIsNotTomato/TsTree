@@ -147,7 +147,7 @@ public class Register extends ActionSupport{
     user.setDoctorPeriod(dInfor);
     
     DBcrud conn = new DBcrud();
-    int id = conn.saveCode(getEmail(), getPwd());
+    int id = conn.saveCode(getEmail(), getPwd(), "pwd");
     if (id == -1) return "ERROR";
     user.setID(String.valueOf(id));
     setID(String.valueOf(id));
