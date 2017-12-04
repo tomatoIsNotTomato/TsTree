@@ -131,6 +131,18 @@ public class CampusUser extends ActionSupport {
     this.doctorPeriod = doctorPeriod;
   }
 
+  public CampusUser(String ID) {
+	    firstName = null;
+	    this.ID = ID;
+	    lastName = null;
+	    headline = null;
+	    location = null;
+	    industry = null;
+	    email = null;
+	    picture_url = null;
+	    profile_url = null;
+	  }
+  
   public CampusUser() {
     firstName = null;
     ID = null;
