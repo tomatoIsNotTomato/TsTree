@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd ">
+<struts>
+    <package name="version1" extends="struts-default">
+        <action name="register" class="version1.Register">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+        <action name="login" class="version1.Login">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${id}
+                </result>
+            <result name="ERROR">/userLogin.jsp</result>
+        </action>
+        <action name="linkedInLogin" class="version1.toLogin" method="redirect">
+        </action>
+        
+        <action name="LoginWithLinkedIn" class="version1.LoginWithLinkedIn">
+	        <result name="SUCCESS" type="redirectAction">
+	                getTree?ID=${id}</result>
+	        <result name="ERROR">/userLogin.jsp</result>
+        </action>
+        
+        <action name="testLinkedin" class="version1.testLinkedin">
+	        <result name="SUCCESS">/error.jsp</result>
+	        <result name="ERROR">/error.jsp</result>
+        </action>
+        
+        <action name="search" class="version1.SearchBasicInfo">
+            <result>/basicInfor.jsp</result>
+            <result name="ERROR">/noResult.jsp</result>
+        </action>
+        
+        <action name="supple" class="version1.Supple">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+        
+        <action name="getTree" class="version1.searchTsTree">
+            <result>/TStree.jsp</result>
+            <result name="ERROR">/suppleInfo.jsp</result>
+        </action> 
+        
+        <action name="showFullTree" class="version1.queryFullTsTree">
+            <result>/TStree.jsp</result>
+            <result name="ERROR">/suppleInfo.jsp</result>
+        </action> 
+        
+        <action name="merge" class="version1.Merge">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID1}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action> 
+        
+        <action name="delete" class="version1.de_t_s">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action> 
+        
+         <action name="update" class="version1.update_t_s">
+            <result name="SUCCESS" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
+            <result name="ERROR">/error.jsp</result>
+        </action> 
+        
+    </package>
+</struts>
