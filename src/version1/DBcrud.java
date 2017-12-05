@@ -477,10 +477,10 @@ public class DBcrud {
   }
   }
   
-  public ArrayList<CampusUser> mayKnow(int ID,String period) 
+  public HashSet<NameIdPair> mayKnow(int ID,String period,String t_or_s) 
 	      throws SQLException{
 	    try {
-	    ArrayList<CampusUser> a=new ArrayList<CampusUser>();
+	    	HashSet<NameIdPair> hash=new HashSet<NameIdPair>();
 	    Connection connect = connectDB();
 	    PreparedStatement ps;
 	    ResultSet rs;
@@ -498,19 +498,19 @@ public class DBcrud {
 	    ps.setString(1, school);
 	    ps.setDate(2, admit);
 	    rs=ps.executeQuery();
+	    String str=null;
 	    while(rs.next()){
 	    	int id=rs.getInt(1);
-	    	sqlStatement = "select * from user where  ID = ?";
+	    	sqlStatement = "select * from user_"+period + " where ID = ?";
 		    ps=connect.prepareStatement(sqlStatement);
 		    ps.setInt(1, id);
 		    rs=ps.executeQuery();
 		    if(rs.next()) {
-		    	CampusUser user=new CampusUser(rs.getString(2),rs.getString(3),rs.getString(4),
-		    			rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9));
-		    	a.add(user);
+		    	str+=rs.getString(t_or_s);
 		    }
 	    }
-	    return a;
+	    hash=changeToHashSet(str);
+	    return hash;
 	  }catch (Exception e) {
 	    e.printStackTrace();
 	    return null;
