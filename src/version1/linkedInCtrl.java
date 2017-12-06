@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
 
 public class linkedInCtrl {
   private static String basicInfor = ":(id,first-name,last-name,headline,location,industry,picture-url,public-profile-url,email-address)";

@@ -471,7 +471,74 @@ public class DBcrud {
   }
 }
 
+  public HashSet<NameIdPair> mayKnow(int ID,String period,String t_or_s) 
+	      throws SQLException{
+	    try {
+	    	HashSet<NameIdPair> hash=new HashSet<NameIdPair>();
+	    Connection connect = connectDB();
+	    PreparedStatement ps;
+	    ResultSet rs;
+	    String sqlStatement = "select * from user_"+period + " where "+period+"ID = ?";
+	    ps=connect.prepareStatement(sqlStatement);
+	    ps.setInt(1, ID);
+	    rs=ps.executeQuery();
+	    String school=null;
+	    Date admit=null;
+	    if(rs.next()) {
+	    	 school=rs.getString(2);
+	    	 admit=rs.getDate(5);
+	    }
+	    sqlStatement = "select * from user_"+period + " where school = ? and admittionDate=?";
+	    ps.setString(1, school);
+	    ps.setDate(2, admit);
+	    rs=ps.executeQuery();
+	    String str=null;
+	    while(rs.next()){
+	    	int id=rs.getInt(1);
+	    	sqlStatement = "select * from user_"+period + " where ID = ?";
+		    ps=connect.prepareStatement(sqlStatement);
+		    ps.setInt(1, id);
+		    rs=ps.executeQuery();
+		    if(rs.next()) {
+		    	str+=rs.getString(t_or_s);
+		    }
+	    }
+	    hash=changeToHashSet(str);
+	    return hash;
+	  }catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	  }
+	  }
+  
+  public ArrayList<CampusUser> mayKnow2(int ID,String str,int row) 
+	      throws SQLException{
+	    try {
+	    ArrayList<CampusUser> a=new ArrayList<CampusUser>();
+	    Connection connect = connectDB();
+	    PreparedStatement ps;
+	    ResultSet rs;
+	    String sqlStatement = "select * from user where ID = ?";
+	    ps=connect.prepareStatement(sqlStatement);
+	    ps.setInt(1, ID);
+	    rs=ps.executeQuery();
+	    String string=null;
+	    if(rs.next()) string=rs.getString(row);
+	    
+	    sqlStatement = "select * from user where "+str+" = ?";
+	    ps.setString(1, string);
+	    rs=ps.executeQuery();
+	    while(rs.next()){
+		    CampusUser user=new CampusUser(rs.getString(2),rs.getString(3),rs.getString(4),
+		    			    rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9));
+		    a.add(user);
+		}
+	    return a;
+	  }catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	  }
+	  }
+}
 
 
-
- 
