@@ -3,7 +3,7 @@ package version1;
 import java.sql.Date;
 
 import com.opensymphony.xwork2.ActionSupport;
-
+ 
 public class CampusUser extends ActionSupport {
   /**
    * 

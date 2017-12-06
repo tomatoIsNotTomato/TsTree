@@ -14,7 +14,7 @@ public class CookieCtrl {
         System.out.println("添加cookie");  
         cookie.setMaxAge(60 * 60 * 24);// cookie保存两周  
         return cookie;  
-    }  
+    } 
   
     // 得到cookie  
     public static String getCookie(HttpServletRequest request) {  

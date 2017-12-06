@@ -14,7 +14,7 @@ public class DBcrud {
   private String dbusername = "root";
   private String dbpassword = "2218234907";
   private String dbUrl = "jdbc:mysql://localhost:3306/tree?useSSL=false&useUnicode=true&characterEncoding=utf-8";
-
+ 
   public Connection connectDB() {
     try {
       Class.forName(jdbcDriver);
@@ -469,7 +469,7 @@ public class DBcrud {
     return false;
   }
   }
-}
+
 
   public HashSet<NameIdPair> mayKnow(int ID,String period,String t_or_s) 
 	      throws SQLException{
