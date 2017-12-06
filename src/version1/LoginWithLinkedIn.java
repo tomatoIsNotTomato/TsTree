@@ -2,7 +2,9 @@ package version1;
 
 import java.sql.SQLException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -105,29 +107,46 @@ public class LoginWithLinkedIn extends ActionSupport{
                 //±£´æÓÃ»§  
              
                 DBcrud conn = new DBcrud();
-                int flag = conn.checkExist(userInfo.getString("id"), "linkedin");
-                if (flag == 0) return "SUCCESS";
-                else if (flag == -1) return "ERROR";
+                int treeId = conn.checkExist(userInfo.getString("id"), "linkedin");
+                if (treeId > 0) {
+                  id = String.format("%0" + 5 + "d", treeId);
+                  Cookie cookie = CookieCtrl.addCookie(id);
+                  System.out.println(cookie);
+                  HttpServletResponse response = ServletActionContext.getResponse();
+                  response.addCookie(cookie);
+                  
+                  return "LOGIN";
+                }
+            
+                else if (treeId == -2) return "ERROR";
                 else {
-
                     CampusUser user=new CampusUser(); 
                     user.setFirstName(userInfo.getString("firstName"));
                     if (userInfo.containsKey("lastName")) user.setLastName(userInfo.getString("lastName"));  
                     if (userInfo.containsKey("headline")) user.setHeadline(userInfo.getString("headline"));
-                    if (userInfo.containsKey("location")) user.setLocation(userInfo.getString("location"));
+                    if (userInfo.containsKey("location")) {
+                        System.out.println(userInfo.get("location"));
+                          JSONObject jsb = JSONObject.fromObject(userInfo.getString("location"));
+                          System.out.println(jsb);
+                          System.out.println(jsb.getString("name"));
+                          user.setLocation(jsb.getString("name"));
+                    }
                     if (userInfo.containsKey("industry")) user.setIndustry(userInfo.getString("industry"));
-                    if (userInfo.containsKey("picture_url")) user.setPicture_url(userInfo.getString("picture_url"));
-                    if (userInfo.containsKey("public-profile-url")) user.setProfile_url(userInfo.getString("public-profile-url"));
-                    if (userInfo.containsKey("email-address")) user.setEmail(userInfo.getString("email-address"));
+                    if (userInfo.containsKey("pictureUrl")) user.setPicture_url(userInfo.getString("pictureUrl"));
+                    if (userInfo.containsKey("publicProfileUrl")) user.setProfile_url(userInfo.getString("publicProfileUrl"));
+                    if (userInfo.containsKey("emailAddress")) user.setEmail(userInfo.getString("emailAddress"));
                     int idint = conn.saveCode(userInfo.getString("id"), accessToken, "linkedin");
                     if (idint == -1) return "ERROR";
                     id = String.format("%0" + 5 + "d", idint);
+                    user.setID(id);
+                  Cookie cookie = CookieCtrl.addCookie(id);
+                  HttpServletResponse response = ServletActionContext.getResponse();
+                  response.addCookie(cookie);
+                  conn.insertBasicInfo(user);
                   return "SUCCESS";
                 }
             }  
         }
     } 
   }
-  
-  
 }

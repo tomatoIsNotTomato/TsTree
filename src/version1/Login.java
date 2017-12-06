@@ -1,6 +1,8 @@
 package version1;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -39,8 +41,11 @@ public class Login extends ActionSupport {
     System.out.println(getEmail()+getPwd());
     int id = conn.loginJudge(getEmail(), getPwd());
     if (id > 0) {
-      HttpServletRequest request = ServletActionContext.getRequest();
-      request.getSession().setAttribute("userEmail", getEmail());
+      Cookie cookie = CookieCtrl.addCookie(String.format("%0" + 5 + "d", id));
+      HttpServletResponse response = ServletActionContext.getResponse();
+      response.addCookie(cookie);
+      /*HttpServletRequest request = ServletActionContext.getRequest();
+      request.getSession().setAttribute("userEmail", getEmail());*/
       return "SUCCESS";
     }
     else if(id == 0) return "ERROR";

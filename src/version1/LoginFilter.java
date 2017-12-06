@@ -26,14 +26,15 @@ public class LoginFilter extends HttpServlet implements Filter {
           
         HttpServletRequest request = (HttpServletRequest) sRequest;        
         HttpServletResponse response = (HttpServletResponse) sResponse;        
-        HttpSession session = request.getSession();        
+             
         String url=request.getServletPath();    
         String contextPath=request.getContextPath();    
         if(url.equals("")) url+="/";    
 
         if((url.startsWith("/"))&&!((url.startsWith("/userLogin"))||(url.startsWith("/login"))||(url.startsWith("/css"))||(url.startsWith("/register")) || (url.startsWith("/supersized")) || (url.startsWith("/img"))|| (url.startsWith("/images"))|| (url.contains("inked")))){//若访问后台资源 过滤到login    
-             String user=(String)session.getAttribute("userID");    
-             if(user==null){//转入管理员登陆页面    
+          String id = CookieCtrl.getCookie(request);
+          if(id==null)
+          {
                   response.sendRedirect(contextPath+"/userLogin.jsp");   
                   return;    
              }    

@@ -4,24 +4,34 @@
     "http://struts.apache.org/dtds/struts-2.5.dtd ">
 <struts>
     <package name="version1" extends="struts-default">
+        <!--注册并添加基本信息-->
         <action name="register" class="version1.Register">
+            <result name="SUCCESS">/addPeriodInfor.jsp</result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+        <!--添加上学的时段信息-->
+        <action name="addPeriod" class="version1.AddPeriodInfo">
             <result name="SUCCESS" type="redirectAction">
-                getTree?ID=${ID}
+                getTree?ID=${id}
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action>
+        <!--使用邮箱登陆-->
         <action name="login" class="version1.Login">
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${id}
                 </result>
             <result name="ERROR">/userLogin.jsp</result>
         </action>
+        <!--使用linkedin登陆-->
         <action name="linkedInLogin" class="version1.toLogin" method="redirect">
         </action>
-        
+        <!--使用linkedin登陆-->
         <action name="LoginWithLinkedIn" class="version1.LoginWithLinkedIn">
-	        <result name="SUCCESS" type="redirectAction">
-	                getTree?ID=${id}</result>
+	        <result name="LOGIN" type="redirectAction">
+                getTree?ID=${id}
+                </result>
+	        <result name="SUCCESS">/addPeriodInfor.jsp</result>
 	        <result name="ERROR">/userLogin.jsp</result>
         </action>
         
@@ -29,43 +39,43 @@
 	        <result name="SUCCESS">/error.jsp</result>
 	        <result name="ERROR">/error.jsp</result>
         </action>
-        
+        <!--查询id/名字-->
         <action name="search" class="version1.SearchBasicInfo">
             <result>/basicInfor.jsp</result>
             <result name="ERROR">/noResult.jsp</result>
         </action>
-        
+        <!--添加结点信息-->
         <action name="supple" class="version1.Supple">
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${ID}
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action>
-        
+        <!--获取师承树-->
         <action name="getTree" class="version1.searchTsTree">
             <result>/TStree.jsp</result>
             <result name="ERROR">/suppleInfo.jsp</result>
         </action> 
-        
+        <!--显示多层师承树-->
         <action name="showFullTree" class="version1.queryFullTsTree">
             <result>/TStree.jsp</result>
             <result name="ERROR">/suppleInfo.jsp</result>
         </action> 
-        
+        <!--合并两个人的树-->
         <action name="merge" class="version1.Merge">
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${ID1}
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action> 
-        
+        <!--删除师承树上的结点-->
         <action name="delete" class="version1.de_t_s">
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${ID}
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action> 
-        
+        <!--更新师承树的结点-->
          <action name="update" class="version1.update_t_s">
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${ID}

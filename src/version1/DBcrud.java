@@ -91,10 +91,10 @@ public class DBcrud {
   public int checkExist(String emailOrId, String type) throws SQLException{
     Connection connect = connectDB();
     if (connect == null) {
-      return -1;
+      return -2;
     }
-    String sqlStatement = "select * from userpwd where email = (?)";
-    String sqlStatement1 = "select * from userpwd where linkedinId = (?)";
+    String sqlStatement = "select id from userpwd where email = (?)";
+    String sqlStatement1 = "select id from userpwd where linkedinId = (?)";
     PreparedStatement ps;
     try {
       if (type.equals("linkedin")) {
@@ -107,13 +107,13 @@ public class DBcrud {
       ps.setString(1, emailOrId);
       ResultSet rs = ps.executeQuery();
       if (rs.next())
-        return 0;
-      else return 1;
+        return rs.getInt(1);
+      else return -1;
     }
     catch(Exception e) {
       e.printStackTrace();
       connect.close();
-      return -1;
+      return -2;
     }
   }
 
@@ -123,7 +123,7 @@ public class DBcrud {
     if (connect == null)
       return -1;
     String sqlStatement = "insert into userpwd (email,pwd) value(?,?)";
-    String sqlStatement1 = "insert into userpwd (linkinId,token) value(?,?)";
+    String sqlStatement1 = "insert into userpwd (linkedinId,token) value(?,?)";
     PreparedStatement ps;
     try {
       if (type == "linkedin")
@@ -179,7 +179,7 @@ public class DBcrud {
     Boolean fail = false;
     if (connect == null)
       return false;
-    String sqlStatement1 = "insert into user (id, firstName, lastName, headline, location, industry, email-address, picture-url, public-profile-url) value(?,?,?,?,?,?,?,?,?)";
+    String sqlStatement1 = "insert into user (id, firstName, lastName, headline, location, industry, emailAddress, pictureUrl, publicProfileUrl) value(?,?,?,?,?,?,?,?,?)";
     PreparedStatement ps;
     try {
       ps = (PreparedStatement) connect.prepareStatement(sqlStatement1);
@@ -194,13 +194,6 @@ public class DBcrud {
       ps.setString(9, user.getProfile_url());
 
       ps.executeUpdate();
-
-      if (!insertPeriodInfo(id, user.getBachelorPeriod()))
-        fail = true;
-      if (!insertPeriodInfo(id, user.getMasterPeriod()))
-        fail = true;
-      if (!insertPeriodInfo(id, user.getDoctorPeriod()))
-        fail = true;
 
       connect.close();
       if (fail)

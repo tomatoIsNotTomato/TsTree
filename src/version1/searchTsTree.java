@@ -26,19 +26,19 @@ public class searchTsTree extends ActionSupport{
       
     HttpServletRequest request = ServletActionContext.getRequest();
     ArrayList<Map<String, Object>> info = conn.getBasicInfo(Integer.parseInt(getID()));
-    String name = info.get(0).get("name").toString();
+    String name = info.get(0).get("lastName").toString()+" "+info.get(0).get("firstName").toString();
     ArrayList<Map<String, Object>> lst = conn.queryTsTree(Integer.parseInt(getID()));
     if (lst != null) {
       for (Map<String, Object> l : lst) {
         if (l.get("relation").equals("teacher")) {
           list.add("{\"source\":\"" + l.get("name").toString() + "\",\"target\":\"" + name + "\",\"type\":\""
-              + l.get("relation").toString() + "\",\"ID\":\"" + String.format("%0" + 5+ "d", l.get("ID") )+ "\",\"tel\":\""
-              + l.get("tel").toString() + "\",\"period\":\"" + l.get("period").toString() + "\"}");
+              + l.get("relation").toString() + "\",\"ID\":\"" + String.format("%0" + 5+ "d", l.get("ID") )+ "\",\"email\":\""
+              + l.get("email").toString() + "\",\"period\":\"" + l.get("period").toString() + "\"}");
           
         } else {
           list.add("{\"source\":\"" + name + "\",\"target\":\"" + l.get("name").toString() + "\",\"type\":\""
-              + l.get("relation").toString() + "\",\"ID\":\"" +  String.format("%0" + 5+ "d", l.get("ID"))  + "\",\"tel\":\""
-              + l.get("tel").toString() + "\",\"period\":\"" + l.get("period").toString() + "\"}");
+              + l.get("relation").toString() + "\",\"ID\":\"" +  String.format("%0" + 5+ "d", l.get("ID"))  + "\",\"email\":\""
+              + l.get("email").toString() + "\",\"period\":\"" + l.get("period").toString() + "\"}");
         }
       }
     }

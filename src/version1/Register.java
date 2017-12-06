@@ -1,7 +1,10 @@
 package version1;
 
 import java.sql.Date;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -24,13 +27,6 @@ public class Register extends ActionSupport{
   private String profile_url;
   private String pwd;
 
- 
-  private Date bpDate;
-  private Date mpDate;
-  private Date dpDate;
-  private String bpSchool;
-  private String mpSchool;
-  private String dpSchool;
   
   public String getPwd() {
     return pwd;
@@ -93,66 +89,21 @@ public class Register extends ActionSupport{
   public void setProfile_url(String profile_url) {
     this.profile_url = profile_url;
   }
-  public Date getBpDate() {
-    return bpDate;
-  }
-  public void setBpDate(Date bpDate) {
-    this.bpDate = bpDate;
-  }
-  public Date getMpDate() {
-    return mpDate;
-  }
-  public void setMpDate(Date mpDate) {
-    this.mpDate = mpDate;
-  }
-  public Date getDpDate() {
-    return dpDate;
-  }
-  public void setDpDate(Date dpDate) {
-    this.dpDate = dpDate;
-  }
-  public String getBpSchool() {
-    return bpSchool;
-  }
-  public void setBpSchool(String bpSchool) {
-    this.bpSchool = bpSchool;
-  }
-  public String getMpSchool() {
-    return mpSchool;
-  }
-  public void setMpSchool(String mpSchool) {
-    this.mpSchool = mpSchool;
-  }
-  public String getDpSchool() {
-    return dpSchool;
-  }
-  public void setDpSchool(String dpSchool) {
-    this.dpSchool = dpSchool;
-  }
-  
-  
+
   public String execute() throws Exception{
     
-    
     CampusUser user = new CampusUser(getFirstName(), getLastName(), getHeadline(), getLocation(), getIndustry(), getEmail(), getPicture_url(), getProfile_url());
-    
     HttpServletRequest request = ServletActionContext.getRequest();
-    
-    SchoolInfo bInfor = new SchoolInfo("bachelor", getBpSchool(), getBpDate());
-    SchoolInfo mInfor = new SchoolInfo("master", getMpSchool(), getMpDate());
-    SchoolInfo dInfor = new SchoolInfo("doctor", getDpSchool(), getDpDate());
-    
-    user.setBachelorPeriod(bInfor);
-    user.setMasterPeriod(mInfor);
-    user.setDoctorPeriod(dInfor);
-    
     DBcrud conn = new DBcrud();
     int id = conn.saveCode(getEmail(), getPwd(), "pwd");
     if (id == -1) return "ERROR";
     user.setID(String.valueOf(id));
     setID(String.valueOf(id));
     ID = user.userID();
-    request.getSession().setAttribute("userEmail", email);
+    Cookie cookie = CookieCtrl.addCookie(String.format("%0" + 5 + "d", id));
+    HttpServletResponse response = ServletActionContext.getResponse();
+    response.addCookie(cookie);
+   /* request.getSession().setAttribute("userID", ID);*/
     if (conn.insertBasicInfo(user)) {
       return "SUCCESS";
     }
