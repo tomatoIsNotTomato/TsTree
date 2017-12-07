@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "/struts-tags" prefix = "s" %>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en" class="no-js">
     <head>
         <meta charset="utf-8">
@@ -226,20 +226,15 @@
         </div>
         
         
-        
-        <%-- <s:a href="suppleInfo.jsp?ID=%{#request.ID}">Add a Node</s:a></td></tr>
-       
-       <s:a action="merge">与我的师承树合并
 
-     <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
-     <s:param name="name"><s:property value="%{#request.name}"/></s:param>
- </s:a> --%>
    
   
     <script>
         var links =<%=request.getAttribute("tree")%>;
 <%--         var nodes =<%=request.getAttribute("nodes")%>; --%>
-        var nodes = {}; 
+        var nodes = <%=request.getAttribute("node")%>;
+       
+        console.log(nodes); 
         var mainname = '<%=request.getAttribute("name")%>';
         var mainID = <%=request.getAttribute("ID")%>;
         
@@ -247,29 +242,12 @@
         var img_h = 100;
         var rad = 60;
 
-                
-        links.forEach(function(link) { 
-            console.log(nodes);
-            if (link.source==mainname){
-            	link.source = nodes[link.source] || (nodes[link.source] = { name: mainname , ID : mainID}); 
-            }
-            else{
-            	link.source = nodes[link.source] || (nodes[link.source] = { name: link.source , tel : link.tel, ID : link.ID, type : link.type, period : link.period}); 
-            }
-            
-            if (link.target==mainname){
-            	link.target = nodes[link.target] || (nodes[link.target] = { name: mainname , ID : mainID}); 
-            }
-            else{
-            link.target = nodes[link.target] || (nodes[link.target] = { name: link.target , tel : link.tel, ID : link.ID, type : link.type, period : link.period});
-            }
-        });
 
         var width = 960,
             height = 500;
 
         var force = d3.layout.force()
-            .nodes(d3.values(nodes))
+            .nodes(nodes)
             .links(links)
             .size([width, height])
             .linkDistance(300)
@@ -284,45 +262,68 @@
 
         //(1)创建箭头  
         svg.append("svg:defs").selectAll("marker")
-            .data(["teacher", "student"])
+            .data(force.links())
             .enter().append("svg:marker")
-            .attr("id", String)
+            .attr("markerUnits","userSpaceOnUse")
+            .attr("id", "resolved")
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 15)
-            .attr("refY", -1.5)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
+            .attr("refX", Math.log(15) * 20)
+            .attr("refY", 5)
+            .attr("markerWidth", 12)
+            .attr("markerHeight", 12)
             .attr("orient", "auto")
             .append("svg:path")
             .attr("d", "M0,-5L10,0L0,5");
 
-
         var path = svg.append("svg:g").selectAll("path")
             .data(force.links())
             .enter().append("svg:path")
-            .attr("class", function(d) { return "link " + d.type; })
-            .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+            .attr("marker-end", "url(#resolved)" );
+        ;
+        
+        path.attr("id", function(d, i){return "link"+i;})
+            .attr("class", function(d) { console.log(d);return "link "+d.relation; });
 
         var node = svg.selectAll(".node")
             .data(force.nodes())
             .enter().append("g")
             .attr("class", "node")
-            .call(force.drag)
+            .call(force.drag);
+        
+        var edges_text = svg.append("g").selectAll(".edgelabel")
+        .data(force.links())
+        .enter()
+        .append("text")
+        .style("pointer-events", "none")
+        //.attr("class","linetext")
+        .attr({  'class':'edgelabel',
+                       'id':function(d,i){return 'edgepath'+i;},
+                       'dx':120,
+                       'dy':0
+                       });
+
+        //设置线条上的文字
+        edges_text.append('textPath')
+        .attr('xlink:href',function(d,i) {return '#link'+i})
+        .style("pointer-events", "none")
+        .text(function(d){return d.relation;});
  
         var timer = null;
+        
+        path.append("text");
+        
 
 
         //设置圆点的半径，圆点的度越大weight属性值越大，可以对其做一点数学变换                               
         function radius(d) {
-            if (!d.weight) { //节点weight属性没有值初始化为1（一般就是叶子了）  
-                d.weight = 1;
-            }
-            return Math.log(d.weight + 5) * 20;
+            
+            return Math.log(d.wei + 5) * 20;
         }
 
+        
         node.append("circle")
             .attr("r", function(d) { //设置圆点半径    
-
+            	
                 return radius(d);
             })
             .attr("id", function(d){
@@ -366,7 +367,7 @@
                 timer = setTimeout(function() { 
                 	 for (var i = 0; i < links.length; i++) {
                 	        if ((links[i].target.name==mainname && links[i].source.name==d.name)||(links[i].target.name==d.name && links[i].source.name==mainname)){
-                	        	window.location.href="modify.jsp?sourceID="+<%=request.getAttribute("ID")%>+"&ID="+d.ID+"&name="+d.name+"&tel="+d.tel+"&relation="+d.type+"&period="+d.period;
+                	        	window.location.href="modify.jsp?sourceID="+<%=request.getAttribute("ID")%>+"&ID="+d.ID+"&name="+d.name+"&email="+d.email+"&relation="+d.relation+"&period="+d.period;
                 	        	break;
                 	        }
                 	    };
@@ -418,7 +419,7 @@
                 		return "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>ID:"+d.ID+"</div>";
                 	}
                 	else{
-                		return "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>ID:"+d.ID+"<br/>Tel:"+d.tel+"<br/>relation:my"+d.type+"</div>";
+                		return "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>ID:"+d.ID+"<br/>Email:"+d.email+"<br/>relation:my "+d.relation+"</div>";
                 	}
                 })
                     //设置tooltip的位置(left,top 相对于页面的距离)   

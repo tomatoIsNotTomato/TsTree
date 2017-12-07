@@ -25,21 +25,23 @@
 		<form action="register" method="post">
 <div class="registerForm" style="display: block">
 			<div>
-				<input type="text" name="name" placeholder="你叫什么" />
+				<input type="text" name="firstName" placeholder="firstName" />
 			</div>
 
 			<div>
-				<input type="text" name="phoneNumber" placeholder="能找到你的电话"/>
+				<input type="text" name="lastName" placeholder="lastName"/>
 			</div>
 			
-			
+			<div>
+                <input type="text" name="email" placeholder="email"/>
+            </div>
 
 			<div>
-				<input type="password" name="pwd" placeholder="密码">
+				<input type="password" name="pwd" placeholder="password">
 			</div>
 
 			<div>
-				<input type="password" name="pwd1" placeholder="再输一遍">
+				<input type="password" name="pwd1" placeholder="confirm your password">
 			</div>
 
 			<button id="next1" type="button">next</button>
@@ -68,44 +70,7 @@
 				<div>
                     <input type="text" name="linkedIn" placeholder="LinkedIn host page">
                 </div>
-                <button id="next2" type="button">next</button>
-			</div>
-			<div class="form2" style="display: none">
-				<h3>你的本科</h3>
-
-				<div>
-					<input type="text" name="bpDate" placeholder="入学时间">
-				</div>
-
-				<div>
-					<input type="text" name="bpSchool" placeholder="学校">
-				</div>
-				<button id="next3" type="button">next</button>
-			</div>
-			
-			<div class="form3" style="display: none">
-				<h3>你的硕士</h3>
-
-				<div>
-					<input type="text" name="mpDate" placeholder="入学时间">
-				</div>
-
-				<div>
-					<input type="text" name="mpSchool" placeholder="学校">
-				</div>
-				<button id="next4" type="button">next</button>
-			</div>
-			<div class="form4" style="display: none">
-				<h3>你的博士</h3>
-
-				<div>
-					<input type="text" name="dpDate" placeholder="入学时间">
-				</div>
-
-				<div>
-					<input type="text" name="dpSchool" placeholder="学校">
-				</div>
-
+                
 				<button id="submit" type="submit">Sign in</button>
 			</div>
 		</form>
@@ -157,30 +122,6 @@
 			
 		);
 		
-		$("#next2").live('click', function() {
-			$(".form1").hide({
-                "left" : "-40%"
-            }, 1000)
-			$(".form2").show({
-                "right" : "50%"
-            }, 1000)
-        });
-		$("#next3").live('click', function() {
-			$(".form2").hide({
-                "left" : "-40%"
-            }, 1000)
-			$(".form3").show({
-                "right" : "50%"
-            }, 1000)
-        });
-		$("#next4").live('click', function() {
-			$(".form3").hide({
-                "left" : "-40%"
-            }, 1000)
-            $(".form4").show({
-                "right" : "50%"
-            }, 1000)
-        });
 		function is_hide() {
 			$(".alert").animate({
 				"top" : "-40%"

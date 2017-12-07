@@ -38,7 +38,7 @@ public class Merge extends ActionSupport{
   public String execute() throws Exception{
     DBcrud conn = new DBcrud();
     HttpServletRequest request = ServletActionContext.getRequest();
-    ID1 = request.getSession().getAttribute("userID").toString(); 
+    ID1 = CookieCtrl.getCookie(request);//request.getSession().getAttribute("userID").toString(); 
     if (conn.Merge(Integer.parseInt(ID1), Integer.parseInt(ID2), name)) return "SUCCESS";
     else return "ERROR";
   }

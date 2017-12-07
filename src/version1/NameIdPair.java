@@ -6,7 +6,7 @@ package version1;
     private int ID;
     private String email;
 
-    
+     
 
     public String getEmail() {
       return email;
