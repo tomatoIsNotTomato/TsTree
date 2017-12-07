@@ -36,11 +36,11 @@ public class CheckUncheckedMsg extends HttpServlet{
     response.setStatus(200);
     PrintWriter out;
     try {
+      
       out = response.getWriter();
-      String title = "user_info";
-      String docType = "<!DOCTYPE html>\n";
+      
       out.println(
-          docType + "<html>\n" + "<head><title>" + title + "</title></head>\n" + "<body bgcolor=\"#f0f0f0\">\n" + count);
+          count);
     } catch (IOException e1) {
       // TODO Auto-generated catch block
       e1.printStackTrace();

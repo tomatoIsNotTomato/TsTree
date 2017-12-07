@@ -227,14 +227,19 @@
     <script>
     
     function getMsgCount(){  
-        $.post('CheckUncheckedMsg.servlet',  
-                function(m){  
-            if (parseInt(m)>0){
-            	alert("你有"+m+"未读消息");
-            }
-        })  
-        
+               
+               $.post("CheckUncheckedMsg.servlet",{}
+            		   ,
+            		   function(data,status){
+            			 
+            	   if (parseInt(data)>0){
+                       alert(data);
+                   }
+            		   });
+            
     }
+    
+    
     setInterval("getMsgCount()",2000);  
     	
     	
