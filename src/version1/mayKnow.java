@@ -159,6 +159,4 @@ public ArrayList<CampusUser> getA9() {
 public void setA9(ArrayList<CampusUser> a9) {
 	this.a9 = a9;
 }
-
-
 }

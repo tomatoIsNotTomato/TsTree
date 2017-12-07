@@ -82,5 +82,16 @@
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action> 
+        <!-- 留言 -->
+        <action name = "leaveMsg" class="version1.leaveMeaasge">
+            <result name="SUCCESS">/send.jsp</result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+        <!-- 获取留言列表 -->
+        <action name = "msgList" class="version1.ShowMessageList">
+            <result name="SUCCESS">/send.jsp</result>
+            <result name="ERROR">/error.jsp</result>
+        </action>
+        
     </package>
 </struts>

@@ -25,7 +25,7 @@
             <h1>login</h1>
             <form action="login" method="post">
                 <div>
-                    <input type="text" name="id" placeholder="UserID" autocomplete="off"/>
+                    <input type="text" name="email" placeholder="UserID" autocomplete="off"/>
                 </div>
                 <div>
                     <input type="password" name="pwd"  placeholder="Password" oncontextmenu="return false" onpaste="return false" />
@@ -61,15 +61,7 @@
                 is_show();
                 return false;
             }
-            else{
-                var reg = /^[0-9A-Za-z]+$/;
-                if(!reg.exec(u.val()))
-                {
-                    $("#ts").html("ID格式不正确");
-                    is_show();
-                    return false;
-                }
-            }
+            
         });
         window.onload = function()
         {

@@ -61,6 +61,7 @@ public class searchTsTree extends ActionSupport{
     if (info.get("emailAddress")!=null) {
       sel.setEmail(info.get("emailAddress").toString());
     }
+    // sel.setPic(info.get("pictureUrl").toString());;
     sel.setWeight("10");
     node.add(sel);
     
@@ -74,6 +75,7 @@ public class searchTsTree extends ActionSupport{
         person.setPeriod(l.get("period").toString());
         person.setRelation(l.get("relation").toString());
         person.setWeight("5");
+        person.setPic(conn.getPicUrl(Integer.parseInt(l.get("ID").toString())));
         
         if(!checkRed(node, person.getName(), person.getEmail())) {
           node.add(person);
@@ -91,11 +93,11 @@ public class searchTsTree extends ActionSupport{
     StringBuilder sp = new StringBuilder();
     sp.append('[');
     relatedPerson r = node.get(0);
-    sp.append("{name:\""+r.getName()+"\",email:\""+r.getEmail()+"\",ID:\""+r.getId()+"\",wei:"+Integer.parseInt(r.getWeight())+"}");
+    sp.append("{name:\""+r.getName()+"\",email:\""+r.getEmail()+"\",ID:\""+r.getId()+"\",wei:"+Integer.parseInt(r.getWeight())+",\"pic\":\""+r.getPic()+"\"}");
     for(int i = 1; i<node.size(); i++) {
       r = node.get(i);
       sp.append(',');
-      sp.append("{name:\""+r.getName()+"\",email:\""+r.getEmail()+"\",ID:\""+r.getId()+"\",period:\""+r.getPeriod()+"\",relation:\""+r.getRelation()+"\",wei:"+Integer.parseInt(r.getWeight())+"}");
+      sp.append("{name:\""+r.getName()+"\",email:\""+r.getEmail()+"\",ID:\""+r.getId()+"\",period:\""+r.getPeriod()+"\",relation:\""+r.getRelation()+"\",wei:"+Integer.parseInt(r.getWeight())+",\"pic\":\""+r.getPic()+"\"}");
     }
     sp.append(']');
     

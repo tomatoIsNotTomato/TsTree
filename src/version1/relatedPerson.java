@@ -7,8 +7,15 @@ public class relatedPerson {
   private String relation;
   private String period;
   private String weight;
+  private String pic;
   public String getName() {
     return name;
+  }
+  public String getPic() {
+    return pic;
+  }
+  public void setPic(String pic) {
+    this.pic = pic;
   }
   public void setName(String name) {
     this.name = name;
@@ -51,6 +58,7 @@ public class relatedPerson {
     relation = "";
     period = "";
     weight = "";
+    pic = "";
   }
   
 

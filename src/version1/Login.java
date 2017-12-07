@@ -39,16 +39,17 @@ public class Login extends ActionSupport {
  public String execute() throws Exception{
     DBcrud conn = new DBcrud();
     System.out.println(getEmail()+getPwd());
-    int id = conn.loginJudge(getEmail(), getPwd());
-    if (id > 0) {
-      Cookie cookie = CookieCtrl.addCookie(String.format("%0" + 5 + "d", id));
+    int ID = conn.loginJudge(getEmail(), getPwd());
+    id = String.format("%0" + 5 + "d", ID);
+    if (ID > 0) {
+      Cookie cookie = CookieCtrl.addCookie(id);
       HttpServletResponse response = ServletActionContext.getResponse();
       response.addCookie(cookie);
       /*HttpServletRequest request = ServletActionContext.getRequest();
       request.getSession().setAttribute("userEmail", getEmail());*/
       return "SUCCESS";
     }
-    else if(id == 0) return "ERROR";
+    else if(ID == 0) return "ERROR";
     else return "ERROR";
   }
   

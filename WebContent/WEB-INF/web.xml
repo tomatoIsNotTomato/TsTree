@@ -4,6 +4,15 @@
     <welcome-file-list>
         <welcome-file>userLogin.jsp</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>CheckUncheckedMsg</servlet-name>
+        <servlet-class>version1.CheckUncheckedMsg</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CheckUncheckedMsg</servlet-name>
+        <url-pattern>/CheckUncheckedMsg.servlet</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>struts2</filter-name>
         <filter-class>
@@ -24,5 +33,6 @@
   </filter-mapping>
     <session-config>
     <session-timeout>30</session-timeout>
+    
 </session-config>
 </web-app>

@@ -202,9 +202,8 @@
 <ul>
           <li><img src = images/tstree.jpg width="120px" style="float:left; margin-top:3px" ></li>
            <li><a href="About.jsp" style="float:right">About us</a></li>
-           
+           <li><a href="<s:url action = "msgList"></s:url>">Msg</a></li>
            <li> <form action="search" method="post" class="searchBox">
-                
                 <table>
                 <tr><td>
                     <input type="text" name="nameOrId" placeholder="Name or ID" autocomplete="off"/>
@@ -225,11 +224,20 @@
             <br>
         </div>
         
-        
-
-   
-  
     <script>
+    
+    function getMsgCount(){  
+        $.post('CheckUncheckedMsg.servlet',  
+                function(m){  
+            if (parseInt(m)>0){
+            	alert("你有"+m+"未读消息");
+            }
+        })  
+        
+    }
+    setInterval("getMsgCount()",2000);  
+    	
+    	
         var links =<%=request.getAttribute("tree")%>;
 <%--         var nodes =<%=request.getAttribute("nodes")%>; --%>
         var nodes = <%=request.getAttribute("node")%>;
@@ -238,8 +246,8 @@
         var mainname = '<%=request.getAttribute("name")%>';
         var mainID = <%=request.getAttribute("ID")%>;
         
-        var img_w = 100;
-        var img_h = 100;
+        var img_w = 120;
+        var img_h = 120;
         var rad = 60;
 
 
@@ -347,7 +355,7 @@
                     .attr("y", -(img_h / 2 - rad))
                     .attr("width", img_w)
                     .attr("height", img_h)
-                    .attr("xlink:href", "userImage/default.jpg");
+                    .attr("xlink:href", d.pic);
                 
                     console.log("url(#catpattern" + i + ")");
                 return "url(#catpattern" + i + ")";

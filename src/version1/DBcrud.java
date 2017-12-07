@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.sql.rowset.serial.SerialBlob;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class DBcrud {
@@ -70,14 +72,6 @@ public class DBcrud {
         
         for (int i = 1; i <= column; i++) {
           rowData.put(md.getColumnName(i), rs.getObject(i));
-          /*if (md.getColumnName(i).equals("sex")){
-            if  ((int)rs.getObject(i)==0) {
-              rowData.put(md.getColumnName(i), "W");
-            }
-            else {
-              rowData.put(md.getColumnName(i), "M");
-            }
-          }*/
         }
         lst.add(rowData);
       }
@@ -217,15 +211,14 @@ public class DBcrud {
       ps.setString(1, email);
       ps.setString(2, pwd);
       ResultSet rs = ps.executeQuery();
-     
+      int id = -1;
       if (rs.next()) {
+      id = rs.getInt(1);}
+
         connect.close();
-        return rs.getInt(1);
-      } else {
-        connect.close();
-        return -1;
+        return id;
       }
-    } catch (Exception e) {
+ catch (Exception e) {
       e.printStackTrace();
       connect.close();
       return 0;
@@ -328,6 +321,34 @@ public class DBcrud {
       }
     }
     return lst;
+  }
+  
+  public String getPicUrl(int ID) throws SQLException {
+    String defaultPic = "http://localhost:8080/Ttree/userImage/default.jpg";
+    Connection connect = connectDB();
+    if (connect == null || ID==-1) {
+      return defaultPic;
+    }
+    String sqlStatement = "select pictureUrl from user where ID = (?)";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, ID);
+      ResultSet rs = ps.executeQuery();
+      if(rs.next()) {
+        connect.close();
+        return rs.getString(1);
+      }
+      else
+        {
+          return defaultPic;
+        }
+    }catch (Exception e) {
+        
+      e.printStackTrace();
+      connect.close();
+      return defaultPic;
+  }
   }
   
   public Boolean add_t_s_info(int selfID, String name, int id, String relation, String period, String email) throws SQLException{
@@ -470,7 +491,6 @@ public class DBcrud {
   }
   }
 
-
   public HashSet<NameIdPair> mayKnow(int ID,String period,String t_or_s) 
 	      throws SQLException{
 	    try {
@@ -539,6 +559,115 @@ public class DBcrud {
 	    return null;
 	  }
 	  }
+  
+  public boolean leaveMes(int ID1, int ID2, String message, String time, int history) throws SQLException {
+    Connection connect = connectDB();
+    if (connect == null)
+      return false;
+    String sqlStatement = "insert into message (fromID, toID, sendTime, mess, lastMes, status) value(?,?,?,?,?,?)";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, ID1);
+      ps.setInt(2, ID2);
+      ps.setString(3, time);
+      ps.setBlob(4, new SerialBlob(message.getBytes("utf-8")));
+      ps.setInt(5, history);
+      ps.setInt(6, 0);
+      ps.executeUpdate();
+      connect.close();
+     return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return false;
+    }
+  }
+  
+  private ArrayList<Map<String, String>> extractMsgInfo(ResultSet rs) {
+    ArrayList<Map<String, String>> lst = new ArrayList<>();
+    ResultSetMetaData md;
+    try {
+      md = rs.getMetaData();
+      int column = md.getColumnCount();
+      while (rs.next()) {
+        Map<String, String> rowData = new HashMap<>();
+        for (int i = 1; i <= column; i++) {
+          if (i == 4) {
+            rowData.put(md.getColumnName(i), new String( rs.getBlob(i).getBytes((long)1, (int) rs.getBlob(i).length())));
+          }
+          rowData.put(md.getColumnName(i),rs.getObject(i).toString());
+        }
+        lst.add(rowData);
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return lst;
+  }
+  
+  public ArrayList<Map<String, String>> getMessList(int id) throws SQLException{
+    Connection connect = connectDB();
+    if (connect == null)
+      return null;
+    String sqlStatement = "select * from message where toID = ?"; 
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, id);
+      ResultSet rs = ps.executeQuery();
+      ArrayList<Map<String, String>> lst = extractMsgInfo(rs);
+      connect.close();
+      return lst;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return null;
+    }
+  }
+  
+  public boolean alreadyRead(int msgId) throws SQLException {
+    Connection connect = connectDB();
+    if (connect == null)
+      return false;
+    String sqlStatement = "update message set state=1 where mesID=?"; 
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, msgId);
+      ps.executeUpdate();
+      connect.close();
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return false;
+    }
+  }
+  
+  public int getMsgCount(int id) throws SQLException {
+    Connection connect = connectDB();
+    if (connect == null)
+      return -1;
+    String sqlStatement = "select * from message where toID = ? and status=0"; 
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, id);
+      int count = 0;
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        count++;
+      }
+      connect.close();
+      return count;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return -1;
+    }
+  }
 }
 
 
