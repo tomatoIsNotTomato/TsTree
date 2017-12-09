@@ -454,7 +454,10 @@
         <div class="op">
      <br>
      <s:a href="suppleInfo.jsp?ID=%{#request.ID}" cssClass="herf">Add a Node</s:a>
+     
      <br>
+     <s:a action="peopleMayKnow" cssClass="herf">people may know
+     </s:a>
      <br>
      <s:a action="merge" cssClass="herf">Merge with My Tstree
 

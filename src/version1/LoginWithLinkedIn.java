@@ -73,6 +73,7 @@ public class LoginWithLinkedIn extends ActionSupport{
         String basePath = linkedInCtrl.getBaseUrl(request);
         //String redirectUri = basePath + "/linkedInProcess"; 
         String redirectUri = "http://localhost:8080/Ttree/LoginWithLinkedIn";
+        //String redirectUri =  "http://tomato.applinzi.com/Ttree/LoginWithLinkedIn";
         JSONObject tokenInfo=linkedInCtrl.getAccessToken(getTokenUrl, clientId, clientSecrte, code, "authorization_code", redirectUri);  
         System.out.println(getCode());
         if(null==tokenInfo){  

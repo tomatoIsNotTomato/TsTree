@@ -12,7 +12,7 @@
         <!--添加上学的时段信息-->
         <action name="addPeriod" class="version1.AddPeriodInfo">
             <result name="SUCCESS" type="redirectAction">
-                getTree?ID=${id}
+                peopleMayKnow?ID=${id}
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action>
@@ -92,6 +92,11 @@
             <result name="SUCCESS">/send.jsp</result>
             <result name="ERROR">/error.jsp</result>
         </action>
-        
+        <!-- 可能认识得人 -->
+        <action name = "peopleMayKnow" class="version1.mayKnow">
+            <result name="SUCCESS">/peopleMayKnow.jsp</result>
+            <result name="ERROR">/error.jsp</result>
+            <result name="NoResult">/noResult.jsp</result>
+        </action>
     </package>
 </struts>
