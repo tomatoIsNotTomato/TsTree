@@ -70,17 +70,18 @@ public String execute() throws Exception{
     
     Boolean fail = false;
     HttpServletRequest request = ServletActionContext.getRequest();
-    int id = Integer.parseInt(CookieCtrl.getCookie(request)); 
+    id = CookieCtrl.getCookie(request);
+    int Id = Integer.parseInt(id); 
     SchoolInfo bInfor = new SchoolInfo("bachelor", getBpSchool(), getBpDate());
     SchoolInfo mInfor = new SchoolInfo("master", getMpSchool(), getMpDate());
     SchoolInfo dInfor = new SchoolInfo("doctor", getDpSchool(), getDpDate());
     
     DBcrud conn = new DBcrud();
-    if (!conn.insertPeriodInfo(id, bInfor));
+    if (!conn.insertPeriodInfo(Id, bInfor));
       fail = true;
-    if (!conn.insertPeriodInfo(id, mInfor));
+    if (!conn.insertPeriodInfo(Id, mInfor));
       fail = true;
-    if (!conn.insertPeriodInfo(id, dInfor));
+    if (!conn.insertPeriodInfo(Id, dInfor));
       fail = true;
 
     if (fail) {

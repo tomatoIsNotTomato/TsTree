@@ -650,10 +650,22 @@ public class DBcrud {
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
           HashSet<NameIdPair> hs = changeToHashSet(rs.getString(1));
-          for (NameIdPair r : hs) {
-            if (r.getName().equals(name)) {
-              if (r.getID() != -1) {
-                idlst.add(r.getID());
+          if(hs!=null){
+            for (NameIdPair r : hs) {
+              if (r.getName().equals(name)) {
+                System.out.println(r.getName());
+                System.out.println(name); 
+                  idlst.add(i);   
+              }
+            }
+          }
+         
+          hs = changeToHashSet(rs.getString(2));
+          if(hs!=null){
+            for (NameIdPair r : hs) {
+              
+              if (r.getName().equals(name)) {
+                idlst.add(i); 
               }
             }
           }
@@ -667,6 +679,15 @@ public class DBcrud {
     return idlst;
   }
 
+  private boolean existTeacherOrStu(ArrayList<Map<String, Object>> existTs, int id) {
+    for (Map<String, Object> r :existTs) {
+      if (r.get("ID").equals(id)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   public ArrayList<Map<String, String>> peopleMayKnow(int id, String name) throws SQLException {
     Connection conn = connectDB();
     ArrayList<Map<String, String>> pmn = new ArrayList<>();
@@ -675,9 +696,10 @@ public class DBcrud {
     }
     PreparedStatement ps;
     ArrayList<Integer> lst = sameLocation(id);
-    String sqlStatement1 = "select teacher and student from user_bachelor where bachelorID = ?";
-    String sqlStatement2 = "select teacher and student from user_master where masterID = ?";
-    String sqlStatement3 = "select teacher and student from user_doctor where doctorID = ?";
+    ArrayList<Map<String, Object>> existTs = queryTsTree(id);
+    String sqlStatement1 = "select teacher , student from user_bachelor where bachelorID = ?";
+    String sqlStatement2 = "select teacher , student from user_master where masterID = ?";
+    String sqlStatement3 = "select teacher , student from user_doctor where doctorID = ?";
     String sqlStatement4 = "select firstName, lastName, pictureUrl from user where id = ?";
     ArrayList<Integer> idlst = new ArrayList<>();
     ArrayList<Integer> l = SameName(name, lst, sqlStatement1);
@@ -689,19 +711,23 @@ public class DBcrud {
     l = SameName(name, lst, sqlStatement3);
     if (l != null)
       idlst.addAll(l);
-
+    int count = 0;
     for (int j = 0; j < idlst.size(); j++) {
-      if (j >= 6)
+      if (count >= 6)
         break;
       try {
         ps = (PreparedStatement) conn.prepareStatement(sqlStatement4);
         ps.setInt(1, idlst.get(j));
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
+          if (existTs!=null && existTeacherOrStu(existTs, idlst.get(j))) {
+            continue;
+          }
           Map<String, String> map = new HashMap<>();
-          map.put("name", rs.getString(1) + " " + rs.getString(2));
-          map.put("id", idlst.get(j).toString());
+          map.put("name", rs.getString(2) + " " + rs.getString(1));
+          map.put("id", String.format("%0" + 5 + "d", Integer.parseInt(idlst.get(j).toString()) ));
           map.put("pictureUrl", rs.getString(3));
+          count++;
           pmn.add(map);
         }
 
@@ -712,6 +738,5 @@ public class DBcrud {
       }
     }
     return pmn;
-
   }
 }

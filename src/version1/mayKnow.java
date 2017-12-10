@@ -33,6 +33,7 @@ public class mayKnow extends ActionSupport {
   public void setID(int iD) {
     ID = iD;
   }
+
   public ArrayList<Map<String, String>> getPmn() {
     return pmn;
   }
@@ -43,6 +44,9 @@ public class mayKnow extends ActionSupport {
   public String execute() throws Exception {
     try {
       DBcrud conn = new DBcrud();
+      ArrayList<Map<String,Object>> l = conn.getBasicInfo(ID);
+      String name = l.get(0).get("lastName")+" "+l.get(0).get("firstName");
+
       pmn = conn.peopleMayKnow(ID, name);
       if (pmn == null) {
         return "ERROR";

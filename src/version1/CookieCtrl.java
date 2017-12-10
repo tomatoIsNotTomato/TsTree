@@ -11,7 +11,7 @@ public class CookieCtrl {
     // 添加一个cookie  
     public static Cookie addCookie(String id) {  
         Cookie cookie = new Cookie(USER_COOKIE, id);  
-        System.out.println("添加cookie");  
+       // System.out.println("添加cookie");  
         cookie.setMaxAge(60 * 60 * 24);// cookie保存两周  
         return cookie;  
     } 
@@ -19,10 +19,10 @@ public class CookieCtrl {
     // 得到cookie  
     public static String getCookie(HttpServletRequest request) {  
         Cookie[] cookies = request.getCookies();  
-        System.out.println("cookies: " + cookies);  
+       // System.out.println("cookies: " + cookies);  
         if (cookies != null) {  
             for (Cookie cookie : cookies) {  
-                System.out.println("cookie: " + cookie.getName());  
+                //System.out.println("cookie: " + cookie.getName());  
                 if (USER_COOKIE.equals(cookie.getName())) {  
                     String value = cookie.getValue();  
                     if (StringUtils.isNotBlank(value)) {  

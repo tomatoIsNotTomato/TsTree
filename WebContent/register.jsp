@@ -114,7 +114,8 @@
 			            }, 600)
 					}
 				}
-			})
+
+			});
 		
 		var q = $("input[name=location]");
 		$("#submit").live('click', function() {

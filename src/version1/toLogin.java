@@ -29,8 +29,8 @@ public class toLogin extends ActionSupport implements Serializable{
     String basePath = linkedInCtrl.getBaseUrl(request);
     
     //String redirectUri = basePath + "/linkedInProcess";
-    // String redirectUri = "http://localhost:8080/Ttree/LoginWithLinkedIn";
-    String redirectUri =  "http://tomato.applinzi.com/Ttree/LoginWithLinkedIn";
+    String redirectUri = "http://localhost:8080/Ttree/LoginWithLinkedIn";
+    //String redirectUri =  "http://tomato.applinzi.com/Ttree/LoginWithLinkedIn";
     HttpSession session = request.getSession();
     session.setAttribute("linkStatus", status);
     linkedInCtrl.directToLoginPage(status, response_type, redirectUri, clientId, scope, baseUrl, response);

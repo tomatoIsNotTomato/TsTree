@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.sql.Date;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class Register extends ActionSupport implements Serializable{
+public class Register extends ActionSupport{
   /**
    * 
    */
@@ -112,10 +111,11 @@ public class Register extends ActionSupport implements Serializable{
     
     HttpServletRequest request = ServletActionContext.getRequest();
     String projectPath = request.getSession().getServletContext().getRealPath("/");
+    projectPath = projectPath.replace('\\', '/');
       String imgPath = projectPath+"userImage/"; 
       System.out.println(imgPath);
       String picture_url = imgPath+getEmail().replace('@', '_').replace('.', '_')+".jpg";
-      try {
+      try { 
         if (img!=null) {
           InputStream is = new FileInputStream(img);
             File destFile = new File(picture_url);

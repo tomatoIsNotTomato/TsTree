@@ -12,7 +12,7 @@
         <!--添加上学的时段信息-->
         <action name="addPeriod" class="version1.AddPeriodInfo">
             <result name="SUCCESS" type="redirectAction">
-                getTree?ID=${id}
+                peopleMayKnow?ID=${id}
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action>

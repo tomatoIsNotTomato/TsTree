@@ -122,18 +122,33 @@ h1 {
 	</ul>
 	<h1>可能认识得人...</h1>
 	<br>
+<<<<<<< HEAD
 	<s:iterator value="bmn" id="bn">
 		<table>
 			<tr>
 				<td><a href="<s:url action="linkedInLogin"/>"><img
+=======
+	<s:iterator value="pmn" id="bn">
+		<table>
+			<tr>
+				<td><a href="<s:url action="search?id=%{#bn.get(\"id\")}"/>"/><img
+>>>>>>> cd0285e0054be44eff9477ee54567343b478f13a
 						src=<s:property value="#bn.get(\"pictureUrl\")"></s:property>
 						width="80" height="80" /></a></td>
 			</tr>
 			<tr>
 				<td><s:property value="#bn.get(\"name\")" /></td>
+<<<<<<< HEAD
 			</tr>
 		</table>
 	</s:iterator>
+=======
+				<td><s:property value="#bn.get(\"id\")"/></td>
+			</tr>
+		</table>
+	</s:iterator>
+	<a href="<s:url action="getTree"/>">Skip</a>
+>>>>>>> cd0285e0054be44eff9477ee54567343b478f13a
 
 
 

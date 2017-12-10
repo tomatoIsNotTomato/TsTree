@@ -51,6 +51,9 @@ public class searchTsTree extends ActionSupport{
     ArrayList<relatedPerson> node = new ArrayList<>();
     
     HttpServletRequest request = ServletActionContext.getRequest();
+    if(ID==null || ID.equals("")) {
+      ID= CookieCtrl.getCookie(request);
+    }
     Map<String, Object> info = conn.getBasicInfo(Integer.parseInt(getID())).get(0);
     String name = info.get("lastName").toString()+" "+info.get("firstName").toString();
     ArrayList<Map<String, Object>> lst = conn.queryTsTree(Integer.parseInt(getID()));
@@ -63,7 +66,9 @@ public class searchTsTree extends ActionSupport{
     }
     // sel.setPic(info.get("pictureUrl").toString());;
     sel.setWeight("10");
+    sel.setPic(info.get("pictureUrl").toString());
     node.add(sel);
+    
     
     //nodelist.add("{\"name\":\""+name+"\",\"email\":\""+info.get("emailAddress")+"\",\"ID\":\""+info.get("id")+"\",\"weight\":\"10\"";
     if (lst != null) {
