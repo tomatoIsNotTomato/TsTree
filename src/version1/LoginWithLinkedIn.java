@@ -1,5 +1,6 @@
 package version1;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 
 import javax.servlet.http.Cookie;
@@ -12,7 +13,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import net.sf.json.JSONObject;
 
-public class LoginWithLinkedIn extends ActionSupport{
+public class LoginWithLinkedIn extends ActionSupport implements Serializable{
   /**
    * 
    */
@@ -46,7 +47,7 @@ public class LoginWithLinkedIn extends ActionSupport{
     this.id = id;
   }
    
-  public String execute() throws SQLException {
+  public String execute() throws SQLException{
     HttpServletRequest request = ServletActionContext.getRequest();
     String getTokenUrl="https://www.linkedin.com/oauth/v2/accessToken"; 
     String getUserInfoUrl="https://api.linkedin.com/v1/people/~";  

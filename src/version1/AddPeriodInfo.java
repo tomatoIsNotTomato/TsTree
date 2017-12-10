@@ -1,5 +1,6 @@
 package version1;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,7 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class AddPeriodInfo extends ActionSupport{
+public class AddPeriodInfo extends ActionSupport implements Serializable{
   /**
    * 
    */

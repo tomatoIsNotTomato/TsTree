@@ -22,7 +22,7 @@
 
 	<div class="page-container">
 		<h1>Register</h1>
-		<form action="register" method="post">
+		<form action="register" method="post" enctype="multipart/form-data">
 <div class="registerForm" style="display: block">
 			<div>
 				<input type="text" name="firstName" placeholder="firstName" />
@@ -48,27 +48,24 @@
 </div>
 			<div class="form1" style="display: none">
 				<h2>关于你...</h2>
-
+                
+                <div>
+				<input type="file" name="img"/>
+                </div>
 				<div>
-					<!-- <input type="text" name="sex" placeholder="W/M"> -->
-					<input type="radio" name="sex" value="0"/>Man
-                    <input type="radio" name="sex" value="1" checked="checked" />Lady
+					<input type="text" name="headline" placeholder="花果山美猴王">
 				</div>
 
 				<div>
-					<input type="text" name="birthDay" placeholder="出生日期">
+					<input type="text" name="location" placeholder="Haerbin, Heilongjiang, China">
 				</div>
 
 				<div>
-					<input type="text" name="place" placeholder="你从哪来">
-				</div>
-
-				<div>
-					<input type="text" name="job" placeholder="你是做什么的">
+					<input type="text" name="industry" placeholder="student">
 				</div>
 				
 				<div>
-                    <input type="text" name="linkedIn" placeholder="LinkedIn host page">
+                    <input type="text" name="profile_url" placeholder="LinkedIn host page">
                 </div>
                 
 				<button id="submit" type="submit">Sign in</button>
@@ -117,9 +114,16 @@
 			            }, 600)
 					}
 				}
-			}
-			
-			
+			})
+		
+		var q = $("input[name=location]");
+		$("#submit").live('click', function() {
+            if (q.val() == '') {
+                $("#ts").html("地区不能为空~");
+                is_show();
+                return false;
+            }
+            }
 		);
 		
 		function is_hide() {
