@@ -1,6 +1,8 @@
 package version1;
 
-import java.io.IOException;  
+import java.io.IOException;
+import java.io.Serializable;
+
 import javax.servlet.Filter;  
 import javax.servlet.FilterChain;  
 import javax.servlet.FilterConfig;  
@@ -12,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;  
 import javax.servlet.http.HttpSession;  
   
-public class LoginFilter extends HttpServlet implements Filter {  
+public class LoginFilter extends HttpServlet implements Filter, Serializable{  
     /**
    * 
    */
@@ -32,6 +34,7 @@ public class LoginFilter extends HttpServlet implements Filter {
         if(url.equals("")) url+="/";    
 
         if((url.startsWith("/"))&&!((url.startsWith("/userLogin"))||(url.startsWith("/login"))||(url.startsWith("/css"))||(url.startsWith("/register")) || (url.startsWith("/supersized")) || (url.startsWith("/img"))|| (url.startsWith("/images"))|| (url.contains("inked")))){//若访问后台资源 过滤到login    
+          //String id = request.getSession().getAttribute("userId").toString();
           String id = CookieCtrl.getCookie(request);
           if(id==null)
           {

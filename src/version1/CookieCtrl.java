@@ -9,10 +9,12 @@ public class CookieCtrl {
     public static final String USER_COOKIE = "userId";  
   
     // 添加一个cookie  
-    public static Cookie addCookie(String id) {  
+    public static Cookie addCookie(String id, HttpServletRequest request) {  
+      
         Cookie cookie = new Cookie(USER_COOKIE, id);  
        // System.out.println("添加cookie");  
         cookie.setMaxAge(60 * 60 * 24);// cookie保存两周  
+        cookie.setPath(request.getContextPath()+"/");
         return cookie;  
     } 
   

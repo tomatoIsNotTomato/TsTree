@@ -28,20 +28,38 @@ public class SearchBasicInfo extends ActionSupport{
     Pattern pattern = Pattern.compile("[0-9]*");
     Matcher isNum = pattern.matcher(NameOrId);
     if( isNum.matches() && NameOrId.length()==5 ){
-      ArrayList<Map<String,Object>> lst = conn.getBasicInfo(Integer.valueOf(NameOrId)); 
+      ArrayList<Map<String,Object>> lst = conn.getBasicInfo(Integer.valueOf(NameOrId));
+      for(Map<String,Object> m :lst) {
+        for (String key : m.keySet()) {
+          if (m.get(key)==null || m.toString().length()==0) {
+            m.remove(key);
+            m.put(key,"To be upplemented");
+          }
+          System.out.println("key= "+ key + " and value= " + m.get(key));
+        }
+      }
       if (lst.size()!=0) {
         request.setAttribute("BasicInfo", lst);
-        request.setAttribute("ID", lst.get(0).get("ID").toString());
+        request.setAttribute("ID", lst.get(0).get("id").toString());
         return SUCCESS;
       }
       else return "ERROR";
     }
     else {
-      String [] name = NameOrId.split("-");
+      String [] name = NameOrId.split(" ");
       ArrayList<Map<String,Object>> lst = conn.getBasicInfo(name[0], name[1]);
+      for(Map<String,Object> m :lst) {
+        for (String key : m.keySet()) {
+          if (m.get(key)==null || m.toString().length()==0) {
+            m.remove(key);
+            m.put(key,"To be upplemented");
+          }
+          System.out.println("key= "+ key + " and value= " + m.get(key));
+        }
+      }
       if (lst.size()!=0) {
         request.setAttribute("BasicInfo", lst);
-        request.setAttribute("ID", lst.get(0).get("ID").toString());
+        request.setAttribute("ID", lst.get(0).get("id").toString());
         return SUCCESS;
       }
       else return "ERROR";

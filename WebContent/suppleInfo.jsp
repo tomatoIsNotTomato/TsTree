@@ -28,7 +28,10 @@
                     <input  type="hidden" name="ID" value = <s:property value="#parameters.ID[0]"/>/>
                 </div>
                 <div>
-                    <input type="text" name="name" placeholder="name" autocomplete="off"/>
+                    <input type="text" name="firstName" placeholder="firstName" autocomplete="off"/>
+                </div>
+                 <div>
+                    <input type="text" name="lastName" placeholder="lastName" autocomplete="off"/>
                 </div>
                 <div>
                     <input type="text" name="id" placeholder="ID(optional)" autocomplete="off"/>
@@ -41,7 +44,7 @@
                 </div>
                 
                 <div>
-                    <input type="text" name="tel"  placeholder="tel" oncontextmenu="return false" onpaste="return false" />
+                    <input type="text" name="email"  placeholder="email" oncontextmenu="return false" onpaste="return false" />
                 </div>
                 <div>
                     <!-- <input type="text" name="period" placeholder="时期" autocomplete="off"/> -->

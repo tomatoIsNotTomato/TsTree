@@ -51,7 +51,7 @@ h3 {
     text-align: center;
 }
 
-.page-container input[type="text"] , .page-container input[type="password"], .page-container input[type="file"]{
+.page-container input[type="text"] , .page-container input[type="password"], .page-container input[type="file"],.page-container select {
     width: 270px;
     height: 42px;
 	line-height:42px;
@@ -96,7 +96,7 @@ h3 {
 }
 
 .page-container input[type="radio"]{
-	width: 50px;
+	width: 20px;
     height: 42px;
     line-height:42px;
     margin-top: 25px;

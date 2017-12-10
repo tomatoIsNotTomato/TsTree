@@ -1,5 +1,6 @@
 package version1;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 
 import javax.servlet.http.Cookie;
@@ -12,7 +13,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import net.sf.json.JSONObject;
 
-public class LoginWithLinkedIn extends ActionSupport{
+public class LoginWithLinkedIn extends ActionSupport implements Serializable{
   /**
    * 
    */
@@ -52,14 +53,14 @@ public class LoginWithLinkedIn extends ActionSupport{
     String getUserInfoUrl="https://api.linkedin.com/v1/people/~";  
     /*String code=request.getParameter("code");  
     String status=request.getParameter("state");  */
-    String tempCode=(String)request.getSession().getAttribute("linkStatus");  
-    request.getSession().removeAttribute("linkStatus");  
+    //String tempCode=(String)request.getSession().getAttribute("linkStatus");  
+    //request.getSession().removeAttribute("linkStatus");  
     
     /*·ÀÖ¹¿çÕ¾¹¥»÷*/  
-    if(null==tempCode||null==getState()||!tempCode.trim().equalsIgnoreCase(getState().trim())){  
+    /*if(null==tempCode||null==getState()||!tempCode.trim().equalsIgnoreCase(getState().trim())){  
         System.out.println("ÒÉËÆ¿çÕ¾¹¥»÷");  
         return "ERROR";  
-    }  
+    }*/  
     
     /*ÅÐ¶ÏµÚÒ»²½ÊÇ·ñµÃµ½Code*/  
     if(code==null ||code.length() == 0){  
@@ -72,8 +73,8 @@ public class LoginWithLinkedIn extends ActionSupport{
         //int serverPost = request.getServerPort();  
         String basePath = linkedInCtrl.getBaseUrl(request);
         //String redirectUri = basePath + "/linkedInProcess"; 
-        String redirectUri = "http://localhost:8080/Ttree/LoginWithLinkedIn";
-        //String redirectUri =  "http://tomato.applinzi.com/Ttree/LoginWithLinkedIn";
+        //String redirectUri = "http://localhost:8080/Ttree/LoginWithLinkedIn";
+        String redirectUri =  "http://tomato.applinzi.com/Ttree/LoginWithLinkedIn";
         JSONObject tokenInfo=linkedInCtrl.getAccessToken(getTokenUrl, clientId, clientSecrte, code, "authorization_code", redirectUri);  
         System.out.println(getCode());
         if(null==tokenInfo){  
@@ -111,7 +112,7 @@ public class LoginWithLinkedIn extends ActionSupport{
                 int treeId = conn.checkExist(userInfo.getString("id"), "linkedin");
                 if (treeId > 0) {
                   id = String.format("%0" + 5 + "d", treeId);
-                  Cookie cookie = CookieCtrl.addCookie(id);
+                  Cookie cookie = CookieCtrl.addCookie(id, request);
                   System.out.println(cookie);
                   HttpServletResponse response = ServletActionContext.getResponse();
                   response.addCookie(cookie);
@@ -140,7 +141,9 @@ public class LoginWithLinkedIn extends ActionSupport{
                     if (idint == -1) return "ERROR";
                     id = String.format("%0" + 5 + "d", idint);
                     user.setID(id);
-                  Cookie cookie = CookieCtrl.addCookie(id);
+                 // request.getSession().setAttribute("userId", id);  
+                   
+                  Cookie cookie = CookieCtrl.addCookie(id, request);
                   HttpServletResponse response = ServletActionContext.getResponse();
                   response.addCookie(cookie);
                   conn.insertBasicInfo(user);

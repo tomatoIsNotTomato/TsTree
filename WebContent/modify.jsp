@@ -75,42 +75,90 @@
    }
    
 
-   .herf {
-        display:block;
-        width:340px;
-        height:30px;
-        border-radius: 6px;
-        border: 0px;
-        float:left;
-        background-color:#ef4300;
-        text-decoration:none;
-        font-family:'PT Sans', Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        font-weight: 700;
-        margin-left:10px;
-        color: #fff;
-   }
        
     h1 {
         font: 40px "Trebuchet MS", Arial, Helvetica, sans-serif;
         float:left;
         margin-left:50px;
         margin-top:100px;
+        color:#000;
         }
         
-     .bi {
-        font-size: 25px;
-        
-        font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-        margin-left:10px;
-        margin-top:150px;
-        float:left;
-    }
     
-    .bi table , .bi td{
-        border:solid #333;
-        cellpadding:0
-    }
+    .basic-grey {
+    margin-top: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+    
+    padding: 25px 15px 25px 10px;
+    font: 12px Georgia, "Times New Roman", Times, serif;
+    color: #888;
+    text-shadow: 1px 1px 1px #FFF;
+    border: 1px solid #E4E4E4;
+}
+
+.basic-grey h4 {
+    
+    font-size: 25px;
+    padding: 0px 0px 10px 40px;
+    display: block;
+    border-bottom: 1px solid #E4E4E4;
+    margin: -10px -15px 30px -10px;;
+    color: #000;
+}
+
+.basic-grey h4>span {
+    display: block;
+    font-size: 11px;
+}
+
+
+
+.basic-grey button {
+    background: #E27575;
+    border: none;
+    padding: 10px 25px 10px 25px;
+    color: #FFF;
+    box-shadow: 1px 1px 5px #B6B6B6;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px #9E3F3F;
+    cursor: pointer;
+    width:80;
+}
+
+.basic-grey input{
+
+    width: 100px;
+    height: 42px;
+    line-height:42px;
+    margin-top: 25px;
+    padding: 0 15px;
+    background: #2d2d2d; /* browsers that don't support rgba */
+    *background-color:transparent;
+    background: rgba(45,45,45,.15);
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+    border: 1px solid rgba(255,255,255,.15);
+    -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #FFF;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -o-transition: all .2s;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    -ms-transition: all .2s;
+ 
+}
+
+.basic-grey button:hover {
+    background: #CF7A7A
+}
         </style>
 </head>
 <body>
@@ -132,21 +180,21 @@
             <h1>Modify...</h1><br>
             
             
-   <table class="bi">
-    <tr><td>name: </td><td>${param.name}</td></tr>
-    <tr><td>ID: </td><td>${param.ID}</td></tr>
-    <tr><td>tel: </td><td>${param.tel }</td><tr>
-    <tr><td>relation: </td><td>${param.relation }</td><tr>
-    <tr><td>period: </td><td>${param.period }</td><tr>
-    </table>
+    <div class="basic-grey" >
+    <h4>name: ${param.name}
+    <br>ID: ${param.ID}
+    <br>Email: ${param.email }
+    <br>relation: ${param.relation }
+    <br>period: ${param.period }</h4>
     
-    <div class="page-container">
+    
+    <div >
             <form action="delete" method="post">
                 <div>
-                    <input type="hidden" name="ID" value = "${param.sourceID}"/>
-                    <input type="hidden" name="Name" value="${param.name}"/>
+                    
+                    <input type="hidden" name="name" value="${param.name}"/>
                     <input type="hidden" name="id" value="${param.ID}"/>
-                    <input type="hidden" name="tel" value="${param.tel}"/>
+                    <input type="hidden" name="email" value="${param.email}"/>
                     <input type="hidden" name="period" value="${param.period}"/>
                     <input type="hidden" name="relation" value="${param.relation}"/>
                 </div>
@@ -156,25 +204,26 @@
             <br>
         </div>
         
-        <div class="page-container" style="margin-top:5px">
+        <div style="margin-top:5px">
             <form action="update" method="post">
                 <div>
                     <input type="hidden" name="ID" value = "${param.sourceID}"/>
                     <input type="hidden" name="preName" value="${param.name}"/>
                     <input type="hidden" name="id" value="${param.ID}"/>
-                    <input type="hidden" name="tel_old" value="${param.tel}"/>
+                    <input type="hidden" name="email_old" value="${param.email}"/>
                     <input type="hidden" name="period" value="${param.period}"/>
                     <input type="hidden" name="relation" value="${param.relation}"/>
-                    <input type="text" name="postName" placeholder="new name"/>
-                    <input type="text" name="tel_new" placeholder="new tel number"/>
+                    <input type="text" name="postLastName" placeholder="new last name"/>
+                    <input type="text" name="postFirstName" placeholder="new first name"/>
+                    <input type="text" name="email_new" placeholder="new email"/>
                    
                 </div>
-                
+                <br>
                 <button id="submit" type="submit">update</button>
             </form>
             <br>
         </div>
-        
+        </div>
        
 </body>
 </html>

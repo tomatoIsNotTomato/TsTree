@@ -18,29 +18,32 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 @SuppressWarnings("serial")
 public class de_t_s extends ActionSupport {
-  private int ID; // ×Ô¼ºµÄID
-  private String Name;
-  private String relation;
-  private int id;
-  private String tel;
-  private String period;
-
-  public int getID() {
-    return ID;
-  }
-
-  public void setID(int iD) {
-    ID = iD;
-  }
+ 
+  private String name;
+  
 
   public String getName() {
-    return Name;
+    return name;
   }
 
   public void setName(String name) {
-    Name = name;
+    this.name = name;
   }
 
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  private String relation;
+  private int id;
+  private String email;
+  private String period;
+
+  
   public String getRelation() {
     return relation;
   }
@@ -56,15 +59,7 @@ public class de_t_s extends ActionSupport {
   public void setId(int id) {
     this.id = id;
   }
-
-  public String getTel() {
-    return tel;
-  }
-
-  public void setTel(String tel) {
-    this.tel = tel;
-  }
-
+  
   public String getPeriod() {
     return period;
   }
@@ -76,8 +71,10 @@ public class de_t_s extends ActionSupport {
   public String execute() throws Exception {
     try {
       DBcrud conn = new DBcrud();
-      
-      conn.de_t_s_info(ID, id, Name, period, relation, tel);
+      String n[] = name.split(" ");
+      HttpServletRequest request = ServletActionContext.getRequest();
+      String ID = CookieCtrl.getCookie(request);
+      conn.de_t_s_info(Integer.parseInt(ID), id, n[0]+" "+n[1],  period, relation, email);
 
     } catch (Exception e) {
       return "ERROR";

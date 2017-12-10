@@ -27,6 +27,28 @@ public class Register extends ActionSupport{
   private String lastName;
   private String headline;
   private String location;
+  private String country;
+  private String province;
+  private String city;
+  public String getCountry() {
+    return country;
+  }
+  public void setCountry(String country) {
+    this.country = country;
+  }
+  public String getProvince() {
+    return province;
+  }
+  public void setProvince(String province) {
+    this.province = province;
+  }
+  public String getCity() {
+    return city;
+  }
+  public void setCity(String city) {
+    this.city = city;
+  }
+
   private String industry;
   private String email;
   private String picture_url;
@@ -142,14 +164,16 @@ public class Register extends ActionSupport{
       return "error";
       }
       
-    CampusUser user = new CampusUser(getFirstName(), getLastName(), getHeadline(), getLocation(), getIndustry(), getEmail(), picture_url, getProfile_url());
+    location = city+", "+province+", "+country;
+    CampusUser user = new CampusUser(getFirstName(), getLastName(), getHeadline(), location, getIndustry(), getEmail(), picture_url, getProfile_url());
     DBcrud conn = new DBcrud();
     int id = conn.saveCode(getEmail(), getPwd(), "pwd");
     if (id == -1) return "ERROR";
     user.setID(String.valueOf(id));
     setID(String.valueOf(id));
     ID = user.userID();
-    Cookie cookie = CookieCtrl.addCookie(String.format("%0" + 5 + "d", id));
+   
+    Cookie cookie = CookieCtrl.addCookie(String.format("%0" + 5 + "d", id), request);
     HttpServletResponse response = ServletActionContext.getResponse();
     response.addCookie(cookie);
    /* request.getSession().setAttribute("userID", ID);*/

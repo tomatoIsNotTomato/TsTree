@@ -41,10 +41,25 @@ li a {
 	text-decoration: none;
 }
 
-li a:hover:not (.active ) {
-	background-color: #111;
-}
+li
+ 
+a
+:hover
+:not
+ 
+(
+.active
+ 
+)
+{
+background-color
+:
+ 
+#111
+;
 
+
+}
 .searchBox {
 	float: right;
 	margin-right: 170px;
@@ -113,7 +128,7 @@ h1 {
     border: 1px solid #E4E4E4;
 }
 
-.basic-grey h3 {
+.basic-grey h1 {
     
     font-size: 25px;
     padding: 0px 0px 10px 40px;
@@ -123,14 +138,52 @@ h1 {
     color: #888;
 }
 
-.basic-grey h3>span {
+.basic-grey h1>span {
     display: block;
     font-size: 11px;
 }
 
+.basic-grey label {
+    display: block;
+    margin: 0px;
+}
 
+.basic-grey label>span {
+    float: left;
+    width: 20%;
+    text-align: right;
+    padding-right: 10px;
+    margin-top: 10px;
+    color: #888;
+}
 
-.basic-grey button {
+.basic-grey input[type="text"], .basic-grey textarea, .basic-grey select
+    {
+    border: 1px solid #DADADA;
+    color: #888;
+    height: 30px;
+    margin-bottom: 16px;
+    margin-right: 6px;
+    margin-top: 2px;
+    outline: 0 none;
+    padding: 3px 3px 3px 5px;
+    width: 70%;
+    font-size: 12px;
+    line-height: 15px;
+    box-shadow: inset 0px 1px 4px #ECECEC;
+    -moz-box-shadow: inset 0px 1px 4px #ECECEC;
+    -webkit-box-shadow: inset 0px 1px 4px #ECECEC;
+}
+
+.basic-grey textarea {
+    padding: 5px 3px 3px 5px;
+}
+
+.basic-grey textarea {
+    height: 100px;
+}
+
+.basic-grey .button {
     background: #E27575;
     border: none;
     padding: 10px 25px 10px 25px;
@@ -139,10 +192,9 @@ h1 {
     border-radius: 3px;
     text-shadow: 1px 1px 1px #9E3F3F;
     cursor: pointer;
-    width:80;
 }
 
-.basic-grey button:hover {
+.basic-grey .button:hover {
     background: #CF7A7A
 }
 </style>
@@ -167,25 +219,32 @@ h1 {
 			</form>
 		</li>
 	</ul>
-	<h1>可能认识得人...</h1>
+	<h1>消息列表...</h1>
 	<br>
-	<br>
-	<s:iterator value="pmn" id="bn">
-		<table  class="basic-grey">
-			<tr>
-				<td><a href="<s:url action="search?nameOrId=%{#bn.get(\"id\")}"/>"/><img
-						src=<s:property value="#bn.get(\"pictureUrl\")"></s:property>
-						width="80" height="80" /></a></td>
-			
-				<td><h3>Name: <s:property value="#bn.get(\"name\")" />   ID: <s:property value="#bn.get(\"id\")"/>
-				<h3><span>He considered you as his <s:property value="#bn.get(\"relation\")"/> when he was in <s:property value="#bn.get(\"period\")"/> period<span></h3>
+	<s:iterator value="messages" id="bn">
+	<form action="leaveMsg" method="post" class="basic-grey">
+		
+				<img style="float:left"
+					src=<s:property value="#bn.get(\"pictureUrl\")"></s:property>
+					width="80" height="80" />
+				<br>
+				<s:property value="#bn.get(\"name\")" />
+				<s:property value="#bn.get(\"sendTime\")" />
+					
+					<input type="hidden" name="id" value="${bn.fromID}" /> 
+					
+						<input type="hidden" name="history" value="${bn.mesID}" />
+            
+					<textarea id="message" name="message"
+						placeholder="Reply"></textarea>
+					<label> <span>&nbsp;</span> <input type="submit"
+						class="button" value="Send" />
+					</label>
 				
-			     <button type="button" onclick="javascript:window.location.href='supple?id=${bn.id}&name=${bn.name}&relation=${bn.relation}&period=${bn.period}&email=${bn.email}'"/>Add into My Tree</button>
-			     <button type="button" onclick="javascript:window.location.href='message.jsp?id=${bn.id}&name=${bn.name}'"/>Leave a message</button>
-			</td></tr>
-		</table>
+			
+		</form>
 	</s:iterator>
-	<a href="<s:url action="getTree"/>">Skip</a>
+	
 
 </body>
 </html>

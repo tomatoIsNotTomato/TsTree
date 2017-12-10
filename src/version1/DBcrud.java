@@ -13,10 +13,17 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DBcrud {
   private String jdbcDriver = "com.mysql.jdbc.Driver";
-  private String dbusername = "root";
+  /*private String dbusername = "root";
   private String dbpassword = "2218234907";
   private String dbUrl = "jdbc:mysql://localhost:3306/tree?useSSL=false&useUnicode=true&characterEncoding=utf-8";
 
+  */
+  
+  String dbusername = System.getenv("ACCESSKEY");
+  String dbpassword = System.getenv("SECRETKEY");
+  //System.getenv("MYSQL_HOST_S"); Îª´Ó¿â£¬Ö»¶Á
+  String dbUrl = String.format("jdbc:mysql://%s:%s/%s", System.getenv("MYSQL_HOST"), System.getenv("MYSQL_PORT"), System.getenv("MYSQL_DB"));
+  
   public Connection connectDB() {
     try {
       Class.forName(jdbcDriver);
@@ -244,7 +251,7 @@ public class DBcrud {
     }
   }
 
-  public ArrayList<Map<String, Object>> getBasicInfo(String firstName, String lastName) throws SQLException {
+  public ArrayList<Map<String, Object>> getBasicInfo(String lastName, String firstName) throws SQLException {
     ArrayList<Map<String, Object>> lst = new ArrayList<>();
     Connection connect = connectDB();
     if (connect == null)
@@ -335,8 +342,9 @@ public class DBcrud {
       ps.setInt(1, ID);
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
+        String pic = rs.getString(1);
         connect.close();
-        return rs.getString(1);
+        return pic;
       } else {
         return defaultPic;
       }
@@ -348,7 +356,7 @@ public class DBcrud {
     }
   }
 
-  public Boolean add_t_s_info(int selfID, String name, int id, String relation, String period, String email)
+  public Boolean add_t_s_info(int selfID, String firstName, String lastName,  int id, String relation, String period, String email)
       throws SQLException {
     try {
       Connection connect = connectDB();
@@ -365,7 +373,7 @@ public class DBcrud {
         if (hash == null)
           hash = new HashSet<NameIdPair>();
 
-        hash.add(new NameIdPair(name, id, email));
+        hash.add(new NameIdPair(lastName+" "+firstName, id, email));
         String inf = changeToString(hash);
         ps = connect.prepareStatement("update user_" + period + " set " + relation + "=(?) where " + period + "ID=(?)");
 
@@ -529,6 +537,11 @@ public class DBcrud {
           }
           rowData.put(md.getColumnName(i), rs.getObject(i).toString());
         }
+        int id = rs.getInt(1);
+        ArrayList<Map<String, Object>> user = getBasicInfo(id);
+        rowData.put("name", user.get(0).get("lastName")+" "+user.get(0).get("firstName"));
+        rowData.put("pictureUrl", user.get(0).get("pictureUrl").toString());
+        
         lst.add(rowData);
       }
     } catch (SQLException e) {
@@ -636,13 +649,13 @@ public class DBcrud {
     }
   }
 
-  private ArrayList<Integer> SameName(String name, ArrayList<Integer> lst, String sqlStatement) throws SQLException {
+  private ArrayList<Map<Integer,String>> SameName(String name, ArrayList<Integer> lst, String sqlStatement) throws SQLException {
     Connection conn = connectDB();
     if (conn == null) {
       return null;
     }
     PreparedStatement ps;
-    ArrayList<Integer> idlst = new ArrayList<>();
+    ArrayList<Map<Integer,String>> idlst = new ArrayList<>();
     for (int i : lst) {
       try {
         ps = (PreparedStatement) conn.prepareStatement(sqlStatement);
@@ -653,9 +666,11 @@ public class DBcrud {
           if(hs!=null){
             for (NameIdPair r : hs) {
               if (r.getName().equals(name)) {
+                Map<Integer,String> m = new HashMap<>();
+                m.put(i, "teacher");
                 System.out.println(r.getName());
                 System.out.println(name); 
-                  idlst.add(i);   
+                  idlst.add(m);   
               }
             }
           }
@@ -665,7 +680,11 @@ public class DBcrud {
             for (NameIdPair r : hs) {
               
               if (r.getName().equals(name)) {
-                idlst.add(i); 
+                Map<Integer,String> m = new HashMap<>();
+                m.put(i, "student");
+                System.out.println(r.getName());
+                System.out.println(name); 
+                idlst.add(m);   
               }
             }
           }
@@ -700,17 +719,33 @@ public class DBcrud {
     String sqlStatement1 = "select teacher , student from user_bachelor where bachelorID = ?";
     String sqlStatement2 = "select teacher , student from user_master where masterID = ?";
     String sqlStatement3 = "select teacher , student from user_doctor where doctorID = ?";
-    String sqlStatement4 = "select firstName, lastName, pictureUrl from user where id = ?";
+    String sqlStatement4 = "select firstName, lastName, pictureUrl, emailAddress from user where id = ?";
     ArrayList<Integer> idlst = new ArrayList<>();
-    ArrayList<Integer> l = SameName(name, lst, sqlStatement1);
-    if (l != null)
-      idlst.addAll(l);
+    ArrayList<String> period = new ArrayList<>();
+    ArrayList<String> relation = new ArrayList<>();
+    ArrayList<Map<Integer, String>> l = SameName(name, lst, sqlStatement1);
+    if (l != null) {
+      for (Map<Integer, String> m:l) {
+        idlst.addAll(m.keySet());
+        relation.addAll(m.values());
+        period.add("bachelor");
+      }
+    }
     l = SameName(name, lst, sqlStatement2);
     if (l != null)
-      idlst.addAll(l);
+      for (Map<Integer, String> m:l) {
+        idlst.addAll(m.keySet());
+        relation.addAll(m.values());
+        period.add("master");
+      }
     l = SameName(name, lst, sqlStatement3);
     if (l != null)
-      idlst.addAll(l);
+      for (Map<Integer, String> m:l) {
+        idlst.addAll(m.keySet());
+        relation.addAll(m.values());
+        period.add("doctor");
+      }
+    
     int count = 0;
     for (int j = 0; j < idlst.size(); j++) {
       if (count >= 6)
@@ -725,8 +760,18 @@ public class DBcrud {
           }
           Map<String, String> map = new HashMap<>();
           map.put("name", rs.getString(2) + " " + rs.getString(1));
+          
           map.put("id", String.format("%0" + 5 + "d", Integer.parseInt(idlst.get(j).toString()) ));
           map.put("pictureUrl", rs.getString(3));
+          map.put("relation", relation.get(j));
+          map.put("period", period.get(j));
+          map.put("email", rs.getString(4));
+          if (relation.get(j).equals("teacher")) {
+            map.put("newRelation", "student");
+          }
+          else {
+            map.put("newRelation", "teacher");
+          }
           count++;
           pmn.add(map);
         }

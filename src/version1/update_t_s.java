@@ -23,8 +23,8 @@ public class update_t_s extends ActionSupport{
   String preName;
   String relation;
   int id;
-  String tel_old;
-  String tel_new;
+  String email_old;
+  String email_new;
   public int getID() {
     return ID;
   }
@@ -49,17 +49,17 @@ public class update_t_s extends ActionSupport{
   public void setId(int id) {
     this.id = id;
   }
-  public String getTel_old() {
-    return tel_old;
+  public String getEmail_old() {
+    return email_old;
   }
-  public void setTel_old(String tel_old) {
-    this.tel_old = tel_old;
+  public void setEmail_old(String email_old) {
+    this.email_old = email_old;
   }
-  public String getTel_new() {
-    return tel_new;
+  public String getEmail_new() {
+    return email_new;
   }
-  public void setTel_new(String tel_new) {
-    this.tel_new = tel_new;
+  public void setEmail_new(String email_new) {
+    this.email_new = email_new;
   }
   public String getPeriod() {
     return period;
@@ -67,19 +67,27 @@ public class update_t_s extends ActionSupport{
   public void setPeriod(String period) {
     this.period = period;
   }
-  public String getPostName() {
-    return postName;
-  }
-  public void setPostName(String postName) {
-    this.postName = postName;
-  }
+  
   String period;
-  String postName;
+  String postFirstName;
+  String postLastName;
+  public String getPostFirstName() {
+    return postFirstName;
+  }
+  public void setPostFirstName(String postFirstName) {
+    this.postFirstName = postFirstName;
+  }
+  public String getPostLastName() {
+    return postLastName;
+  }
+  public void setPostLastName(String postLastName) {
+    this.postLastName = postLastName;
+  }
   public String execute() throws Exception{
     try {
         DBcrud conn = new DBcrud();
-        
-        if(conn.update_t_s_info(ID, id,preName, postName, period, relation,tel_old,tel_new)) {
+        String postName = postLastName+" "+postFirstName;
+        if(conn.update_t_s_info(ID, id,preName, postName, period, relation,email_old,email_new)) {
           return "SUCCESS";
         }
         else return "ERROR";

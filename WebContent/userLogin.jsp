@@ -16,11 +16,39 @@
         
         <link rel="stylesheet" href="css/supersized.css">
         <link rel="stylesheet" href="css/style.css">
+<style>
+ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+                position: fixed;
+                top: 0;
+                width: 100%;
+            }
+            
+            li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+            
+            li a:hover:not(.active) {
+                background-color: #111;
+            } 
+            
 
+            </style>
     </head>
 
     <body oncontextmenu="return false">
-
+ <ul>
+   <li><img src = images/tstree.jpg width="120px" style="float:left; margin-top:3px" ></li>
+           <li><a href="About.jsp" style="float:right">About us</a></li>
+        </ul>
         <div class="page-container">
             <h1>login</h1>
             <form action="login" method="post">
@@ -33,8 +61,9 @@
                 <button id="submit" type="submit">Sign in</button>
             </form>
             <br>
-            <a href="register.jsp">New? Register here.</a>
-            <a href="<s:url action="linkedInLogin"/>"><img id = "image1" src="images/linkedIn1.jpg" width="250" height="40" onMouseOver="MM_swapImage()" onMouseOut="MM_swapImgRestore()"/></a>
+            <button type="button" onclick="javascript:window.location.href='register.jsp' ">New? Register here.</button>
+            <!-- <a class = "herf" href="register.jsp" style="margin-top:10px">New? Register here.</a> -->
+            <br><br><br><a href="<s:url action="linkedInLogin"/>"><img id = "image1" src="images/linkedIn1.jpg" width="250" height="40" onMouseOver="MM_swapImage()" onMouseOut="MM_swapImgRestore()"/></a>
             
         </div>
         <div class="alert" style="display:none">

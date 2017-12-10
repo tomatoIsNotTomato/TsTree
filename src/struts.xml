@@ -35,10 +35,7 @@
 	        <result name="ERROR">/userLogin.jsp</result>
         </action>
         
-        <action name="testLinkedin" class="version1.testLinkedin">
-	        <result name="SUCCESS">/error.jsp</result>
-	        <result name="ERROR">/error.jsp</result>
-        </action>
+       
         <!--查询id/名字-->
         <action name="search" class="version1.SearchBasicInfo">
             <result>/basicInfor.jsp</result>
@@ -89,14 +86,16 @@
         </action>
         <!-- 获取留言列表 -->
         <action name = "msgList" class="version1.ShowMessageList">
-            <result name="SUCCESS">/send.jsp</result>
+            <result name="SUCCESS">/messageList.jsp</result>
             <result name="ERROR">/error.jsp</result>
         </action>
         <!-- 可能认识得人 -->
         <action name = "peopleMayKnow" class="version1.mayKnow">
             <result name="SUCCESS">/peopleMayKnow.jsp</result>
             <result name="ERROR">/error.jsp</result>
-            <result name="NoResult">/noResult.jsp</result>
+            <result name="NoResult" type="redirectAction">
+                getTree?ID=${ID}
+                </result>
         </action>
     </package>
 </struts>

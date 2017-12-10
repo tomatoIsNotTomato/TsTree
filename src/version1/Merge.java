@@ -15,13 +15,17 @@ public class Merge extends ActionSupport{
   private String ID1;
   private String ID2;
   private String name;
+ 
+ 
   public String getName() {
     return name;
   }
   public void setName(String name) {
     this.name = name;
   }
-
+  public static long getSerialversionuid() {
+    return serialVersionUID;
+  }
   public String getID1() {
     return ID1;
   }

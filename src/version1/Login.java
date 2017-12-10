@@ -42,7 +42,8 @@ public class Login extends ActionSupport {
     int ID = conn.loginJudge(getEmail(), getPwd());
     id = String.format("%0" + 5 + "d", ID);
     if (ID > 0) {
-      Cookie cookie = CookieCtrl.addCookie(id);
+      HttpServletRequest request = ServletActionContext.getRequest();
+      Cookie cookie = CookieCtrl.addCookie(id, request);
       HttpServletResponse response = ServletActionContext.getResponse();
       response.addCookie(cookie);
       /*HttpServletRequest request = ServletActionContext.getRequest();

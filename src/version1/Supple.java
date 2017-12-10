@@ -6,34 +6,38 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 public class Supple extends ActionSupport{
-  private String ID;
-  private String name;
+  private String firstName;
+  private String lastName;
   private String id;
   private String relation;
   private String period;
-  private String tel;
- 
-  
-  public String getID() {
-    return ID;
+  private String email;
+
+
+  public String getFirstName() {
+    return firstName;
   }
 
 
-  public void setID(String iD) {
-    ID = iD;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
 
-  public String getName() {
-    return name;
+  public String getLastName() {
+    return lastName;
   }
 
 
-  public void setName(String name) {
-    this.name = name;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
 
@@ -67,20 +71,22 @@ public class Supple extends ActionSupport{
   }
 
 
-  public String getTel() {
-    return tel;
+  public String getEmail() {
+    return email;
   }
 
 
-  public void setTel(String tel) {
-    this.tel = tel;
+  public void setEmail(String email) {
+    this.email = email;
   }
 
 
   public String execute() throws Exception{
     try {
         DBcrud conn = new DBcrud();
-        ID = ID.substring(0, ID.length()-1);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String ID = CookieCtrl.getCookie(request);//request.getSession().getAttribute("userID").toString(); 
+      
         int iD = Integer.valueOf(ID);
         int intid;
         if(id .equals("")) {
@@ -89,7 +95,7 @@ public class Supple extends ActionSupport{
         else {
           intid = Integer.valueOf(id);
         }
-        if (conn.add_t_s_info(iD, name, intid, relation, period, tel)) return "SUCCESS";
+        if (conn.add_t_s_info(iD, firstName, lastName, intid, relation, period, email)) return "SUCCESS";
         else return  "ERROR";
     }catch (Exception e) {
       return "ERROR";

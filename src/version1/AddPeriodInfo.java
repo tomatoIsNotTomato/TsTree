@@ -1,5 +1,6 @@
 package version1;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,7 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class AddPeriodInfo extends ActionSupport{
+public class AddPeriodInfo extends ActionSupport implements Serializable{
   /**
    * 
    */
@@ -69,6 +70,7 @@ public String execute() throws Exception{
     
     Boolean fail = false;
     HttpServletRequest request = ServletActionContext.getRequest();
+   // id = request.getSession().getAttribute("userId").toString();
     id = CookieCtrl.getCookie(request);
     int Id = Integer.parseInt(id); 
     SchoolInfo bInfor = new SchoolInfo("bachelor", getBpSchool(), getBpDate());

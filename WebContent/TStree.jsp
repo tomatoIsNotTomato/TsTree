@@ -14,9 +14,8 @@
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/supersized.css">
         <link rel="stylesheet" href="css/style.css">
+        <link type="text/css" href="css/index.css" rel="stylesheet">
 
-        
-           
        <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
         
         <script src="supersized.3.2.7.min.js"></script>
@@ -145,6 +144,16 @@
     path.link.student {
         stroke-dasharray: 0, 2 1;
     }
+    
+    .link {
+        fill: none;
+        stroke: #666;
+        stroke-width: 1.5px;
+    }
+
+    .link.student {
+        stroke-dasharray: 0, 2 1;
+    }
 
     .circle {
         width: "100px";
@@ -194,6 +203,19 @@
      svg{
      float:left;
      margin-top:10px;}
+     
+     i{
+     margin-top:10px;
+     margin-right:110px;
+  display:block;
+  background:#f00;
+  border-radius:50%;
+  width:5px;
+  height:5px;
+  top:0px;
+  right:0px;
+  position:absolute;
+}
         
     
     </style>
@@ -202,11 +224,11 @@
 <ul>
           <li><img src = images/tstree.jpg width="120px" style="float:left; margin-top:3px" ></li>
            <li><a href="About.jsp" style="float:right">About us</a></li>
-           <li><a href="<s:url action = "msgList"></s:url>">Msg</a></li>
+           <li><a href="<s:url action = "msgList"></s:url>" style="float:right">Message<i id="redPoint"></i></a></li>
            <li> <form action="search" method="post" class="searchBox">
                 <table>
                 <tr><td>
-                    <input type="text" name="nameOrId" placeholder="Name or ID" autocomplete="off"/>
+                    <input type="text" name="nameOrId" placeholder="Tomas Edison" autocomplete="off"/>
                 </td><td>
                 <button id="submit" type="submit">search</button></tr>
                 </table>
@@ -214,6 +236,22 @@
             </li>
         </ul>
             <h1><%=request.getAttribute("name")%>'s TsTree..</h1>
+     
+     <div id="mintbar"><a id="closebtn" href="#"><img src="images/wd02.png" /></a></div>
+
+<div id="mint" style="display:none;position:absolute;top:0;right:0px;">
+    <div class="box-nav-bj"><img style="right:0px; top:50px;" src="images/wd06.png" /></div>
+    <div class="box-nav">
+        <li><a href="#">添加此诺接待按</a></li>
+        <li><a href="#"></a></li>
+        <li><a href="#">案例展示</a></li>
+        <li><a href="#">新闻中心</a></li>
+        <li><a href="#">新闻资讯</a></li>
+        <li><a href="#">联系我们</a></li>
+    </div>
+    <img src="images/wd07.png" alt="丝带"/>
+    
+</div>
      
         <div class="page-container">
             <form action="showFullTree" method="post" class="mainSearch">
@@ -224,6 +262,27 @@
             <br>
         </div>
         
+        
+         <div class="op"><div id="supple">     <br >
+     <s:a href="suppleInfo.jsp?ID=%{#request.ID}" cssClass="herf"  >Add a Node</s:a>
+     </div>
+     
+     <br>
+     <div id="pmn">
+     <s:a action="peopleMayKnow" cssClass="herf"  id = "pmn" style="">people may know
+     </s:a>
+     </div>
+     <br >
+     <div id="merge">
+     <s:a action="merge" cssClass="herf" id = "merge" style="">Merge with My Tstree
+
+     <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
+     <s:param name="name"><s:property value="%{#request.name}"/></s:param>
+     </s:a>
+     </div>
+     </div>
+     <br>
+        
     <script>
     
     function getMsgCount(){  
@@ -231,10 +290,17 @@
                $.post("CheckUncheckedMsg.servlet",{}
             		   ,
             		   function(data,status){
-            			 
+            			   var rp = document.getElementById("redPoint");
             	   if (parseInt(data)>0){
-                       alert(data);
+                   
+                       
+                       rp.style.display="inline";
+                       
                    }
+            	   else{
+            		  
+                       rp.style.display="none";
+            	   }
             		   });
             
     }
@@ -244,6 +310,7 @@
     	
     	
         var links =<%=request.getAttribute("tree")%>;
+        var cookie = getCookie("userId");
 <%--         var nodes =<%=request.getAttribute("nodes")%>; --%>
         var nodes = <%=request.getAttribute("node")%>;
        
@@ -251,9 +318,9 @@
         var mainname = '<%=request.getAttribute("name")%>';
         var mainID = <%=request.getAttribute("ID")%>;
         
-        var img_w = 120;
-        var img_h = 120;
-        var rad = 60;
+        var img_w = 80;
+        var img_h = 80;
+        
 
 
         var width = 960,
@@ -263,7 +330,7 @@
             .nodes(nodes)
             .links(links)
             .size([width, height])
-            .linkDistance(300)
+            .linkDistance(200)
             .charge(-300)
             .on("tick", tick)
             .start();
@@ -280,23 +347,32 @@
             .attr("markerUnits","userSpaceOnUse")
             .attr("id", "resolved")
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", Math.log(15) * 20)
+            .attr("refX", Math.log(10) * 20)
             .attr("refY", 5)
             .attr("markerWidth", 12)
             .attr("markerHeight", 12)
             .attr("orient", "auto")
-            .append("svg:path")
+            .append("svg:path") 
+            //.append("line")
             .attr("d", "M0,-5L10,0L0,5");
 
         var path = svg.append("svg:g").selectAll("path")
             .data(force.links())
             .enter().append("svg:path")
             .attr("marker-end", "url(#resolved)" );
-        ;
+        ; 
         
-        path.attr("id", function(d, i){return "link"+i;})
+       /*  var link = svg.selectAll(".link")  
+        .data(force.links())  
+        .enter().append("line")  
+        .attr("class", "link");   */
+       /*  
+        link.attr("id", function(d,i){return "link"+i;})
+        .attr("class", function(d) { console.log(d);return "link "+d.relation; });
+         */
+         path.attr("id", function(d, i){return "link"+i;})
             .attr("class", function(d) { console.log(d);return "link "+d.relation; });
-
+ 
         var node = svg.selectAll(".node")
             .data(force.nodes())
             .enter().append("g")
@@ -311,7 +387,7 @@
         //.attr("class","linetext")
         .attr({  'class':'edgelabel',
                        'id':function(d,i){return 'edgepath'+i;},
-                       'dx':120,
+                       'dx':60,
                        'dy':0
                        });
 
@@ -324,13 +400,14 @@
         var timer = null;
         
         path.append("text");
+        //link.append("text");
         
 
 
         //设置圆点的半径，圆点的度越大weight属性值越大，可以对其做一点数学变换                               
         function radius(d) {
             
-            return Math.log(d.wei + 5) * 20;
+            return Math.log(d.wei) * 20;
         }
 
         
@@ -353,10 +430,12 @@
                     .attr("id", "catpattern" + i)
                     .attr("height", 1)
                     .attr("width", 1);
-
+                
+                var rad = radius(d);
 
                 catpattern.append("image")
-                    .attr("x", -(img_w / 2 - rad))
+                    .attr("preserveAspectRatio","none meet")
+                    .attr("x",-(img_w / 2 - rad))
                     .attr("y", -(img_h / 2 - rad))
                     .attr("width", img_w)
                     .attr("height", img_h)
@@ -378,6 +457,7 @@
             .on("click", function(d){
             	clearTimeout(timer);
                 timer = setTimeout(function() { 
+                	if (mainID==cookie){
                 	 for (var i = 0; i < links.length; i++) {
                 	        if ((links[i].target.name==mainname && links[i].source.name==d.name)||(links[i].target.name==d.name && links[i].source.name==mainname)){
                 	        	window.location.href="modify.jsp?sourceID="+<%=request.getAttribute("ID")%>+"&ID="+d.ID+"&name="+d.name+"&email="+d.email+"&relation="+d.relation+"&period="+d.period;
@@ -385,7 +465,7 @@
                 	        }
                 	    };
                 	
-                }, 300);
+                	}}, 300);
             	
             }) ;
 
@@ -405,8 +485,14 @@
                     d.source.y + "A" + dr + "," +
                     dr + " 0 0,0 " + d.target.x + "," +
                     d.target.y;
-            });
-
+            }); 
+           /*  
+            link  
+            .attr("x1", function(d) { return d.source.x; })  
+            .attr("y1", function(d) { return d.source.y; })  
+            .attr("x2", function(d) { return d.target.x; })  
+            .attr("y2", function(d) { return d.target.y; });  
+ */
             //更新结点图片和文字
             node.attr("transform", function(d) {
                     return "translate(" + d.x + "," + d.y + ")";
@@ -449,23 +535,56 @@
                 });
                 tooltip.style("opacity",0.0);  
         }
+        
+        $(document).ready(function(){
+            function anim(duration){
+                $('#mint').animate(
+                    {height: 'toggle'},
+                    {duration: duration}
+                );
+            }
+            $('#closebtn').click(function() {
+                $('#mintbar').slideUp();
+                anim(600);
+            });
+           
+            $('#mint').click(function() {
+                anim(600);
+                $('#mintbar').slideDown('slow');
+            });
+            
+        });
+        
+        function getCookie(name) 
+        { 
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+         
+            if(arr=document.cookie.match(reg))
+         
+                return unescape(arr[2]); 
+            else 
+                return null; 
+        } 
+        
+        criShow();
+        function criShow(){
+        	var sp = document.getElementById("supple");
+            var pm = document.getElementById("pmn");
+            var mg = document.getElementById("merge");
+        	if (cookie== mainID){
+        		sp.style.display="inline";
+        		pm.style.display="inline";
+        		mg.style.display="none";
+        	}
+        	else{
+        		sp.style.display="none";
+                pm.style.display="none";
+                mg.style.display="inline";
+        	}
+        }
         </script>
         
-        <div class="op">
-     <br>
-     <s:a href="suppleInfo.jsp?ID=%{#request.ID}" cssClass="herf">Add a Node</s:a>
-     
-     <br>
-     <s:a action="peopleMayKnow" cssClass="herf">people may know
-     </s:a>
-     <br>
-     <s:a action="merge" cssClass="herf">Merge with My Tstree
-
-     <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
-     <s:param name="name"><s:property value="%{#request.name}"/></s:param>
-     </s:a>
-     </div>
-     <br>
+       
      
 </body>
 </html>

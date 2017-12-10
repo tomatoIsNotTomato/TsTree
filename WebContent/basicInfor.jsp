@@ -112,6 +112,53 @@
         cellpadding:0
     }
     
+    
+.basic-grey {
+    margin-top: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+    
+    padding: 25px 15px 25px 10px;
+    font: 12px Georgia, "Times New Roman", Times, serif;
+    color: #888;
+    text-shadow: 1px 1px 1px #FFF;
+    border: 1px solid #E4E4E4;
+}
+
+.basic-grey h4 {
+    
+    font-size: 25px;
+    padding: 0px 0px 10px 40px;
+    display: block;
+    border-bottom: 1px solid #E4E4E4;
+    margin: -10px -15px 30px -10px;;
+    color: #888;
+}
+
+.basic-grey h4>span {
+    display: block;
+    font-size: 11px;
+}
+
+
+
+.basic-grey button {
+    background: #E27575;
+    border: none;
+    padding: 10px 25px 10px 25px;
+    color: #FFF;
+    box-shadow: 1px 1px 5px #B6B6B6;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px #9E3F3F;
+    cursor: pointer;
+    width:80;
+}
+
+.basic-grey button:hover {
+    background: #CF7A7A
+}
+    
     </style>
     
     </head>
@@ -134,23 +181,20 @@
          <table><tr><td>
     <s:iterator id = "bs" value="%{#request.BasicInfo}">
        
-        <br><table class="bi" >
-            <tr><td>ID: </td><td><s:property value="#bs.get(\"ID\")"></s:property></td></tr>
-            <tr><td>Name: </td><td><s:property value="#bs.get(\"name\")"></s:property></td></tr>
-            <tr><td>Sex: </td><td><s:property value="#bs.get(\"sex\")"></s:property></td></tr>
-            <tr><td>Birth Date: </td><td><s:property value="#bs.get(\"birthDay\")"/></td></tr>
-            <tr><td>Job: </td><td><s:property value="#bs.get(\"job\")"></s:property></td></tr>
-            <tr><td>PhoneNumber </td><td><s:property value="#bs.get(\"phoneNumber\")"></s:property></td></tr>
-            <tr><td><a href="<s:property value="#bs.get(\"linkedIn\")"></s:property>">Goto LinkedIn</a></td></tr>
-       </table>
-    </s:iterator>
-    <br></td></tr><tr><td>
-    <s:a action="getTree" class="herf">Show TsTree
+        <br><div class="basic-grey" >
+            <h4>ID: <s:property value="#bs.get(\"id\")"></s:property>
+            <br>firstName: <s:property value="#bs.get(\"firstName\")"></s:property>
+            <br>lastName: <s:property value="#bs.get(\"lastName\")"></s:property>
+            <br>headline: <s:property value="#bs.get(\"headline\")"/>>
+            <br>location: <s:property value="#bs.get(\"location\")"></s:property>
+            <br>industry: <s:property value="#bs.get(\"industry\")"></s:property>
+            <br>email: <s:property value="#bs.get(\"emailAddress\")"></s:property>
+            <br><br> <button type="button" onclick="javascript:window.location.href='${bs.publicProfileUrl}'"/>Goto LinkedIn</button>
+            <button type="button" onclick="javascript:window.location.href='getTree?ID=<s:property value="%{#request.ID}"/>'">Show TsTree</button>
+            </h4>
+       </div>
 
-    <s:param name="ID"><s:property value="%{#request.ID}"/></s:param>
-
- </s:a>
- </td></tr></table>
+ </s:iterator>
    
 </body>
 </html>
