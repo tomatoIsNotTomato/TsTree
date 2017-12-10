@@ -13,6 +13,16 @@
         <servlet-name>CheckUncheckedMsg</servlet-name>
         <url-pattern>/CheckUncheckedMsg.servlet</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Active</servlet-name>
+        <servlet-class>version1.Active</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Active</servlet-name>
+        <url-pattern>/Active.servlet</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>struts2</filter-name>
         <filter-class>

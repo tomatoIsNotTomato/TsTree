@@ -53,7 +53,7 @@
    .searchBox input{
         float:right;
         margin-top:7px;
-        width:200px;
+        width:100px;
         height:25px;
         font-size:15px;
         border-radius: 6px;
@@ -167,14 +167,15 @@
           <li><img src = images/tstree.jpg width="120px" style="float:left; margin-top:3px" ></li>
           <li><a href="About.jsp" style="float:right">About us</a></li>
            
-          <li> <form action="search" method="post" class="searchBox">
+          <li> <form action="search" method="post" class="searchBox" >
                 <table>
-                <tr><td>
-                    <input type="text" name="nameOrId" placeholder="Name or ID" autocomplete="off"/>
+                <tr><td style="width:200">
+                    <input type="text" name="lastName"  style="float:left" placeholder="姓" autocomplete="off"/></td><td> <input type="text" name="firstName"  style="float:left" placeholder="名" autocomplete="off" />
                 </td><td>
                 <button id="submit" type="submit">search</button></tr>
                 </table>
             </form>
+           
             </li>
         </ul>
             <h1>Modify...</h1><br>

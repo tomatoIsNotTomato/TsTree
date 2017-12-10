@@ -6,13 +6,14 @@
     <package name="version1" extends="struts-default">
         <!--注册并添加基本信息-->
         <action name="register" class="version1.Register">
-            <result name="SUCCESS">/addPeriodInfor.jsp</result>
+            <result name="SUCCESS">/waitingActive.jsp</result>
             <result name="ERROR">/error.jsp</result>
+            <result name="EMAIL">/register.jsp?email="red"</result>
         </action>
         <!--添加上学的时段信息-->
         <action name="addPeriod" class="version1.AddPeriodInfo">
             <result name="SUCCESS" type="redirectAction">
-                peopleMayKnow?ID=${id}
+                getTree?ID=${id}
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action>
@@ -21,7 +22,8 @@
             <result name="SUCCESS" type="redirectAction">
                 getTree?ID=${id}
                 </result>
-            <result name="ERROR">/userLogin.jsp</result>
+            <result name="ERROR">/userLogin.jsp?error="1"</result>
+            <result name="VAD">/validation.jsp</result>
         </action>
         <!--使用linkedin登陆-->
         <action name="linkedInLogin" class="version1.toLogin" method="redirect">
@@ -61,21 +63,21 @@
         <!--合并两个人的树-->
         <action name="merge" class="version1.Merge">
             <result name="SUCCESS" type="redirectAction">
-                getTree?ID=${ID1}
+                getTree
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action> 
         <!--删除师承树上的结点-->
         <action name="delete" class="version1.de_t_s">
             <result name="SUCCESS" type="redirectAction">
-                getTree?ID=${ID}
+                getTree
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action> 
         <!--更新师承树的结点-->
          <action name="update" class="version1.update_t_s">
             <result name="SUCCESS" type="redirectAction">
-                getTree?ID=${ID}
+                getTree
                 </result>
             <result name="ERROR">/error.jsp</result>
         </action> 
@@ -94,7 +96,7 @@
             <result name="SUCCESS">/peopleMayKnow.jsp</result>
             <result name="ERROR">/error.jsp</result>
             <result name="NoResult" type="redirectAction">
-                getTree?ID=${ID}
+                getTree
                 </result>
         </action>
     </package>

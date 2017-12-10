@@ -13,56 +13,71 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class SearchBasicInfo extends ActionSupport{
   private String id;
-  private String NameOrId;
+  private String firstName;
+  private String lastName;
 
-  public String getNameOrId() {
-    return NameOrId;
+ 
+  public String getId() {
+    return id;
   }
 
-  public void setNameOrId(String nameOrId) {
-    NameOrId = nameOrId;
+
+  public void setId(String id) {
+    this.id = id;
   }
+
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+
+  public String getLastName() {
+    return lastName;
+  }
+
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+
   public String execute() throws Exception{
     DBcrud conn = new DBcrud();
+    ArrayList<Map<String,Object>> lst = new ArrayList<>();
     HttpServletRequest request = ServletActionContext.getRequest();
-    Pattern pattern = Pattern.compile("[0-9]*");
-    Matcher isNum = pattern.matcher(NameOrId);
-    if( isNum.matches() && NameOrId.length()==5 ){
-      ArrayList<Map<String,Object>> lst = conn.getBasicInfo(Integer.valueOf(NameOrId));
-      for(Map<String,Object> m :lst) {
-        for (String key : m.keySet()) {
-          if (m.get(key)==null || m.toString().length()==0) {
-            m.remove(key);
-            m.put(key,"To be upplemented");
-          }
-          System.out.println("key= "+ key + " and value= " + m.get(key));
-        }
-      }
-      if (lst.size()!=0) {
-        request.setAttribute("BasicInfo", lst);
-        request.setAttribute("ID", lst.get(0).get("id").toString());
-        return SUCCESS;
-      }
-      else return "ERROR";
+    if (firstName.equals("")) {
+      lst = conn.getBasicInfo(lastName, 1);
+    }
+    else if (lastName.equals("")) {
+      lst = conn.getBasicInfo(firstName, 2);
     }
     else {
-      String [] name = NameOrId.split(" ");
-      ArrayList<Map<String,Object>> lst = conn.getBasicInfo(name[0], name[1]);
-      for(Map<String,Object> m :lst) {
-        for (String key : m.keySet()) {
-          if (m.get(key)==null || m.toString().length()==0) {
-            m.remove(key);
-            m.put(key,"To be upplemented");
-          }
-          System.out.println("key= "+ key + " and value= " + m.get(key));
-        }
-      }
-      if (lst.size()!=0) {
-        request.setAttribute("BasicInfo", lst);
-        request.setAttribute("ID", lst.get(0).get("id").toString());
-        return SUCCESS;
-      }
-      else return "ERROR";
+      lst = conn.getBasicInfo(lastName, firstName);
+    }
+     if (lst!=null || lst.size()!=0) {
+       for(Map<String,Object> m :lst) {
+         for (String key : m.keySet()) {
+           if (m.get(key)==null || m.toString().length()==0) {
+            
+             m.put(key,"To be upplemented");
+           }
+           System.out.println("key= "+ key + " and value= " + m.get(key));
+         }
+       }
+       if (lst.size()!=0) {
+         request.setAttribute("BasicInfo", lst);
+         request.setAttribute("ID", lst.get(0).get("id").toString());
+         return SUCCESS;
+       }
+     }
+     
+     return "ERROR";
     }
   }
-}
+

@@ -53,7 +53,7 @@
    .searchBox input{
         float:right;
         margin-top:7px;
-        width:200px;
+        width:100px;
         height:25px;
         font-size:15px;
         border-radius: 6px;
@@ -167,10 +167,10 @@
           <li><img src = images/tstree.jpg width="120px" style="float:left; margin-top:3px" ></li>
           <li><a href="About.jsp" style="float:right">About us</a></li>
            
-          <li> <form action="search" method="post" class="searchBox">
+          <li> <form action="search" method="post" class="searchBox" >
                 <table>
-                <tr><td>
-                    <input type="text" name="nameOrId" placeholder="Name or ID" autocomplete="off"/>
+                <tr><td style="width:200">
+                    <input type="text" name="lastName"  style="float:left" placeholder="姓" autocomplete="off"/></td><td> <input type="text" name="firstName"  style="float:left" placeholder="名" autocomplete="off" />
                 </td><td>
                 <button id="submit" type="submit">search</button></tr>
                 </table>
@@ -185,11 +185,11 @@
             <h4>ID: <s:property value="#bs.get(\"id\")"></s:property>
             <br>firstName: <s:property value="#bs.get(\"firstName\")"></s:property>
             <br>lastName: <s:property value="#bs.get(\"lastName\")"></s:property>
-            <br>headline: <s:property value="#bs.get(\"headline\")"/>>
+            <br>headline: <s:property value="#bs.get(\"headline\")"/>
             <br>location: <s:property value="#bs.get(\"location\")"></s:property>
             <br>industry: <s:property value="#bs.get(\"industry\")"></s:property>
             <br>email: <s:property value="#bs.get(\"emailAddress\")"></s:property>
-            <br><br> <button type="button" onclick="javascript:window.location.href='${bs.publicProfileUrl}'"/>Goto LinkedIn</button>
+            <br><br> <button id= "lk" type="button" onclick="javascript:window.location.href='${bs.publicProfileUrl}'"/>Goto LinkedIn</button>
             <button type="button" onclick="javascript:window.location.href='getTree?ID=<s:property value="%{#request.ID}"/>'">Show TsTree</button>
             </h4>
        </div>

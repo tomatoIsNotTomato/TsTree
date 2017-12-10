@@ -33,9 +33,10 @@ public class LoginFilter extends HttpServlet implements Filter, Serializable{
         String contextPath=request.getContextPath();    
         if(url.equals("")) url+="/";    
 
-        if((url.startsWith("/"))&&!((url.startsWith("/userLogin"))||(url.startsWith("/login"))||(url.startsWith("/css"))||(url.startsWith("/register")) || (url.startsWith("/supersized")) || (url.startsWith("/img"))|| (url.startsWith("/images"))|| (url.contains("inked")))){//若访问后台资源 过滤到login    
+        if((url.startsWith("/"))&&!((url.startsWith("/userLogin"))||(url.startsWith("/login"))|| (url.startsWith("/Active")) ||(url.startsWith("/css"))||(url.startsWith("/register")) || (url.startsWith("/supersized")) || (url.startsWith("/img"))|| (url.startsWith("/images"))|| (url.contains("inked")))){//若访问后台资源 过滤到login    
           //String id = request.getSession().getAttribute("userId").toString();
           String id = CookieCtrl.getCookie(request);
+           
           if(id==null)
           {
                   response.sendRedirect(contextPath+"/userLogin.jsp");   

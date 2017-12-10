@@ -40,18 +40,24 @@ public class Login extends ActionSupport {
     DBcrud conn = new DBcrud();
     System.out.println(getEmail()+getPwd());
     int ID = conn.loginJudge(getEmail(), getPwd());
-    id = String.format("%0" + 5 + "d", ID);
-    if (ID > 0) {
-      HttpServletRequest request = ServletActionContext.getRequest();
-      Cookie cookie = CookieCtrl.addCookie(id, request);
-      HttpServletResponse response = ServletActionContext.getResponse();
-      response.addCookie(cookie);
-      /*HttpServletRequest request = ServletActionContext.getRequest();
-      request.getSession().setAttribute("userEmail", getEmail());*/
-      return "SUCCESS";
+    if (ID>0) {
+      int re = conn.checkActive(ID);
+      id = String.format("%0" + 5 + "d", ID);
+      if (re == 1) {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        Cookie cookie = CookieCtrl.addCookie(id, request);
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.addCookie(cookie);
+        /*HttpServletRequest request = ServletActionContext.getRequest();
+        request.getSession().setAttribute("userEmail", getEmail());*/
+        return "SUCCESS";
+      }
+      else if (re == 0){
+        return "VAD";
+      }
     }
-    else if(ID == 0) return "ERROR";
-    else return "ERROR";
+   
+    return "ERROR";
   }
   
 }

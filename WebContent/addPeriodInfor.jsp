@@ -6,7 +6,7 @@
 <head>
 
 <meta charset="utf-8">
-<title>Register</title>
+<title>Add period Info</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -92,7 +92,7 @@
             }, 1000)
         });
         $("#next2").live('click', function() {
-            $(".form2").hide({
+            $(".form3").hide({
                 "left" : "-40%"
             }, 1000)
             $(".form4").show({

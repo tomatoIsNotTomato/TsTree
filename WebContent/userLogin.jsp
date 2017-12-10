@@ -53,10 +53,10 @@ ul {
             <h1>login</h1>
             <form action="login" method="post">
                 <div>
-                    <input type="text" name="email" placeholder="UserID" autocomplete="off"/>
+                    <input type="text" id = "email" name="email" placeholder="Email" autocomplete="off"/>
                 </div>
                 <div>
-                    <input type="password" name="pwd"  placeholder="Password" oncontextmenu="return false" onpaste="return false" />
+                    <input type="password" id = "pwd" name="pwd"  placeholder="Password" oncontextmenu="return false" onpaste="return false" />
                 </div>
                 <button id="submit" type="submit">Sign in</button>
             </form>
@@ -81,12 +81,18 @@ ul {
         $(".btn").click(function(){
             is_hide();
         })
-        var u = $("input[name=id]");
+        var u = $("input[name=email]");
         var p = $("input[name=pwd]");
+        var reg =  /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
         $("#submit").live('click',function(){
             if(u.val() == '' || p.val() =='')
             {
-                $("#ts").html("ID或密码不能为空~");
+                $("#ts").html("邮箱或密码不能为空~");
+                is_show();
+                return false;
+            }
+            else if (!reg.exec(u.val())){ //正则验证不通过，格式不对
+            	$("#ts").html("请输入合法邮箱");
                 is_show();
                 return false;
             }
@@ -105,6 +111,18 @@ ul {
         function MM_swapImgRestore(){
             document.getElementById("image1").style.backgroundImage="url(images/linkedIn1.jpg)";
             }
+        
+        function GetQueryString(name)
+        {
+             var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+             var r = window.location.search.substr(1).match(reg);
+             if(r!=null)return  unescape(r[2]); return null;
+        }
+         
+        
+        if (GetQueryString("error")=="1"){
+            alert(GetQueryString("用户名或密码错误"));
+        }
         </script>
     </body>
 

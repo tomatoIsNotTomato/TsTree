@@ -54,14 +54,15 @@
    }
    
    .searchBox input{
-        float:right;
+        
         margin-top:7px;
-        width:200px;
+        width:100px;
         height:25px;
         font-size:15px;
         border-radius: 6px;
 	    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
 	    border: 1px solid rgba(255,255,255,.15);
+	    float:left;
         
    }
    .searchBox button{
@@ -225,10 +226,10 @@
           <li><img src = images/tstree.jpg width="120px" style="float:left; margin-top:3px" ></li>
            <li><a href="About.jsp" style="float:right">About us</a></li>
            <li><a href="<s:url action = "msgList"></s:url>" style="float:right">Message<i id="redPoint"></i></a></li>
-           <li> <form action="search" method="post" class="searchBox">
+           <li> <form action="search" method="post" class="searchBox" >
                 <table>
-                <tr><td>
-                    <input type="text" name="nameOrId" placeholder="Tomas Edison" autocomplete="off"/>
+                <tr><td style="width:200">
+                    <input type="text" name="lastName"  style="float:left" placeholder="姓" autocomplete="off"/></td><td> <input type="text" name="firstName"  style="float:left" placeholder="名" autocomplete="off" />
                 </td><td>
                 <button id="submit" type="submit">search</button></tr>
                 </table>
@@ -236,23 +237,7 @@
             </li>
         </ul>
             <h1><%=request.getAttribute("name")%>'s TsTree..</h1>
-     
-     <div id="mintbar"><a id="closebtn" href="#"><img src="images/wd02.png" /></a></div>
 
-<div id="mint" style="display:none;position:absolute;top:0;right:0px;">
-    <div class="box-nav-bj"><img style="right:0px; top:50px;" src="images/wd06.png" /></div>
-    <div class="box-nav">
-        <li><a href="#">添加此诺接待按</a></li>
-        <li><a href="#"></a></li>
-        <li><a href="#">案例展示</a></li>
-        <li><a href="#">新闻中心</a></li>
-        <li><a href="#">新闻资讯</a></li>
-        <li><a href="#">联系我们</a></li>
-    </div>
-    <img src="images/wd07.png" alt="丝带"/>
-    
-</div>
-     
         <div class="page-container">
             <form action="showFullTree" method="post" class="mainSearch">
                  <input type="hidden" name="ID" value=<%=request.getAttribute("ID") %> >
@@ -262,26 +247,8 @@
             <br>
         </div>
         
-        
-         <div class="op"><div id="supple">     <br >
-     <s:a href="suppleInfo.jsp?ID=%{#request.ID}" cssClass="herf"  >Add a Node</s:a>
-     </div>
-     
-     <br>
-     <div id="pmn">
-     <s:a action="peopleMayKnow" cssClass="herf"  id = "pmn" style="">people may know
-     </s:a>
-     </div>
-     <br >
-     <div id="merge">
-     <s:a action="merge" cssClass="herf" id = "merge" style="">Merge with My Tstree
-
-     <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
-     <s:param name="name"><s:property value="%{#request.name}"/></s:param>
-     </s:a>
-     </div>
-     </div>
-     <br>
+        <br><br><br>
+         
         
     <script>
     
@@ -310,13 +277,13 @@
     	
     	
         var links =<%=request.getAttribute("tree")%>;
-        var cookie = getCookie("userId");
+        var cookie = String(getCookie("userId"));
 <%--         var nodes =<%=request.getAttribute("nodes")%>; --%>
         var nodes = <%=request.getAttribute("node")%>;
        
         console.log(nodes); 
         var mainname = '<%=request.getAttribute("name")%>';
-        var mainID = <%=request.getAttribute("ID")%>;
+        var mainID = '<%=request.getAttribute("ID")%>';
         
         var img_w = 80;
         var img_h = 80;
@@ -518,6 +485,7 @@
                 		return "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>ID:"+d.ID+"</div>";
                 	}
                 	else{
+                		if (d.ID=="-0001") return  "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>Email:"+d.email+"<br/>relation:my "+d.relation+"</div>";
                 		return "<div class=\"title\">information:</div><div class=\"detail-info\">Name:"+d.name+"<br/>ID:"+d.ID+"<br/>Email:"+d.email+"<br/>relation:my "+d.relation+"</div>";
                 	}
                 })
@@ -566,25 +534,63 @@
                 return null; 
         } 
         
-        criShow();
-        function criShow(){
-        	var sp = document.getElementById("supple");
-            var pm = document.getElementById("pmn");
-            var mg = document.getElementById("merge");
-        	if (cookie== mainID){
-        		sp.style.display="inline";
-        		pm.style.display="inline";
-        		mg.style.display="none";
-        	}
-        	else{
-        		sp.style.display="none";
-                pm.style.display="none";
-                mg.style.display="inline";
-        	}
-        }
+        
         </script>
         
-       
+       <div class="op">     <br><div  id="supple" >
+     <s:a href="suppleInfo.jsp?ID=%{#request.ID}" cssClass="herf"  >Add a Node</s:a>
+     </div>
+     
+     <br><br>
+     <div id="pmn">
+     <s:a action="peopleMayKnow" cssClass="herf"  id = "pmn" style="">people may know
+     </s:a>
+     </div>
+     <br>
+     <div id="merge" >
+     <s:a action="merge" cssClass="herf" id = "merge" style="">Merge with My Tstree
+
+     <s:param name="ID2"><s:property value="%{#request.ID}"/></s:param>
+     <s:param name="name"><s:property value="%{#request.name}"/></s:param>
+     </s:a>
+     </div>
+     
+     <div id="msg" >
+     <br><br>
+     <s:a href="message.jsp?id=%{#request.ID}&name=%{#request.name}" cssClass="herf" id = "merge" style="">Leave a message
+
+ 
+     </s:a>
+     </div>
+     
+     </div>
+     <br>
+     
+     <script>
+     var cookie = String(getCookie("userId"));
+     
+             var mainID = '<%=request.getAttribute("ID")%>';
+     criShow();
+     function criShow(){
+         var sp = document.getElementById("supple");
+         var pm = document.getElementById("pmn");
+         var mg = document.getElementById("merge");
+         var ms = document.getElementById("msg");
+         if (cookie== mainID){
+             sp.style.display="inline";
+             pm.style.display="inline";
+             mg.style.display="none";
+             ms.style.display="none";
+             
+         }
+         else{
+             sp.style.display="none";
+             pm.style.display="none";
+             mg.style.display="inline";
+             mg.style.display="inline";
+         }
+     }
+     </script>
      
 </body>
 </html>

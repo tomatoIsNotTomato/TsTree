@@ -1,5 +1,8 @@
 package version1;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +16,13 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DBcrud {
   private String jdbcDriver = "com.mysql.jdbc.Driver";
-  /*private String dbusername = "root";
+ /* private String dbusername = "root";
   private String dbpassword = "2218234907";
   private String dbUrl = "jdbc:mysql://localhost:3306/tree?useSSL=false&useUnicode=true&characterEncoding=utf-8";
 
   */
   
-  String dbusername = System.getenv("ACCESSKEY");
+ String dbusername = System.getenv("ACCESSKEY");
   String dbpassword = System.getenv("SECRETKEY");
   //System.getenv("MYSQL_HOST_S"); 为从库，只读
   String dbUrl = String.format("jdbc:mysql://%s:%s/%s", System.getenv("MYSQL_HOST"), System.getenv("MYSQL_PORT"), System.getenv("MYSQL_DB"));
@@ -272,6 +275,34 @@ public class DBcrud {
       return null;
     }
   }
+  
+  public ArrayList<Map<String, Object>> getBasicInfo(String name, int i) throws SQLException {
+    ArrayList<Map<String, Object>> lst = new ArrayList<>();
+    Connection connect = connectDB();
+    if (connect == null)
+      return null;
+    String sqlStatement1 = "select * from  user where lastName = ? ";
+    String sqlStatement2 = "select * from  user where firstName = ? ";
+    PreparedStatement ps;
+    try {
+      if (i ==1 ) {
+        ps = (PreparedStatement) connect.prepareStatement(sqlStatement1);
+      }
+      else {
+        ps = (PreparedStatement) connect.prepareStatement(sqlStatement2);
+      }
+      ps.setString(1, name);
+      ResultSet rs = ps.executeQuery();
+      lst = extractInfo(rs);
+      connect.close();
+      return lst;
+    } catch (Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return null;
+    }
+  }
+  
 
   public HashSet<NameIdPair> queryPeriodInfo(int ID, String period, String relationShip) throws SQLException {
     HashSet<NameIdPair> lst = new HashSet<>();
@@ -330,7 +361,7 @@ public class DBcrud {
   }
 
   public String getPicUrl(int ID) throws SQLException {
-    String defaultPic = "http://localhost:8080/Ttree/userImage/default.jpg";
+    String defaultPic = "http://tomato.applinzi.com/userImage/default.jpg";
     Connection connect = connectDB();
     if (connect == null || ID == -1) {
       return defaultPic;
@@ -522,7 +553,21 @@ public class DBcrud {
     }
   }
 
-  private ArrayList<Map<String, String>> extractMsgInfo(ResultSet rs) {
+  public static String BlobToString(Blob blob) throws SQLException, IOException {
+
+    String reString = "";
+    InputStream is =  blob.getBinaryStream();
+
+    ByteArrayInputStream bais = (ByteArrayInputStream)is;
+    byte[] byte_data = new byte[bais.available()]; //bais.available()返回此输入流的字节数
+    bais.read(byte_data, 0,byte_data.length);//将输入流中的内容读到指定的数组
+    reString = new String(byte_data,"utf-8"); //再转为String，并使用指定的编码方式
+    is.close();
+
+    return reString;
+}
+  
+  private ArrayList<Map<String, String>> extractMsgInfo(ResultSet rs) throws IOException {
     ArrayList<Map<String, String>> lst = new ArrayList<>();
     ResultSetMetaData md;
     try {
@@ -533,7 +578,7 @@ public class DBcrud {
         for (int i = 1; i <= column; i++) {
           if (i == 4) {
             rowData.put(md.getColumnName(i),
-                new String(rs.getBlob(i).getBytes((long) 1, (int) rs.getBlob(i).length())));
+                BlobToString(rs.getBlob(i)));
           }
           rowData.put(md.getColumnName(i), rs.getObject(i).toString());
         }
@@ -759,8 +804,8 @@ public class DBcrud {
             continue;
           }
           Map<String, String> map = new HashMap<>();
-          map.put("name", rs.getString(2) + " " + rs.getString(1));
-          
+          map.put("lastName", rs.getString(2));
+          map.put("firstName", rs.getString(1));
           map.put("id", String.format("%0" + 5 + "d", Integer.parseInt(idlst.get(j).toString()) ));
           map.put("pictureUrl", rs.getString(3));
           map.put("relation", relation.get(j));
@@ -783,5 +828,84 @@ public class DBcrud {
       }
     }
     return pmn;
+  }
+  
+  public int active(String uuid) throws SQLException {
+    Connection connect = connectDB();
+    if (connect == null) {
+      return 0;
+    }
+    int id = 0;
+    String sqlStatement0 = "select id from user where uuid = (?)";
+    String sqlStatement = "update user set email_verified=1, uuid = null where uuid = (?)";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement0);
+      ps.setString(1, uuid);
+      ResultSet rs = ps.executeQuery();
+      if (rs.next()) {
+        id = rs.getInt(1);
+      }
+      
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setString(1, uuid);
+      ps.executeUpdate();
+      connect.close();
+      return id;
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return id;
+    }
+  }
+  
+  public Boolean updateUUid(String email, String uuid) throws SQLException {
+    Connection connect = connectDB();
+    String sqlStatement = "update user set uuid = (?) where emailAddress = (?)";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setString(1, uuid);
+      ps.setString(2, email);
+      ps.executeUpdate();
+      connect.close();
+      return true;  
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return false;
+    }
+  }
+  
+  public int checkActive(int id) throws SQLException{
+    Connection connect = connectDB();
+    String sqlStatement = "select email_verified from user where id=?";
+    PreparedStatement ps;
+    try {
+      ps = (PreparedStatement) connect.prepareStatement(sqlStatement);
+      ps.setInt(1, id);
+      ResultSet rs = ps.executeQuery();
+      if (rs.next()) {
+        if (rs.getInt(1)==1) {
+          connect.close();
+          return 1;
+        }
+          else {
+            connect.close();
+            return 0;
+          }  
+        }
+        connect.close();
+        return 1;
+      }
+      
+    
+    catch(Exception e) {
+      e.printStackTrace();
+      connect.close();
+      return -1;
+    }
   }
 }

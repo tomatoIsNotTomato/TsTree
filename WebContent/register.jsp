@@ -161,6 +161,8 @@ ul {
 		})
 		var u = $("input[name=pwd]");
 		var p = $("input[name=pwd1]");
+		var r = $("input[name=email]");
+		var reg =  /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 		$("#next1").live('click', function() {
 			if (u.val() == '' || p.val() == '') {
 				$("#ts").html("密码不能为空~");
@@ -171,6 +173,12 @@ ul {
 					$("#ts").html("两次输入密码不一致");
 					is_show();
 					return false;}
+				else if(!reg.exec(r.val())){ //正则验证不通过，格式不对
+			                $("#ts").html("请输入合法邮箱");
+			                is_show();
+			                return false;
+			            }
+				
 					else {
 						$(".registerForm").hide({
 			                "right" : "500px"
@@ -179,8 +187,10 @@ ul {
 			                "right" : "500px"
 			            }, 600)
 					}
+			}
 				}
-			});
+			
+			);
 		
 		var q = $("input[name=location]");
 		$("#submit").live('click', function() {
@@ -286,6 +296,19 @@ ul {
 		       city.options[ii].text = cities[pv][i];
 		       city.options[ii].value = values[pv][i];
 		       city.options[ii].style = "color:#333" ;
+		    }
+		    
+
+		    function GetQueryString(name)
+		    {
+		         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		         var r = window.location.search.substr(1).match(reg);
+		         if(r!=null)return  unescape(r[2]); return null;
+		    }
+		     
+		    
+		    if (GetQueryString("email")=="red"){
+		    	alert(GetQueryString("该邮箱已经被注册"));
 		    }
 
 		}

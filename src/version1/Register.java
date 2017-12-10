@@ -6,15 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Date;
 
-import javax.servlet.http.Cookie;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
+
 
 public class Register extends ActionSupport{
   /**
@@ -128,13 +128,23 @@ public class Register extends ActionSupport{
     this.profile_url = profile_url;
   }
 
+  private String generateUUId() {
+    return UUID.randomUUID().toString().replaceAll("-", "");
+  }
+  
   public String execute() throws Exception{
-    
-   
+    DBcrud conn = new DBcrud();
+    int ext = conn.checkExist(email, "aa");
+    if (ext>=0) {
+      return "EMAIL";
+    }
+    else if (ext==-2) {
+      return "ERROR";
+    };
     
     HttpServletRequest request = ServletActionContext.getRequest();
-    String projectPath = request.getSession().getServletContext().getRealPath("/");
-    projectPath = projectPath.replace('\\', '/');
+    String projectPath = "http://tomato.applinzi.com/";/*request.getSession().getServletContext().getRealPath("/");
+    projectPath = projectPath.replace('\\', '/');*/
       String imgPath = projectPath+"userImage/"; 
       System.out.println(imgPath);
       String picture_url = imgPath+getEmail().replace('@', '_').replace('.', '_')+".jpg";
@@ -166,21 +176,30 @@ public class Register extends ActionSupport{
       
     location = city+", "+province+", "+country;
     CampusUser user = new CampusUser(getFirstName(), getLastName(), getHeadline(), location, getIndustry(), getEmail(), picture_url, getProfile_url());
-    DBcrud conn = new DBcrud();
+   
     int id = conn.saveCode(getEmail(), getPwd(), "pwd");
     if (id == -1) return "ERROR";
     user.setID(String.valueOf(id));
     setID(String.valueOf(id));
     ID = user.userID();
-   
-    Cookie cookie = CookieCtrl.addCookie(String.format("%0" + 5 + "d", id), request);
-    HttpServletResponse response = ServletActionContext.getResponse();
-    response.addCookie(cookie);
-   /* request.getSession().setAttribute("userID", ID);*/
+    String uuid = generateUUId();
     if (conn.insertBasicInfo(user)) {
-      return "SUCCESS";
+      if (conn.updateUUid(email, uuid)){
+        EmailCtrl.sendAccountActivateEmail(email, uuid);
+        return "SUCCESS";
+      }
     }
-    else return "ERROR";
+    
+    return "ERROR";
+    
+    
+    
+    /*Cookie cookie = CookieCtrl.addCookie(String.format("%0" + 5 + "d", id), request);
+    HttpServletResponse response = ServletActionContext.getResponse();
+    response.addCookie(cookie);*/
+   /* request.getSession().setAttribute("userID", ID);*/
+    
+   
   }
 }
 

@@ -28,6 +28,6 @@
     <script src="supersized-init.js"></script>
     </head>
     <body>
-            <h3>Message sent!</h3>     
+            <h3>Your count has not been verified yet, check your email!</h3>     
     </body>
 </html>

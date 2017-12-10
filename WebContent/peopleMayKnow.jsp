@@ -56,7 +56,7 @@ li a:hover:not (.active ) {
 .searchBox input {
 	float: right;
 	margin-top: 7px;
-	width: 200px;
+	width: 100px;
 	height: 25px;
 	font-size: 15px;
 	border-radius: 6px;
@@ -155,16 +155,14 @@ h1 {
 		<li><a href="About.jsp" style="float: right">About us</a></li>
 
 		<li>
-			<form action="search" method="post" class="searchBox">
-				<table>
-					<tr>
-						<td><input type="text" name="nameOrId"
-							placeholder="Name or ID" autocomplete="off" /></td>
-						<td>
-							<button id="submit" type="submit">search</button>
-					</tr>
-				</table>
-			</form>
+			<form action="search" method="post" class="searchBox" >
+                <table>
+                <tr><td style="width:200">
+                    <input type="text" name="lastName"  style="float:left" placeholder="姓" autocomplete="off"/></td><td> <input type="text" name="firstName"  style="float:left" placeholder="名" autocomplete="off" />
+                </td><td>
+                <button id="submit" type="submit">search</button></tr>
+                </table>
+            </form>
 		</li>
 	</ul>
 	<h1>可能认识得人...</h1>
@@ -177,10 +175,10 @@ h1 {
 						src=<s:property value="#bn.get(\"pictureUrl\")"></s:property>
 						width="80" height="80" /></a></td>
 			
-				<td><h3>Name: <s:property value="#bn.get(\"name\")" />   ID: <s:property value="#bn.get(\"id\")"/>
+				<td><h3>Name: <s:property value="#bn.get(\"lastName\")" /> <s:property value="#bn.get(\"firstName\")" />  ID: <s:property value="#bn.get(\"id\")"/>
 				<h3><span>He considered you as his <s:property value="#bn.get(\"relation\")"/> when he was in <s:property value="#bn.get(\"period\")"/> period<span></h3>
 				
-			     <button type="button" onclick="javascript:window.location.href='supple?id=${bn.id}&name=${bn.name}&relation=${bn.relation}&period=${bn.period}&email=${bn.email}'"/>Add into My Tree</button>
+			     <button type="button" onclick="javascript:window.location.href='supple?id=${bn.id}&lastName=${bn.lastName}&firstName=${bn.firstName}&relation=${bn.relation}&period=${bn.period}&email=${bn.email}'"/>Add into My Tree</button>
 			     <button type="button" onclick="javascript:window.location.href='message.jsp?id=${bn.id}&name=${bn.name}'"/>Leave a message</button>
 			</td></tr>
 		</table>

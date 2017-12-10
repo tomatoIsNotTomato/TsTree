@@ -28,6 +28,6 @@
     <script src="supersized-init.js"></script>
     </head>
     <body>
-            <h3>Message sent!</h3>     
+            <h3>An active email has been already sent to you, please check your email box...</h3>     
     </body>
 </html>
