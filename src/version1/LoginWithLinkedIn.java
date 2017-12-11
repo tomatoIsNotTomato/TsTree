@@ -47,7 +47,7 @@ public class LoginWithLinkedIn extends ActionSupport implements Serializable{
     this.id = id;
   }
    
-  public String execute() throws SQLException {
+  public String execute() throws SQLException{
     HttpServletRequest request = ServletActionContext.getRequest();
     String getTokenUrl="https://www.linkedin.com/oauth/v2/accessToken"; 
     String getUserInfoUrl="https://api.linkedin.com/v1/people/~";  

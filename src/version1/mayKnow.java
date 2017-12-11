@@ -17,7 +17,22 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
 public class mayKnow extends ActionSupport {
+  private int ID; // ×Ô¼ºµÄID
+  private String name;
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
+  }
   ArrayList<Map<String, String>> pmn;
+  
+  public int getID() {
+    return ID;
+  }
+  public void setID(int iD) {
+    ID = iD;
+  }
 
   public ArrayList<Map<String, String>> getPmn() {
     return pmn;
@@ -27,14 +42,11 @@ public class mayKnow extends ActionSupport {
   }
   
   public String execute() throws Exception {
-    
-    HttpServletRequest request = ServletActionContext.getRequest();
-    int ID = Integer.parseInt(CookieCtrl.getCookie(request));//request.getSession().getAttribute("userID").toString(); 
-    
     try {
       DBcrud conn = new DBcrud();
       ArrayList<Map<String,Object>> l = conn.getBasicInfo(ID);
       String name = l.get(0).get("lastName")+" "+l.get(0).get("firstName");
+
       pmn = conn.peopleMayKnow(ID, name);
       if (pmn == null) {
         return "ERROR";
