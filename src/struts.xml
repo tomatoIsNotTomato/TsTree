@@ -89,7 +89,7 @@
         <!-- 获取留言列表 -->
         <action name = "msgList" class="version1.ShowMessageList">
             <result name="SUCCESS">/messageList.jsp</result>
-            <result name="ERROR">/error.jsp</result>
+            <result name="ERROR">/noResult.jsp</result>
         </action>
         <!-- 可能认识得人 -->
         <action name = "peopleMayKnow" class="version1.mayKnow">

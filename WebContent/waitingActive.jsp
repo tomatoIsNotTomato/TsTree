@@ -5,7 +5,7 @@
   <head>
 
         <meta charset="utf-8">
-        <title>Error</title>
+        <title>Waiting for Active</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
@@ -20,6 +20,7 @@
         float:left;
         margin-left:50px;
         margin-top:100px;
+        color:#000;
         }
         </style>
         <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"

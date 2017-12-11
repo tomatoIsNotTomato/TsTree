@@ -20,9 +20,8 @@ public class DBcrud {
   private String dbpassword = "2218234907";
   private String dbUrl = "jdbc:mysql://localhost:3306/tree?useSSL=false&useUnicode=true&characterEncoding=utf-8";
 
-  */
-  
- String dbusername = System.getenv("ACCESSKEY");
+*/
+  String dbusername = System.getenv("ACCESSKEY");
   String dbpassword = System.getenv("SECRETKEY");
   //System.getenv("MYSQL_HOST_S"); Îª´Ó¿â£¬Ö»¶Á
   String dbUrl = String.format("jdbc:mysql://%s:%s/%s", System.getenv("MYSQL_HOST"), System.getenv("MYSQL_PORT"), System.getenv("MYSQL_DB"));
@@ -375,6 +374,12 @@ public class DBcrud {
       if (rs.next()) {
         String pic = rs.getString(1);
         connect.close();
+        System.out.println("testPic");
+        if(pic==null || pic.length()==0 || pic.contains("tomato")) {
+          pic = defaultPic;
+          System.out.println("1");
+        }
+        System.out.println(pic);
         return pic;
       } else {
         return defaultPic;
@@ -580,6 +585,7 @@ public class DBcrud {
             rowData.put(md.getColumnName(i),
                 BlobToString(rs.getBlob(i)));
           }
+          else
           rowData.put(md.getColumnName(i), rs.getObject(i).toString());
         }
         int id = rs.getInt(1);

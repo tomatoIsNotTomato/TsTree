@@ -5,7 +5,7 @@
   <head>
 
         <meta charset="utf-8">
-        <title>Validition</title>
+        <title>Waiting for Active</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
@@ -29,6 +29,9 @@
     <script src="supersized-init.js"></script>
     </head>
     <body>
-            <h3>Your count has not been verified yet, check your email!</h3>     
+            <h3>This is a social network helps you to to build your academic cycle.
+            <br>It's a school project, and still have a lot of disadvantages
+            <br>Help to improve our system, you can send messages to our master 2218234907@qq.com 
+            </h3>     
     </body>
 </html>

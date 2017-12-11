@@ -23,6 +23,9 @@
         <servlet-name>Active</servlet-name>
         <url-pattern>/Active.servlet</url-pattern>
     </servlet-mapping>
+
+    
+    
     <filter>
         <filter-name>struts2</filter-name>
         <filter-class>

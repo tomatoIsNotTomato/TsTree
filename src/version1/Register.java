@@ -54,15 +54,15 @@ public class Register extends ActionSupport{
   private String picture_url;
   private String profile_url;
   private String pwd;
-  private String img;
+  //private String img;
 
   
-  public String getImg() {
+ /* public String getImg() {
     return img;
-  }
-  public void setImg(String img) {
+  }*/
+ /* public void setImg(String img) {
     this.img = img;
-  }
+  }*/
   public static long getSerialversionuid() {
     return serialVersionUID;
   }
@@ -146,9 +146,10 @@ public class Register extends ActionSupport{
     String projectPath = "http://tomato.applinzi.com/";/*request.getSession().getServletContext().getRealPath("/");
     projectPath = projectPath.replace('\\', '/');*/
       String imgPath = projectPath+"userImage/"; 
-      System.out.println(imgPath);
-      String picture_url = imgPath+getEmail().replace('@', '_').replace('.', '_')+".jpg";
-      try { 
+      
+      //String picture_url = imgPath+getEmail().replace('@', '_').replace('.', '_')+".jpg";
+      String picture_url=imgPath+"default.jpg";
+  /*    try { 
         if (img!=null) {
           InputStream is = new FileInputStream(img);
             File destFile = new File(picture_url);
@@ -172,7 +173,7 @@ public class Register extends ActionSupport{
       catch(IOException e) {
         e.printStackTrace();
       return "error";
-      }
+      }*/
       
     location = city+", "+province+", "+country;
     CampusUser user = new CampusUser(getFirstName(), getLastName(), getHeadline(), location, getIndustry(), getEmail(), picture_url, getProfile_url());

@@ -28,11 +28,11 @@
                 <h3>Bachelor Period</h3>
 
                 <div>
-                    <input type="text" name="bpDate" placeholder="入学时间">
+                    <input type="text" name="bpDate" placeholder="入学时间 e.g. 2009-09-09">
                 </div>
 
                 <div>
-                    <input type="text" name="bpSchool" placeholder="学校">
+                    <input type="text" name="bpSchool" placeholder="学校 e.g.HIT">
                 </div>
                 <button id="next1" type="button">next</button>
             </div>
@@ -41,11 +41,11 @@
                 <h3>Master Period</h3>
 
                 <div>
-                    <input type="text" name="mpDate" placeholder="入学时间">
+                    <input type="text" name="mpDate" placeholder="入学时间 e.g. 2009-09-09">
                 </div>
 
                 <div>
-                    <input type="text" name="mpSchool" placeholder="学校">
+                    <input type="text" name="mpSchool" placeholder="学校 e.g.HIT">
                 </div>
                 <button id="next2" type="button">next</button>
             </div>
@@ -53,11 +53,11 @@
                 <h3>Doctor Period</h3>
 
                 <div>
-                    <input type="text" name="dpDate" placeholder="入学时间">
+                    <input type="text" name="dpDate" placeholder="入学时间 e.g. 2009-09-09">
                 </div>
 
                 <div>
-                    <input type="text" name="dpSchool" placeholder="学校">
+                    <input type="text" name="dpSchool" placeholder="学校 e.g.HIT">
                 </div>
 
                 <button id="submit" type="submit">Save</button>

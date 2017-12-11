@@ -48,7 +48,7 @@ ul {
         </ul>
 	<div class="page-container">
 		<h1>Register</h1>
-		<form action="register" method="post" enctype="multipart/form-data">
+		<form action="register" method="post" >
 			<div class="registerForm" style="display: block">
 				<div>
 					<input type="text" name="firstName" placeholder="firstName" />
@@ -76,11 +76,9 @@ ul {
 			<div class="form1" style="display: none">
 				<h2>关于你...</h2>
 
+				
 				<div>
-					<input type="file" name="img" placeholder="花果山美猴王"/>
-				</div>
-				<div>
-					<input type="text" name="headline" placeholder="花果山美猴王">
+					<input type="text" name="headline" placeholder="headline：e.g.花果山美猴王">
 				</div>
 
 				<!-- <div>
@@ -126,7 +124,7 @@ ul {
 				</select>
 
 				<div>
-					<input type="text" name="industry" placeholder="student">
+					<input type="text" name="industry" placeholder="industry e.g.Computer Science">
 				</div>
 
 				<div>

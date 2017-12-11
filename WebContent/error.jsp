@@ -20,6 +20,7 @@
         float:left;
         margin-left:50px;
         margin-top:100px;
+        color:#000;
         }
         </style>
         <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"
